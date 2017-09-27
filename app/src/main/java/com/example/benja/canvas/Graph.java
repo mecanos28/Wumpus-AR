@@ -109,6 +109,7 @@ public class Graph {
         add_Bi_Relation(5,1);
         add_Bi_Relation(5,2);
         add_Bi_Relation(4,2);
+        //checked
 
     }
 
@@ -158,7 +159,7 @@ public class Graph {
         add_Bi_Relation(9,4);
         add_Bi_Relation(3,6);
         add_Bi_Relation(3,7);
-        /**Puede que le falte*/
+        //checked
     }
 
     public void createDodecahedron() {
