@@ -1,56 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_gravity="center"
     android:layout_height="match_parent"
     tools:context="com.example.benja.canvas.MainActivity">
 
     <LinearLayout
-        android:layout_width="583dp"
-        android:layout_height="655dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        >
+        android:gravity="center_horizontal">
 
         <ImageView
             android:id="@+id/imageView4"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="400px"
             android:background="@drawable/titulo"
             app:srcCompat="@drawable/titulo"
-           />
+            android:scaleType="fitXY"
+            />
 
         <Button
             android:id="@+id/Individual"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:text="Individual"
-            android:onClick="tipoIndividual"/>
+            android:layout_marginTop="30px"
+            android:onClick="tipoIndividual"
+            android:text="Individual" />
 
         <Button
             android:id="@+id/buttonMultijuador"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:text="Multijugador"
+            android:layout_marginTop="20px"
             android:onClick="tipoMultijugador"
-            />
+            android:text="Multijugador" />
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="33dp"
+            android:layout_marginTop="40px"
             android:text="Universidad de Costa Rica"
-            android:textAlignment="center"
-            android:layout_marginTop="25dp"
-            tools:layout_editor_absoluteX="355dp"
-            tools:layout_editor_absoluteY="250dp" />
+            android:textAlignment="center" />
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
