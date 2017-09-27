@@ -105,6 +105,10 @@ public class Graph {
         add_Bi_Relation(3, 4);
         add_Bi_Relation(3, 5);
         add_Bi_Relation(4, 5);
+        add_Bi_Relation(3,1);
+        add_Bi_Relation(5,1);
+        add_Bi_Relation(5,2);
+        add_Bi_Relation(4,2);
 
     }
 
