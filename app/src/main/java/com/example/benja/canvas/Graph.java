@@ -17,6 +17,7 @@ public class Graph {
         switch (figureName) {
             case "tetrahedron":
                 maximumCaves = 4;
+                createTetrahedron();
                 break;
             case "octahedron":
                 maximumCaves = 6;
@@ -195,6 +196,33 @@ public class Graph {
         add_Bi_Relation(12,17);
         //checked
     }
+
+    public String arrayToString() {
+        StringBuffer result = new StringBuffer();
+        String separator = "*";
+
+        for (int i = 0; i < cavesRelations.length; ++i)
+        {
+            for (int j = 0; j < cavesRelations[i].length; ++j)
+                if (j == 0) {
+                    result.append(cavesRelations[i][j]).append(separator);
+                    result.append(cavesRelations[i][j]);
+                }
+                else {
+                    result.append(cavesRelations[i][j]).append(separator);
+                }
+        }
+        return result.toString();
+    }
+
+    public static void main(String[] args) {
+        Graph grafo = new Graph("tetrahedron");
+        System.out.println(grafo.arrayToString());
+
+    }
+
+
     //--------------------------------------------------------------------------------------------------------------------------/
+
 
 }
