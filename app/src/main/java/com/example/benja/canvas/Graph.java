@@ -15,19 +15,19 @@ public class Graph {
 
     public Graph(String figureName) {
         switch (figureName) {
-            case "tetra":
+            case "tetrahedron":
                 maximumCaves = 4;
                 break;
-            case "octa":
+            case "octahedron":
                 maximumCaves = 6;
                 break;
             case "cube":
                 maximumCaves = 8;
                 break;
-            case "ico":
+            case "icosahedron":
                 maximumCaves = 12;
                 break;
-            case "dode":
+            case "dodecahedron":
                 maximumCaves = 20;
                 break;
         }
@@ -192,7 +192,8 @@ public class Graph {
         add_Bi_Relation(18,19);
         add_Bi_Relation(19,17);
         add_Bi_Relation(17,15);
-
+        add_Bi_Relation(12,17);
+        //checked
     }
     //--------------------------------------------------------------------------------------------------------------------------/
 
