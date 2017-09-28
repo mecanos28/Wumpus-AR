@@ -204,7 +204,7 @@ public class Graph {
         for (int i = 0; i < cavesRelations.length; ++i)
         {
             for (int j = 0; j < cavesRelations[i].length; ++j)
-                if (j == 0) {
+                if (j == 0 && i != 0) {
                     result.append(cavesRelations[i][j]).append(separator);
                     result.append(cavesRelations[i][j]);
                 }
