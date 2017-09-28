@@ -12,6 +12,7 @@
         android:orientation="vertical"
         android:gravity="center_horizontal">
 
+
         <ImageView
             android:id="@+id/imageTitulo"
             android:layout_width="match_parent"
