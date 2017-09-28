@@ -26,6 +26,10 @@ public class AdminSQLite extends SQLiteOpenHelper {
                 "cave_number INTEGER," +
                 "FOREIGN KEY (graph_id) REFERENCES GRAPH(id)" +
                 ");");
+        db.execSQL("CREATE TABLE CAVE_CONTENT (" +
+                "id INTEGER AUTO INCREMENT PRIMARY KEY," +
+                "content TEXT" +
+                ");");
         db.execSQL("CREATE TABLE GAME (" +
                 "id INTEGER AUTO INCREMENT PRIMARY KEY," +
                 "graph_id INTEGER," +
@@ -33,8 +37,10 @@ public class AdminSQLite extends SQLiteOpenHelper {
                 "latitude TEXT," +
                 "longitude TEXT" +
                 "cave_number INTEGER," +
+                "content INTEGER," +
                 "FOREIGN KEY (graph_id) REFERENCES GRAPH(id)," +
-                "FOREIGN KEY (cave_id) REFERENCES CAVE(id)" +
+                "FOREIGN KEY (cave_id) REFERENCES CAVE(id)," +
+                "FOREIGN KEY (content) REFERENCES CAVE_CONTENT(id)" +
                 ");");
     }
 
