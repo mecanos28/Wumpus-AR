@@ -1,5 +1,6 @@
 package com.example.benja.canvas;
 
+import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 
 /**
