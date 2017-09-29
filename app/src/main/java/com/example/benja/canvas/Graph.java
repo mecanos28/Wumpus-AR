@@ -40,6 +40,10 @@ public class Graph {
         this.maximumCaves--;
     }
 
+    public int getMaximumCaves () {
+        return maximumCaves;
+    }
+
     public void add_Bi_Relation(int caveX_id, int caveY_id) {
 
         this.cavesRelations[caveX_id][caveY_id] = true;
@@ -82,8 +86,9 @@ public class Graph {
         return next;
     }
 
-
-
+    /*
+    * Converts a string of relations into an array.
+    */
     public void stringToArray(String relations) {
         int row = 0;
         int column = 0;
@@ -120,6 +125,51 @@ public class Graph {
             result = result + "*";
         }
         return result;
+    }
+
+    /*
+    * Checks if there's a relation between 2 caves.
+    */
+    public boolean areConnected(int caveX_id, int caveY_id) {
+        boolean connected = false;
+        if (this.cavesRelations[caveX_id][caveY_id]) {
+            connected = true;
+        }
+        return connected;
+    }
+
+    /*
+    * Checks if a cave is isolated.
+    */
+    public boolean isIsolated(int cave) {
+        boolean isolated = false;
+        int i = 0;
+        while (!isolated && i < this.maximumCaves) {
+            if (this.areConnected(i, cave)) {
+                isolated = true;
+            }
+            ++i;
+        }
+        return isolated;
+    }
+
+    /*
+    * Validates the relations array.
+    */
+    public boolean valid () {
+        boolean valid = true;
+        //A maze has to have at least 2 caves.
+        if (this.maximumCaves < 2) {
+            return false;
+        }
+        int i = 0;
+        while (i < this.maximumCaves && valid) {
+            if (this.isIsolated(i)) {
+                valid = false;
+            }
+            ++i;
+        }
+        return valid;
     }
 
 }
