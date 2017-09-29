@@ -21,35 +21,6 @@ public class DrawMazeActivity extends AppCompatActivity {
     }
 
     /*
-    * Gets a regular maze from the DB once an image is clicked.
-    */
-    void imageClicked(View v) {
-        Button button = (Button) findViewById(v.getId());
-        String buttonID = button.getText().toString();
-        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 1);
-        SQLiteDatabase db = admin.getWritableDatabase();
-        String graphName = "";
-        Integer graphID;
-        switch (buttonID) {
-            case "btnTetrahedron":
-                graphName = "Tetrahedron";
-                break;
-            case "btnOctahedron":
-                graphName = "Octahedron";
-                break;
-            case "btnCube":
-                graphName = "Cube";
-                break;
-            case "btnIcosahedron":
-                graphName = "Icosahedron";
-                break;
-            case "btnDodecahedron":
-                graphName = "Dodecahedron";
-                break;
-        }
-    }
-
-    /*
     * Saves the actual maze.
     */
     public void saveMaze() {
