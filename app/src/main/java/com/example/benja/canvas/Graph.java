@@ -1,11 +1,6 @@
 package com.example.benja.canvas;
 
-import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
-
-/**
- * Created by b50657 on 27/09/2017.
- */
 
 public class Graph {
 
@@ -14,37 +9,36 @@ public class Graph {
     private boolean[][] cavesRelations;
     private int maximumCaves;
 
-    public Graph(String figureName) {
-        switch (figureName) {
-            case "tetrahedron":
-                maximumCaves = 4;
-                createTetrahedron();
-                break;
-            case "octahedron":
-                maximumCaves = 6;
-                break;
-            case "cube":
-                maximumCaves = 8;
-                break;
-            case "icosahedron":
-                maximumCaves = 12;
-                break;
-            case "dodecahedron":
-                maximumCaves = 20;
-                break;
-        }
-
-        this.cavesRelations = new boolean[maximumCaves][maximumCaves];
+    //Creates an empty graph for irregular mazes.
+    public Graph() {
+        this.maximumCaves = 0;
+        this.cavesRelations = new boolean[20][20];
         this.allCaves = new ArrayList<Cave>();
     }
 
+    //Creates a graph from a relation's string and the corresponding number of caves.
+    public Graph(String relations, int numberOfCaves) {
+        this.maximumCaves = numberOfCaves;
+        this.cavesRelations = new boolean[this.maximumCaves][this.maximumCaves];
+        stringToArray(relations);
+        this.allCaves = new ArrayList<Cave>();
+    }
+
+    /*
     public Graph(boolean[][] relations) {
         this.maximumCaves = relations.length;
         this.cavesRelations = relations;
         this.allCaves = new ArrayList<Cave>();
     }
+    */
 
-    //------------------------------------------------------------------------------
+    public void addCave() {
+        this.maximumCaves++;
+    }
+
+    public void removeCave() {
+        this.maximumCaves--;
+    }
 
     public void add_Bi_Relation(int caveX_id, int caveY_id) {
 
@@ -88,142 +82,44 @@ public class Graph {
         return next;
     }
 
-    //---------------------------------------------------------------------------------//
-    public void createTetrahedron() {
-        add_Bi_Relation(0, 1);
-        add_Bi_Relation(0, 2);
-        add_Bi_Relation(0, 3);
-        add_Bi_Relation(1, 3);
-        add_Bi_Relation(1, 2);
-        add_Bi_Relation(2, 3);
-    }
 
-    public void createOctahedron() {
-        add_Bi_Relation(0, 1);
-        add_Bi_Relation(0, 2);
-        add_Bi_Relation(0, 3);
-        add_Bi_Relation(0, 4);
-        add_Bi_Relation(1, 2);
-        add_Bi_Relation(3, 4);
-        add_Bi_Relation(3, 5);
-        add_Bi_Relation(4, 5);
-        add_Bi_Relation(3,1);
-        add_Bi_Relation(5,1);
-        add_Bi_Relation(5,2);
-        add_Bi_Relation(4,2);
-        //checked
 
-    }
-
-    public void createCube() {
-        add_Bi_Relation(0, 1);
-        add_Bi_Relation(0, 2);
-        add_Bi_Relation(0, 4);
-        add_Bi_Relation(1, 5);
-        add_Bi_Relation(1, 3);
-        add_Bi_Relation(2, 6);
-        add_Bi_Relation(2, 3);
-        add_Bi_Relation(3, 7);
-        add_Bi_Relation(6, 7);
-        add_Bi_Relation(6, 4);
-        add_Bi_Relation(4, 5);
-        add_Bi_Relation(5, 7);
-    }
-
-    public void createIcosahedron() {
-        add_Bi_Relation(0, 1);
-        add_Bi_Relation(0, 2);
-        add_Bi_Relation(0, 3);
-        add_Bi_Relation(0, 4);
-        add_Bi_Relation(0, 5);
-        add_Bi_Relation(1, 2);
-        add_Bi_Relation(1, 11);
-        add_Bi_Relation(2, 11);
-        add_Bi_Relation(9, 11);
-        add_Bi_Relation(10, 11);
-        add_Bi_Relation(8, 9);
-        add_Bi_Relation(8, 10);
-        add_Bi_Relation(8, 7);
-        add_Bi_Relation(8, 6);
-        add_Bi_Relation(6, 7);
-        add_Bi_Relation(4, 6);
-        add_Bi_Relation(7, 5);
-        add_Bi_Relation(3, 4);
-        add_Bi_Relation(3, 5);
-        add_Bi_Relation(1, 9);
-        add_Bi_Relation(1, 4);
-        add_Bi_Relation(2, 10);
-        add_Bi_Relation(2, 5);
-        add_Bi_Relation(10,5);
-        add_Bi_Relation(7,10);
-        add_Bi_Relation(11,8);
-        add_Bi_Relation(9,6);
-        add_Bi_Relation(9,4);
-        add_Bi_Relation(3,6);
-        add_Bi_Relation(3,7);
-        //checked
-    }
-
-    public void createDodecahedron() {
-        add_Bi_Relation(0,1);
-        add_Bi_Relation(0,2);
-        add_Bi_Relation(0,5);
-        add_Bi_Relation(1,3);
-        add_Bi_Relation(1,6);
-        add_Bi_Relation(3,8);
-        add_Bi_Relation(3,4);
-        add_Bi_Relation(4,9);
-        add_Bi_Relation(4,2);
-        add_Bi_Relation(2,7);
-        add_Bi_Relation(5,10);
-        add_Bi_Relation(5,11);
-        add_Bi_Relation(7,11);
-        add_Bi_Relation(7,13);
-        add_Bi_Relation(9,13);
-        add_Bi_Relation(9,14);
-        add_Bi_Relation(8,14);
-        add_Bi_Relation(8,12);
-        add_Bi_Relation(6,12);
-        add_Bi_Relation(6,10);
-        add_Bi_Relation(10,15);
-        add_Bi_Relation(11,16);
-        add_Bi_Relation(13,18);
-        add_Bi_Relation(14,19);
-        add_Bi_Relation(15,16);
-        add_Bi_Relation(16,18);
-        add_Bi_Relation(18,19);
-        add_Bi_Relation(19,17);
-        add_Bi_Relation(17,15);
-        add_Bi_Relation(12,17);
-        //checked
-    }
-
-    public String arrayToString() {
-        StringBuffer result = new StringBuffer();
-        String separator = "*";
-
-        for (int i = 0; i < cavesRelations.length; ++i)
+    public void stringToArray(String relations) {
+        int row = 0;
+        int column = 0;
+        for (int i = 0; i < relations.length() - 1; ++i)
         {
-            for (int j = 0; j < cavesRelations[i].length; ++j)
-                if (j == 0 && i != 0) {
-                    result.append(cavesRelations[i][j]).append(separator);
-                    result.append(cavesRelations[i][j]);
+            if (relations.charAt(i) == '1') {
+                this.add_Bi_Relation(row, column);
+                ++column;
+            }
+            else if (relations.charAt(i) == '0') {
+                ++column;
+            }
+            else {
+                ++row;
+                column = 0;
+            }
+        }
+    }
+
+    /*
+    *  Method for Irregular Mazes
+    */
+    public String arrayToString() {
+        String result = "";
+        for (int i = 0; i < maximumCaves; i++) {
+            for (int j = 0; j < maximumCaves; j++) {
+                if (cavesRelations[i][j]){
+                    result = result + "1";
                 }
                 else {
-                    result.append(cavesRelations[i][j]).append(separator);
+                    result = result + "0";
                 }
+            }
+            result = result + "*";
         }
-        return result.toString();
+        return result;
     }
-
-    public static void main(String[] args) {
-        Graph grafo = new Graph("tetrahedron");
-        System.out.println(grafo.arrayToString());
-
-    }
-
-
-    //--------------------------------------------------------------------------------------------------------------------------/
-
 
 }
