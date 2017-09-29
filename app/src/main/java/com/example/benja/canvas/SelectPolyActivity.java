@@ -19,7 +19,7 @@ public class SelectPolyActivity extends AppCompatActivity {
     /*
     * Gets a regular maze from the DB once an image is clicked.
     */
-    void imageClicked(View v) {
+    public void imageClicked(View v) {
         Button button = (Button) findViewById(v.getId());
         String buttonID = button.getText().toString();
         AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 1);

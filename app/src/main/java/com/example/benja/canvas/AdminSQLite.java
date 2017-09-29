@@ -24,7 +24,8 @@ public class AdminSQLite extends SQLiteOpenHelper {
                 "id INTEGER AUTO INCREMENT PRIMARY KEY," +
                 "relations TEXT," +
                 "number_of_caves INTEGER," +
-                "name TEXT" +
+                "name TEXT," +
+                "image TEXT" +
                 ");");
         db.execSQL("CREATE TABLE CAVE (" +
                 "id INTEGER AUTO INCREMENT PRIMARY KEY," +
