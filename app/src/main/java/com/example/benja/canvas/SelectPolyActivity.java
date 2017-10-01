@@ -6,22 +6,19 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 
 public class SelectPolyActivity extends AppCompatActivity  {
 
-    ViewPager viewPager;
-    CustomSwip  customSwip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_poly);
-        viewPager=(ViewPager)findViewById(R.id.ImageSlider);
-        int[] imageResources = {R.drawable.tetra,R.drawable.octa,R.drawable.cube,R.drawable.icosa,R.drawable.dodeca};
-        customSwip = new CustomSwip(this,imageResources);
-        viewPager.setAdapter(customSwip);
     }
 
     /*
@@ -63,4 +60,18 @@ public class SelectPolyActivity extends AppCompatActivity  {
         }
         cell.close();
     }
+
+
+    public void DrawLabyrinthView(View vista)
+    {
+        setContentView(R.layout.activity_draw);
+
+    }
+
+    public void selectFromLibView(View vista)
+    {
+        setContentView(R.layout.activity_select_from_lib);
+
+    }
+
 }
