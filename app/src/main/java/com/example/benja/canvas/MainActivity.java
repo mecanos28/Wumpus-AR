@@ -19,7 +19,7 @@ public class MainActivity extends Activity {
 
     public void tipoIndividual(View vista)
     {
-        setContentView(R.layout.layout_individual);
+        setContentView(R.layout.activity_select_poly);
 
     }
 

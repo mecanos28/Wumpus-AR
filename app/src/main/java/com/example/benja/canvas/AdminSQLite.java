@@ -56,7 +56,7 @@ public class AdminSQLite extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO GRAPH (relations, number_of_caves, name) " +
                 "VALUES (011110*101101*110011*110011*101101*011110, 6, Octahedron);");
         db.execSQL("INSERT INTO GRAPH (relations, number_of_caves, name) " +
-                "VALUES (01101000*10010100*10010010*01100001*10000110*01001001*00101001*00010110, 8, Cube);");
+                "VALUES (01101000*10010100*10010010*01100001*10000110*01001001*00101001*00010110, 8, cube);");
         db.execSQL("INSERT INTO GRAPH (relations, number_of_caves, name) " +
                 "VALUES (011111000000*101010000101*110001000011*100011110000*110100100100*101100010010*000110011100*000101101010*000000110111*010010101001*001001011001*011000001110, 12, Icosahedron);");
         db.execSQL("INSERT INTO GRAPH (relations, number_of_caves, name) " +

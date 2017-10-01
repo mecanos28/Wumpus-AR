@@ -13,21 +13,26 @@
         android:layout_height="wrap_content"
         android:text="Seleccione el tipo de laberinto a escoger" />
 
-    <Button
-        android:id="@+id/button"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/ImageSlider"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Iniciar Juego" />
+        android:layout_height="match_parent" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/bttnStartGame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Dibujar Laberinto" />
+        android:text="Start Game" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/bttnDrawLab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Escoger De Librería..." />
+        android:text="Draw a new labyrinth" />
+
+    <Button
+        android:id="@+id/bttnChooseLib"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose from library..." />
 </LinearLayout>

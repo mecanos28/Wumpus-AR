@@ -2,18 +2,26 @@ package com.example.benja.canvas;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class SelectPolyActivity extends AppCompatActivity {
+public class SelectPolyActivity extends AppCompatActivity  {
+
+    ViewPager viewPager;
+    CustomSwip  customSwip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_poly);
+        viewPager=(ViewPager)findViewById(R.id.ImageSlider);
+        int[] imageResources = {R.drawable.tetra,R.drawable.octa,R.drawable.cube,R.drawable.icosa,R.drawable.dodeca};
+        customSwip = new CustomSwip(this,imageResources);
+        viewPager.setAdapter(customSwip);
     }
 
     /*
@@ -34,7 +42,7 @@ public class SelectPolyActivity extends AppCompatActivity {
                 graphName = "Octahedron";
                 break;
             case "btnCube":
-                graphName = "Cube";
+                graphName = "cube";
                 break;
             case "btnIcosahedron":
                 graphName = "Icosahedron";
