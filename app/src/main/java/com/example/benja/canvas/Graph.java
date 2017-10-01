@@ -20,7 +20,7 @@ public class Graph {
     public Graph(String relations, int numberOfCaves) {
         this.maximumCaves = numberOfCaves;
         this.cavesRelations = new boolean[this.maximumCaves][this.maximumCaves];
-        stringToArray(relations);
+        this.stringToArray(relations);
         this.allCaves = new ArrayList<Cave>();
     }
 
