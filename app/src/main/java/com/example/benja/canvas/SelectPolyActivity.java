@@ -1,5 +1,6 @@
 package com.example.benja.canvas;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.view.ViewPager;
@@ -14,11 +15,17 @@ import android.widget.Toast;
 
 public class SelectPolyActivity extends AppCompatActivity  {
 
+    ViewPager viewPager;
+    CustomSwip  customSwip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_poly);
+        viewPager=(ViewPager)findViewById(R.id.ImageSlider);
+        int[] imageResources = {R.drawable.tetra,R.drawable.octa,R.drawable.cube,R.drawable.icosa,R.drawable.dodeca};
+        customSwip = new CustomSwip(this,imageResources);
+        viewPager.setAdapter(customSwip);
     }
 
     /*
@@ -64,13 +71,15 @@ public class SelectPolyActivity extends AppCompatActivity  {
 
     public void DrawLabyrinthView(View vista)
     {
-        setContentView(R.layout.activity_draw);
+        Intent i = new Intent(this,DrawMazeActivity.class);
+        startActivity(i);
 
     }
 
     public void selectFromLibView(View vista)
     {
-        setContentView(R.layout.activity_select_from_lib);
+        Intent i = new Intent(this,SelectFromLibActivity.class);
+        startActivity(i);
 
     }
 

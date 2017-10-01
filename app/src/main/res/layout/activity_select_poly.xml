@@ -12,13 +12,15 @@
         android:id="@+id/textView4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textStyle="bold"
         android:text="Seleccione el tipo de laberinto a escoger" />
 
-    <ListView
-        android:id="@+id/polyMazes"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/ImageSlider"
         android:layout_width="match_parent"
-        android:layout_height="136dp"
-        android:layout_weight="0.84" />
+        android:layout_height="172dp"
+        android:layout_weight="0.92" />
 
     <Button
         android:id="@+id/bttnStartGame"

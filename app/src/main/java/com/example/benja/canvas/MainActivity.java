@@ -2,6 +2,7 @@ package com.example.benja.canvas;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -30,7 +31,8 @@ public class MainActivity extends Activity {
 
     public void tipoIndividual(View vista)
     {
-        setContentView(R.layout.activity_select_poly);
+        Intent i = new Intent(this,SelectPolyActivity.class);
+        startActivity(i);
 
     }
 
