@@ -1,8 +1,12 @@
 package com.example.benja.canvas;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.io.FileInputStream;
+import java.io.IOException;
 
 /*
 *   This class starts the DB.
@@ -51,6 +55,91 @@ public class AdminSQLite extends SQLiteOpenHelper {
                 ");");
 
         //Insert the default graphs
+        try {
+            //Tetrahedron
+            FileInputStream fis = new FileInputStream("@drawable/tetra.png");
+            byte[] image = new byte[fis.available()];
+            fis.read(image);
+
+            ContentValues data = new ContentValues();
+            data.put("relations", "0111*1011*1101*1110");
+            data.put("number_of_caves", 4);
+            data.put("name", "Tetrahedron");
+            data.put("image", image);
+
+            db.insert("GRAPH", null, data);
+
+            fis.close();
+            data.clear();
+
+            //Octahedron
+            fis = new FileInputStream("@drawable/octa.png");
+            image = new byte[fis.available()];
+            fis.read(image);
+
+            data = new ContentValues();
+            data.put("relations", "011110*101101*110011*110011*101101*011110");
+            data.put("number_of_caves", 6);
+            data.put("name", "Octahedron");
+            data.put("image", image);
+
+            db.insert("GRAPH", null, data);
+
+            fis.close();
+            data.clear();
+
+            //Cube
+            fis = new FileInputStream("@drawable/cube.png");
+            image = new byte[fis.available()];
+            fis.read(image);
+
+            data = new ContentValues();
+            data.put("relations", "01101000*10010100*10010010*01100001*10000110*01001001*00101001*00010110");
+            data.put("number_of_caves", 8);
+            data.put("name", "Cube");
+            data.put("image", image);
+
+            db.insert("GRAPH", null, data);
+
+            fis.close();
+            data.clear();
+
+            //Octahedron
+            fis = new FileInputStream("@drawable/icosa.png");
+            image = new byte[fis.available()];
+            fis.read(image);
+
+            data = new ContentValues();
+            data.put("relations", "011111000000*101010000101*110001000011*100011110000*110100100100*101100010010*000110011100*000101101010*000000110111*010010101001*001001011001*011000001110");
+            data.put("number_of_caves", 12);
+            data.put("name", "Icosahedron");
+            data.put("image", image);
+
+            db.insert("GRAPH", null, data);
+
+            fis.close();
+            data.clear();
+
+            //Octahedron
+            fis = new FileInputStream("@drawable/dodeca.png");
+            image = new byte[fis.available()];
+            fis.read(image);
+
+            data = new ContentValues();
+            data.put("relations", "01100100000000000000*10010010000000000000*10001001000000000000*01001000100000000000*00110000010000000000*10000000001100000000*01000000001010000000*00100000000101000000*00010000000010100000*00001000000001100000*00000110000000010000*00000101000000001000*00000010100000000100*00000001010000000010*00000000110000000001*00000000001000001100*00000000000100010010*00000000000010010001*00000000000001001001*00000000000000100110");
+            data.put("number_of_caves", 20);
+            data.put("name", "Dodecahedron");
+            data.put("image", image);
+
+            db.insert("GRAPH", null, data);
+
+            fis.close();
+            data.clear();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        /*Insert the default graphs
         db.execSQL("INSERT INTO GRAPH (relations, number_of_caves, name) " +
                 "VALUES (0111*1011*1101*1110, 4, Tetrahedron);");
         db.execSQL("INSERT INTO GRAPH (relations, number_of_caves, name) " +
@@ -61,6 +150,7 @@ public class AdminSQLite extends SQLiteOpenHelper {
                 "VALUES (011111000000*101010000101*110001000011*100011110000*110100100100*101100010010*000110011100*000101101010*000000110111*010010101001*001001011001*011000001110, 12, Icosahedron);");
         db.execSQL("INSERT INTO GRAPH (relations, number_of_caves, name) " +
                 "VALUES (01100100000000000000*10010010000000000000*10001001000000000000*01001000100000000000*00110000010000000000*10000000001100000000*01000000001010000000*00100000000101000000*00010000000010100000*00001000000001100000*00000110000000010000*00000101000000001000*00000010100000000100*00000001010000000010*00000000110000000001*00000000001000001100*00000000000100010010*00000000000010010001*00000000000001001001*00000000000000100110, 20, Dodecahedron);");
+       */
     }
 
     /*
