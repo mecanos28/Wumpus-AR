@@ -34,7 +34,7 @@ public class SelectPolyActivity extends AppCompatActivity  {
     public void imageClicked(View v) {
         Button button = (Button) findViewById(v.getId());
         String buttonID = button.getText().toString();
-        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 1);
+        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 2);
         SQLiteDatabase db = admin.getWritableDatabase();
         String graphName = "";
         Integer graphID;
