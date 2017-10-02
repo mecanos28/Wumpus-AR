@@ -45,7 +45,7 @@ public class SelectFromLibActivity extends Activity {
     * Fills the ListView with the mazes from the DB
     */
     public void populateListView() {
-        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 1);
+        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 2);
         SQLiteDatabase db = admin.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT image, number_of_caves FROM GRAPH WHERE name IS NULL", null);
         data = new String[]{"image", "number_of_caves"};
