@@ -1,9 +1,24 @@
 package com.example.benja.canvas;
 
-/**
- * Created by b50657 on 27/09/2017.
- */
-
 public class Cave {
+    private int id;
+    private float corX, corY;
 
+    public Cave(int id, float corX, float corY) {
+        this.id = id;
+        this.corX = corX;
+        this.corY = corY;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public float getCorX() {
+        return corX;
+    }
+
+    public float getCorY() {
+        return corY;
+    }
 }
