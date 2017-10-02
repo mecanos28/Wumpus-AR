@@ -40,7 +40,7 @@ public class SelectPolyActivity extends AppCompatActivity  {
     * Gets a regular maze from the DB once an image is clicked.
     */
     public void imageClicked(int graph) {
-        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 2);
+        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 5);
         SQLiteDatabase db = admin.getWritableDatabase();
         String graphName = "";
         switch (graph) {
@@ -60,10 +60,11 @@ public class SelectPolyActivity extends AppCompatActivity  {
                 graphName = "Dodecahedron";
                 break;
         }
-        Cursor cell = db.rawQuery("SELECT id FROM GRAPH WHERE GRAPH.name = " + graphName, null);
+        Cursor cell = db.rawQuery("SELECT GRAPH.id FROM GRAPH WHERE GRAPH.name = \"" + graphName +"\";", null);
         if (cell.moveToFirst()){
             int graphID = cell.getInt(0);
             cell.close();
+            Toast.makeText(this, "ID: " + graphID + "\nName: " + graphName, Toast.LENGTH_LONG).show();
             //Intent i = new Intent(this, EmplazarActivity.class);
             //i.putExtra("graphID",graphID);
             //startActivity(i);
@@ -91,8 +92,7 @@ public class SelectPolyActivity extends AppCompatActivity  {
     }
 
     public void startGame(View view) {
-        Toast.makeText(this, "Posición: " + currentPage  , Toast.LENGTH_LONG).show();
-        // this.imageClicked(currentPage);
+        this.imageClicked(currentPage);
     }
 
 }
