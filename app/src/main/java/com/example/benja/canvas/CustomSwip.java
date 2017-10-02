@@ -16,6 +16,7 @@ public class CustomSwip extends PagerAdapter {
     private int[] imageResources;
     private Context context;
     private LayoutInflater layoutInflater;
+    private int position;
 
     public CustomSwip(Context context, int[]imageResources) {
         this.context = context;
@@ -36,6 +37,7 @@ public class CustomSwip extends PagerAdapter {
         imageView.setImageResource(imageResources[position]);
         textView.setText((position+1)+"/"+imageResources.length);
         container.addView(itemView);
+        this.position = position;
         return itemView;
     }
 
@@ -49,4 +51,9 @@ public class CustomSwip extends PagerAdapter {
 
         return  (view==object);
     }
+
+    public int getPosition() {
+        return this.position;
+    }
+
 }

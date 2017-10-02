@@ -31,33 +31,30 @@ public class SelectPolyActivity extends AppCompatActivity  {
     /*
     * Gets a regular maze from the DB once an image is clicked.
     */
-    public void imageClicked(View v) {
-        Button button = (Button) findViewById(v.getId());
-        String buttonID = button.getText().toString();
-        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 2);
+    public void imageClicked(int i) {
+        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 1);
         SQLiteDatabase db = admin.getWritableDatabase();
         String graphName = "";
-        Integer graphID;
-        switch (buttonID) {
-            case "btnTetrahedron":
+        switch (i) {
+            case 1:
                 graphName = "Tetrahedron";
                 break;
-            case "btnOctahedron":
+            case 2:
                 graphName = "Octahedron";
                 break;
-            case "btnCube":
+            case 3:
                 graphName = "cube";
                 break;
-            case "btnIcosahedron":
+            case 4:
                 graphName = "Icosahedron";
                 break;
-            case "btnDodecahedron":
+            case 5:
                 graphName = "Dodecahedron";
                 break;
         }
         Cursor cell = db.rawQuery("SELECT id FROM GRAPH WHERE GRAPH.name = " + graphName, null);
         if (cell.moveToFirst()){
-            graphID = cell.getInt(0);
+           // graphID = cell.getInt(0);
             cell.close();
             //TODO: Call the next layout and send the id as parameter.
         }
@@ -69,17 +66,24 @@ public class SelectPolyActivity extends AppCompatActivity  {
     }
 
 
-    public void DrawLabyrinthView(View vista)
+    public void DrawLabyrinthView(View view)
     {
         Intent i = new Intent(this,DrawMazeActivity.class);
         startActivity(i);
 
     }
 
-    public void selectFromLibView(View vista)
+    public void selectFromLibView(View view)
     {
         Intent i = new Intent(this,SelectFromLibActivity.class);
         startActivity(i);
+
+    }
+
+    public void startGame(View view) {
+        int position = this.customSwip.getPosition();
+        Toast.makeText(this, "Posición: " + position  , Toast.LENGTH_LONG).show();
+       // this.imageClicked(customSwip.getPosition());
 
     }
 
