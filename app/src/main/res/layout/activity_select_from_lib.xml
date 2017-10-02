@@ -6,10 +6,18 @@
     android:layout_height="match_parent"
     tools:context="com.example.benja.canvas.SelectFromLibActivity">
 
+    <TextView
+        android:id="@+id/lblChooseLib"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Choose your maze from the library..."
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
     <ListView
         android:id="@+id/listViewMazes"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </ListView>
+        android:layout_height="match_parent"></ListView>
 
 </LinearLayout>

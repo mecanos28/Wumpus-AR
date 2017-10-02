@@ -14,7 +14,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textStyle="bold"
-        android:text="Seleccione el tipo de laberinto a escoger" />
+        android:textSize="20sp"
+        android:text="Choose a maze..." />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/ImageSlider"
@@ -33,7 +34,7 @@
         android:id="@+id/bttnDrawLab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="DrawLabyrinthView"
+        android:onClick="drawLabyrinthView"
         android:text="Draw a new labyrinth" />
 
     <Button
