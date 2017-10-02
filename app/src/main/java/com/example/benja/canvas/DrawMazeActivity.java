@@ -35,6 +35,7 @@ public class DrawMazeActivity extends Activity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draw);
         myCanvas = (DrawCanvas)findViewById(R.id.viewDrawCanvas);
+        myCanvas.setEnabled(false);
 
         newDrawing = (ImageButton)findViewById(R.id.imgBtnNew);
         saveDrawing = (ImageButton)findViewById(R.id.imgBtnSave);
@@ -103,6 +104,7 @@ public class DrawMazeActivity extends Activity implements View.OnClickListener{
                 break;
             case R.id.imgBtnAddCave: //Agregar cueva
                 //TODO: Buscar una manera de desactivar el canvas si no se presiona el botón
+                myCanvas.setEnabled(true);
                 break;
             case R.id.imgBtnAddArc: //Agregar un arco
                 final Dialog dialogAddArc = new Dialog(this);

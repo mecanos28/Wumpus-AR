@@ -10,6 +10,16 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.ArrayList;
+
+
+class IntPair {
+    int x;
+    int y;
+    IntPair(int x, int y) {this.x=x;this.y=y;}
+
+}
+
 public class DrawCanvas extends View {
 
     private Path drawPath; //Guardo el trazo
@@ -20,6 +30,7 @@ public class DrawCanvas extends View {
     private float touchX, touchY; //Coordenadas
     private boolean active; //Modo: agregar cueva
     private int numCaves; //Contador del número de cuevas
+    private ArrayList<IntPair> relations;
 
     public DrawCanvas(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -42,6 +53,7 @@ public class DrawCanvas extends View {
         touchY = 0;
         active = false;
         numCaves = 0;
+        relations = new ArrayList<IntPair>();
     }
 
     //Tamaño asignado a la vista
@@ -55,8 +67,9 @@ public class DrawCanvas extends View {
     //Reinicializa la pantalla
     public void newDraw(){
         drawCanvas.drawColor(0,PorterDuff.Mode.CLEAR);
-        numCaves = 0;
+        setupDrawing();
         invalidate();
+        //inicializar lo del grafo
     }
 
     //Pinta la vista, se llama desde el OnTouchEvent
@@ -72,10 +85,11 @@ public class DrawCanvas extends View {
     public boolean onTouchEvent(MotionEvent event){
         touchX = event.getX();
         touchY = event.getY();
-        /*if(!isActive()) { //Si no se va añadir una cueva
+        invalidate();
+        if(!this.isEnabled()) { //Si no se va añadir una cueva
             return false;
         }
-        else { //Si se va añadir una cueva*/
+        else { //Si se va añadir una cueva
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     drawPath.moveTo(touchX, touchY);
@@ -100,9 +114,10 @@ public class DrawCanvas extends View {
                     return false;
             }
             invalidate(); //Repinta
-            setActive(false);
+            //setActive(false);
+            this.setEnabled(false);
             return true;
-        //}
+        }
     }
 
     //Agrega un arco entre 2 cuevas
@@ -118,7 +133,7 @@ public class DrawCanvas extends View {
             drawPath.lineTo(c2.getCorX(),c2.getCorY()-52);
             drawCanvas.drawPath(drawPath, drawPaint);
             drawPath.reset();
-            customMaze.add_Bi_Relation(cave1,cave2);
+            relations.add(new IntPair(cave1,cave2));
         }
     }
 
@@ -135,6 +150,12 @@ public class DrawCanvas extends View {
                 drawPath.reset();
                 customMaze.removeCave(cave); //La borro del grafo
                 numCaves--;
+                for (int i = 0; i < relations.size(); ++i)
+                {
+                    if (relations.get(i).x == cave || relations.get(i).y == cave) {
+                        relations.remove(i);
+                    }
+                }
             }
         }
     }
