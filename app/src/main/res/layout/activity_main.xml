@@ -23,33 +23,34 @@
             />
 
         <Button
-            android:id="@+id/buttonNuevo"
+            android:id="@+id/Individual"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="30px"
-            android:onClick="metodoNuevo"
-            android:text="Juego Nuevo" />
+            android:onClick="tipoIndividual"
+            android:text="Individual" />
 
         <Button
-            android:id="@+id/buttonCargar"
+            android:id="@+id/buttonMultijuador"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20px"
-            android:onClick="metodoCargar"
-            android:text="Cargar" />
+            android:onClick="tipoMultijugador"
+            android:text="Multijugador" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="33dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:text="Universidad de Costa Rica"
+            android:textAlignment="center" />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="33dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:text="Universidad de Costa Rica"
-        android:textAlignment="center" />
 
 </RelativeLayout>
