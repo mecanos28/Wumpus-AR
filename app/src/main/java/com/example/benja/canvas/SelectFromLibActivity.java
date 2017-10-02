@@ -9,16 +9,16 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-//https://www.youtube.com/watch?v=HRPpQw0dzko
+import java.util.ArrayList;
 
 public class SelectFromLibActivity extends Activity {
 
     ListView mazeList;
     String[] data;
-    int[] toListIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +47,16 @@ public class SelectFromLibActivity extends Activity {
         mazeList = (ListView)findViewById(R.id.listViewMazes);
         AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 5);
         SQLiteDatabase db = admin.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT id as _id, name, number_of_caves FROM GRAPH", null);
-        data = new String[]{"_id", "name", "number_of_caves"};
-        toListIds = new int[]{R.id.maze_id, R.id.maze_name, R.id.maze_caves};
-        SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(this, R.layout.list_items, cursor, data, toListIds, 0);
-        mazeList.setAdapter(cursorAdapter);
+        Cursor cursor = db.rawQuery("SELECT name, number_of_caves FROM GRAPH", null);
+        ArrayList<String> datos = new ArrayList<String>();
+        if (cursor.moveToFirst()) {
+            do{
+                String dato = "Name: " + cursor.getString(0) + "\nNumber of caves: " + cursor.getString(1);
+                datos.add(dato);
+            }while(cursor.moveToNext());
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,datos);
+        mazeList.setAdapter(adapter);
         cursor.close();
     }
 
