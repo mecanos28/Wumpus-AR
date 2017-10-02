@@ -17,25 +17,33 @@ public class SelectPolyActivity extends AppCompatActivity  {
 
     ViewPager viewPager;
     CustomSwip  customSwip;
+    int currentPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_poly);
+        currentPage = 1;
         viewPager=(ViewPager)findViewById(R.id.ImageSlider);
         int[] imageResources = {R.drawable.tetra,R.drawable.octa,R.drawable.cube,R.drawable.icosa,R.drawable.dodeca};
         customSwip = new CustomSwip(this,imageResources);
         viewPager.setAdapter(customSwip);
+        viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                currentPage = position + 1;
+            }
+        });
     }
 
     /*
     * Gets a regular maze from the DB once an image is clicked.
     */
-    public void imageClicked(int i) {
-        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 1);
+    public void imageClicked(int graph) {
+        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 2);
         SQLiteDatabase db = admin.getWritableDatabase();
         String graphName = "";
-        switch (i) {
+        switch (graph) {
             case 1:
                 graphName = "Tetrahedron";
                 break;
@@ -43,7 +51,7 @@ public class SelectPolyActivity extends AppCompatActivity  {
                 graphName = "Octahedron";
                 break;
             case 3:
-                graphName = "cube";
+                graphName = "Cube";
                 break;
             case 4:
                 graphName = "Icosahedron";
@@ -54,9 +62,11 @@ public class SelectPolyActivity extends AppCompatActivity  {
         }
         Cursor cell = db.rawQuery("SELECT id FROM GRAPH WHERE GRAPH.name = " + graphName, null);
         if (cell.moveToFirst()){
-           // graphID = cell.getInt(0);
+            int graphID = cell.getInt(0);
             cell.close();
-            //TODO: Call the next layout and send the id as parameter.
+            //Intent i = new Intent(this, EmplazarActivity.class);
+            //i.putExtra("graphID",graphID);
+            //startActivity(i);
         }
         else {
             Toast.makeText(this, "The Wumpus isn't around this caves. Try another one!", Toast.LENGTH_LONG).show();
@@ -81,10 +91,8 @@ public class SelectPolyActivity extends AppCompatActivity  {
     }
 
     public void startGame(View view) {
-        int position = this.customSwip.getPosition();
-        Toast.makeText(this, "Posición: " + position  , Toast.LENGTH_LONG).show();
-       // this.imageClicked(customSwip.getPosition());
-
+        Toast.makeText(this, "Posición: " + currentPage  , Toast.LENGTH_LONG).show();
+        // this.imageClicked(currentPage);
     }
 
 }
