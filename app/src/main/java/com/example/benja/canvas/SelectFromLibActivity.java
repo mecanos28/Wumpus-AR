@@ -23,11 +23,10 @@ public class SelectFromLibActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_poly);
+        setContentView(R.layout.activity_select_from_lib);
 
         populateListView();
 
-        mazeList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         mazeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             /*
             * Gets the maze once one is clicked.
@@ -45,14 +44,13 @@ public class SelectFromLibActivity extends Activity {
     * Fills the ListView with the mazes from the DB
     */
     public void populateListView() {
-        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 2);
+        mazeList = (ListView)findViewById(R.id.listViewMazes);
+        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 5);
         SQLiteDatabase db = admin.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT image, number_of_caves FROM GRAPH WHERE name IS NULL", null);
-        data = new String[]{"image", "number_of_caves"};
-        toListIds = new int[]{R.id.maze_pic, R.id.maze_caves};
-        SimpleCursorAdapter cursorAdapter;
-        cursorAdapter = new SimpleCursorAdapter(getBaseContext(), R.layout.list_items, cursor, data, toListIds, 0);
-        mazeList = (ListView) findViewById(R.id.listViewMazes);
+        Cursor cursor = db.rawQuery("SELECT id as _id, name, number_of_caves FROM GRAPH", null);
+        data = new String[]{"_id", "name", "number_of_caves"};
+        toListIds = new int[]{R.id.maze_id, R.id.maze_name, R.id.maze_caves};
+        SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(this, R.layout.list_items, cursor, data, toListIds, 0);
         mazeList.setAdapter(cursorAdapter);
         cursor.close();
     }
