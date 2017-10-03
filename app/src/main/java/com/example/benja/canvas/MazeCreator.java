@@ -1,9 +1,7 @@
 package com.example.benja.canvas;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,52 +9,47 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
-import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 
-/**
- * Created by Daniel on 28/09/2017.
- */
 
-public class CurrentLocation extends Activity implements OnClickListener {
+public class MazeCreator extends AppCompatActivity {
 
     private LocationManager locationManager = null;
     private LocationListener locationListener = null;
     private double latitudeGPS;
     private double longitudeGPS;
-    private Button btnGetLocation = null;
+    private TextView tv_info = (TextView) findViewById(R.id.tv_information);
     private boolean flag = false;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        btnGetLocation = findViewById(R.id.buttonNuevo);
-        btnGetLocation.setOnClickListener(this);
+        setContentView(R.layout.activity_create_maze);
+        tv_info.setText("Informacion de coordenadas");
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
     }
 
-    @Override
-    public void onClick(View v) {
+    public void getCurrentLocation(View v) {
         flag = displayGpsStatus();
         if (flag) {
-            locationListener = new MyLocationListener();
+            locationListener = new MazeCreator.MyLocationListener();
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
+            String coordinates = "Longitude: " + getLongitudeGPS() + "\nLatitude: " + getLatitudeGPS();
+            tv_info.setText(coordinates);
         } else {
             createAlertDialog("GPS Status!", "Your GPS is: OFF");
         }
     }
 
-    /*----Method to Check GPS is enable or disable ----- */
     private boolean displayGpsStatus() {
         boolean gpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         if (gpsStatus) {
@@ -66,7 +59,6 @@ public class CurrentLocation extends Activity implements OnClickListener {
         }
     }
 
-    /*----------Method to create an AlertBox ------------- */
     protected void createAlertDialog(String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title)
@@ -90,22 +82,17 @@ public class CurrentLocation extends Activity implements OnClickListener {
         alert.show();
     }
 
-    public double getLatitudeGPS() {
-        return latitudeGPS;
-    }
+    public double getLatitudeGPS() { return latitudeGPS;  }
 
     public double getLongitudeGPS() {
         return longitudeGPS;
     }
 
-    /*----------Listener class to get coordinates ------------- */
-    private class MyLocationListener implements LocationListener {
+    protected class MyLocationListener implements LocationListener {
         @Override
         public void onLocationChanged(Location loc) {
             latitudeGPS = loc.getLatitude();
             longitudeGPS = loc.getLongitude();
-            String longitude = "Longitude: " + longitudeGPS;
-            String latitude = "Latitude: " + latitudeGPS;
         }
 
         @Override
