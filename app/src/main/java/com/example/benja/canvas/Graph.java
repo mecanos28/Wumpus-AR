@@ -11,7 +11,7 @@ public class Graph {
 
     //Creates an empty graph for irregular mazes.
     public Graph() {
-        this.maximumCaves = 0;
+        this.maximumCaves = 20;
         this.cavesRelations = new boolean[20][20];
         this.allCaves = new ArrayList<Cave>();
     }

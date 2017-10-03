@@ -26,22 +26,16 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:onClick="newD"
             android:src="@drawable/newdrawing"
             tools:ignore="ContentDescription,NestedWeights" />
-
-        <ImageButton
-            android:id="@+id/imgBtnSave"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/savedrawing"
-            tools:ignore="ContentDescription" />
 
         <ImageButton
             android:id="@+id/imgBtnAddCave"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:onClick="addC"
             android:src="@drawable/addcave"
             tools:ignore="ContentDescription" />
 
@@ -50,6 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:onClick="addA"
             android:src="@drawable/addarc"
             tools:ignore="ContentDescription" />
 
@@ -58,15 +53,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:onClick="delC"
             android:src="@drawable/deletecave"
-            tools:ignore="ContentDescription" />
-
-        <ImageButton
-            android:id="@+id/imgBtnDeleteArc"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/deletearc"
             tools:ignore="ContentDescription" />
 
     </LinearLayout>
