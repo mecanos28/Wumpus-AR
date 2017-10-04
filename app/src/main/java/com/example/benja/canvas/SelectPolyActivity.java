@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+
 public class SelectPolyActivity extends AppCompatActivity  {
 
     ViewPager viewPager;
@@ -39,6 +40,7 @@ public class SelectPolyActivity extends AppCompatActivity  {
     /*
     * Gets a regular maze from the DB once an image is clicked.
     */
+
     public void imageClicked(int graph) {
         AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 5);
         SQLiteDatabase db = admin.getWritableDatabase();
@@ -64,10 +66,10 @@ public class SelectPolyActivity extends AppCompatActivity  {
         if (cell.moveToFirst()){
             int graphID = cell.getInt(0);
             cell.close();
-            Toast.makeText(this, "ID: " + graphID + "\nName: " + graphName, Toast.LENGTH_LONG).show();
-            //Intent i = new Intent(this, EmplazarActivity.class);
-            //i.putExtra("graphID",graphID);
-            //startActivity(i);
+            String stringGraphID = Integer.toString(graphID);
+            Intent i = new Intent(this, Coordenadas.class);
+            i.putExtra("graphID",stringGraphID);
+            startActivity(i);
         }
         else {
             Toast.makeText(this, "The Wumpus isn't around this caves. Try another one!", Toast.LENGTH_LONG).show();
