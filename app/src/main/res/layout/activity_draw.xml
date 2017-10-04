@@ -22,21 +22,21 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/imgBtnNew"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:onClick="newD"
-            android:src="@drawable/newdrawing"
-            tools:ignore="ContentDescription,NestedWeights" />
-
-        <ImageButton
             android:id="@+id/imgBtnAddCave"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:onClick="addC"
             android:src="@drawable/addcave"
+            tools:ignore="ContentDescription" />
+
+        <ImageButton
+            android:id="@+id/imgBtnDeleteCave"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:onClick="delC"
+            android:src="@drawable/deletecave"
             tools:ignore="ContentDescription" />
 
         <ImageButton
@@ -49,13 +49,22 @@
             tools:ignore="ContentDescription" />
 
         <ImageButton
-            android:id="@+id/imgBtnDeleteCave"
+            android:id="@+id/imgBtnNew"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:onClick="delC"
-            android:src="@drawable/deletecave"
+            android:onClick="newD"
+            android:src="@drawable/newdrawing"
             tools:ignore="ContentDescription" />
+
+        <ImageButton
+            android:id="@+id/imgBtnCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:onClick="check"
+            android:src="@drawable/check"
+            tools:ignore="ContentDescription"/>
 
     </LinearLayout>
 

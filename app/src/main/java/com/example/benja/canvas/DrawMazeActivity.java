@@ -18,7 +18,6 @@ public class DrawMazeActivity extends Activity {
 
     private DrawCanvas myCanvas;
     private Graph customMaze;
-    private ImageButton newDrawing, addCave, addArc, deleteCave;
     private int caveToDelete, cave1, cave2;
 
     @Override
@@ -26,34 +25,7 @@ public class DrawMazeActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draw);
         myCanvas = (DrawCanvas)findViewById(R.id.viewDrawCanvas);
-        //myCanvas.setEnabled(false);
-
-        newDrawing = (ImageButton)findViewById(R.id.imgBtnNew);
-        addCave = (ImageButton)findViewById(R.id.imgBtnAddCave);
-        addArc = (ImageButton)findViewById(R.id.imgBtnAddArc);
-        deleteCave = (ImageButton)findViewById(R.id.imgBtnDeleteCave);
-
-        customMaze = myCanvas.getCustomMaze();
-    }
-
-    //Reiniciar el dibujo
-    public void newD(View v){
-        //¿Reiniciar el dibujo o guardar el que estaba haciendo y empezar uno nuevo?
-        AlertDialog.Builder newDialog = new AlertDialog.Builder(this);
-        newDialog.setTitle("Nuevo Laberinto");
-        newDialog.setMessage("¿Está seguro que desea comenzar un nuevo dibujo? Perderá el dibujo actual.");
-        newDialog.setPositiveButton("Sí", new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface dialog, int which){
-                myCanvas.newDraw();
-                dialog.dismiss();
-            }
-        });
-        newDialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface dialog, int which){
-                dialog.cancel();
-            }
-        });
-        newDialog.show();
+        //customMaze = myCanvas.getCustomMaze();
     }
 
     //Agregar una cueva
@@ -61,51 +33,6 @@ public class DrawMazeActivity extends Activity {
         //Deshabilitar el canvas hasta que se presione el botón de agregar
         //OnTouch
         //myCanvas.setEnabled(true);
-    }
-
-    //Agregar un arco
-    public void addA(View v)
-    {
-        final Dialog dialogAddArc = new Dialog(this);
-        dialogAddArc.setTitle("Agregar arco");
-        dialogAddArc.setContentView(R.layout.layout_choosecaves);
-        final EditText edtTxtCave1 = (EditText)dialogAddArc.findViewById(R.id.editTxtCave1);
-        final EditText edtTxtCave2 = (EditText)dialogAddArc.findViewById(R.id.editTxtCave2);
-        Button btnAcceptAddArc = (Button)dialogAddArc.findViewById(R.id.btnAccept);
-        Button btnCancelAddArc = (Button)dialogAddArc.findViewById(R.id.btnCancel);
-        btnAcceptAddArc.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                cave1 = Integer.parseInt(edtTxtCave1.getText().toString());
-                cave2 = Integer.parseInt(edtTxtCave2.getText().toString());
-                //if(cave1 < customMaze.getMaximumCaves() && cave2 < customMaze.getMaximumCaves()) {
-                    Cave c1 = customMaze.searchCave(cave1);
-                    Cave c2 = customMaze.searchCave(cave2);
-                    if(c1 != null && c2 != null){
-                        myCanvas.addArc(c1, c2);
-                    }
-                    else{
-                        if(c1 == null && c2 != null){
-                            Toast.makeText(DrawMazeActivity.this, "Error, type the first cave's number again.", Toast.LENGTH_SHORT).show();
-                        }
-                        else if (c1 != null && c2 == null){
-                            Toast.makeText(DrawMazeActivity.this, "Error, type the second cave's number again.", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            Toast.makeText(DrawMazeActivity.this, "Error, type the caves' number again.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                //}
-                dialogAddArc.dismiss();
-            }
-        });
-        btnCancelAddArc.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                dialogAddArc.cancel();
-            }
-        });
-        dialogAddArc.show();
     }
 
     //Borrar una cueva
@@ -133,8 +60,51 @@ public class DrawMazeActivity extends Activity {
         dialogDeleteCave.show();
     }
 
+    //Agregar un arco
+    public void addA(View v)
+    {
+        final Dialog dialogAddArc = new Dialog(this);
+        dialogAddArc.setTitle("Agregar arco");
+        dialogAddArc.setContentView(R.layout.layout_choosecaves);
+        final EditText edtTxtCave1 = (EditText)dialogAddArc.findViewById(R.id.editTxtCave1);
+        final EditText edtTxtCave2 = (EditText)dialogAddArc.findViewById(R.id.editTxtCave2);
+        Button btnAcceptAddArc = (Button)dialogAddArc.findViewById(R.id.btnAccept);
+        Button btnCancelAddArc = (Button)dialogAddArc.findViewById(R.id.btnCancel);
+        btnAcceptAddArc.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                cave1 = Integer.parseInt(edtTxtCave1.getText().toString());
+                cave2 = Integer.parseInt(edtTxtCave2.getText().toString());
+                Cave c1 = myCanvas.searchCave(cave1);
+                Cave c2 = myCanvas.searchCave(cave2);
+                if(c1 != null && c2 != null){
+                    myCanvas.addArc(c1, c2);
+                    myCanvas.getRelations().add(new IntPair(c1.getId(),c2.getId()));
+                    myCanvas.getRelations().add(new IntPair(c2.getId(),c1.getId()));
+                }
+                else if(c1 == null && c2 != null){
+                    Toast.makeText(DrawMazeActivity.this, "Error, type the first cave's number again.", Toast.LENGTH_SHORT).show();
+                }
+                else if (c1 != null && c2 == null){
+                    Toast.makeText(DrawMazeActivity.this, "Error, type the second cave's number again.", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(DrawMazeActivity.this, "Error, type the caves' number again.", Toast.LENGTH_SHORT).show();
+                }
+                dialogAddArc.dismiss();
+            }
+        });
+        btnCancelAddArc.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                dialogAddArc.cancel();
+            }
+        });
+        dialogAddArc.show();
+    }
+
     //Borrar un arco
-    public void delA(View v){
+    /*public void delA(View v){
         final Dialog dialogDeleteArc = new Dialog(this);
         dialogDeleteArc.setTitle("Borrar arco");
         dialogDeleteArc.setContentView(R.layout.layout_choosecaves);
@@ -147,9 +117,10 @@ public class DrawMazeActivity extends Activity {
             public void onClick(View v) {
                 cave1 = Integer.parseInt(edtTxtCaveDel1.getText().toString());
                 cave2 = Integer.parseInt(edtTxtCaveDel2.getText().toString());
+                Cave c1 = myCanvas.searchCave(cave1);
+                Cave c2 = myCanvas.searchCave(cave2);
                 if(cave1 < customMaze.getMaximumCaves() && cave2 < customMaze.getMaximumCaves()) {
-                    //Modificar coordenadas
-                    myCanvas.deleteArc(cave1, cave2);
+                    myCanvas.deleteArc(c1, c2);
                 }
                 dialogDeleteArc.dismiss();
             }
@@ -161,6 +132,33 @@ public class DrawMazeActivity extends Activity {
             }
         });
         dialogDeleteArc.show();
+    }*/
+
+    //Reiniciar el dibujo
+    public void newD(View v){
+        //¿Reiniciar el dibujo o guardar el que estaba haciendo y empezar uno nuevo?
+        AlertDialog.Builder newDialog = new AlertDialog.Builder(this);
+        newDialog.setTitle("Nuevo Laberinto");
+        newDialog.setMessage("¿Está seguro que desea comenzar un nuevo dibujo? Perderá el dibujo actual.");
+        newDialog.setPositiveButton("Sí", new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int which){
+                myCanvas.newDraw();
+                myCanvas.setupDrawing();
+                dialog.dismiss();
+            }
+        });
+        newDialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int which){
+                dialog.cancel();
+            }
+        });
+        newDialog.show();
+    }
+
+    public void check(View v){
+        customMaze = new Graph(myCanvas.getNumCaves());
+        customMaze.fillGraph(myCanvas.getRelations());
+        saveMaze();
     }
 
     /*
