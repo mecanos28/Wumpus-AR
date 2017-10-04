@@ -20,21 +20,21 @@ import android.widget.TextView;
 
 public class MazeCreator extends AppCompatActivity {
 
-    private LocationManager locationManager = null;
+    /*private LocationManager locationManager = null;
     private LocationListener locationListener = null;
     private double latitudeGPS;
     private double longitudeGPS;
     private TextView tv_info = (TextView) findViewById(R.id.tv_information);
     private boolean flag = false;
-
+*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_maze);
-        tv_info.setText("Informacion de coordenadas");
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+         /*setContentView(R.layout.activity_create_maze);
+       tv_info.setText("Informacion de coordenadas");
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);*/
     }
-
+/*
     public void getCurrentLocation(View v) {
         flag = displayGpsStatus();
         if (flag) {
@@ -106,5 +106,5 @@ public class MazeCreator extends AppCompatActivity {
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
         }
-    }
+    }*/
 }
