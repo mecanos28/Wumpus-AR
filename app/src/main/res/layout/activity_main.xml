@@ -29,7 +29,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="30px"
             android:onClick="tipoIndividual"
-            android:text="Single player" />
+            android:text="Un jugagor" />
 
         <Button
             android:id="@+id/buttonMultijuador"
@@ -38,7 +38,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="20px"
             android:onClick="tipoMultijugador"
-            android:text="Multiplayer" />
+            android:text="Multijugador" />
 
         <TextView
             android:id="@+id/textView"

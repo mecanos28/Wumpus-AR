@@ -15,7 +15,7 @@
         android:gravity="center"
         android:textStyle="bold"
         android:textSize="20sp"
-        android:text="Choose a maze..." />
+        android:text="Escoja un laberinto..." />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/ImageSlider"
@@ -28,19 +28,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="startGame"
-        android:text="Start Game" />
+        android:text="Iniciar el juego" />
 
     <Button
         android:id="@+id/bttnDrawLab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="drawLabyrinthView"
-        android:text="Draw a new labyrinth" />
+        android:text="Dibujar un laberinto" />
 
     <Button
         android:id="@+id/bttnChooseLib"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="selectFromLibView"
-        android:text="Choose from library..." />
+        android:text="Elegir un laberinto de la biblioteca..." />
 </LinearLayout>
