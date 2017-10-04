@@ -77,7 +77,7 @@ public class SelectPolyActivity extends AppCompatActivity  {
     }
 
 
-    public void DrawLabyrinthView(View view)
+    public void drawLabyrinthView(View view)
     {
         Intent i = new Intent(this,DrawMazeActivity.class);
         startActivity(i);
