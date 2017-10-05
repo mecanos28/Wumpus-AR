@@ -80,7 +80,7 @@ public class Graph {
         this.cavesRelations[caveY_id][caveX_id] = false;
     }
 
-    public Cave getFirstCave(Cave caveFather) {
+    /*public Cave getFirstCave(Cave caveFather) {
         Cave first = null;
         int index = 0;
         boolean repeat = true;
@@ -93,9 +93,9 @@ public class Graph {
             }
         }
         return first;
-    }
+    }*/
 
-    public Cave getNextCave(Cave caveFather, Cave caveChild) {
+    /*public Cave getNextCave(Cave caveFather, Cave caveChild) {
         Cave next = null;
         int index = allCaves.indexOf(caveChild);
         boolean repeat = true;
@@ -108,7 +108,7 @@ public class Graph {
             }
         }
         return next;
-    }
+    }*/
 
     /*
     * Converts a string of relations into an array.

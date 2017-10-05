@@ -111,18 +111,35 @@ public class DrawCanvas extends View {
 
     //Borra una cueva
     public void deleteCave(int c){ //Recibo la posicion de la cueva que deseo borrar
-        /*String tag;
+        String tag;
         Cave c1, c2;
         if(c < numCaves) {
             Cave cave = searchCave(c);
+            drawCanvas.drawColor(0,PorterDuff.Mode.CLEAR);
             //Borro todas las aristas relacionadas con esa cueva
-            for (int i = 0; i < relations.size(); ++i) {
-                if (relations.get(i).x == c || relations.get(i).y == c) {
-                    relations.remove(i);
+            int l = 0;
+            while(relations.get(l) != null) {
+                if (relations.get(l).x == c || relations.get(l).y == c) {
+                    relations.remove(l);
+                }
+                else{
+                    l++;
                 }
             }
             //Borro la cueva
-            caves.remove(cave);
+            boolean found = false;
+            int j = 0;
+            while (j < numCaves && !found)
+            {
+                if (caves.get(j).getId() == c) {
+                    caves.remove(j);
+                    found = true;
+                }
+                else {
+                    j++;
+                }
+            }
+            //caves.remove(cave);
             numCaves--;
             //Dibujo las demás cuevas
             int i = 0;
@@ -133,22 +150,27 @@ public class DrawCanvas extends View {
                 touchX = caves.get(i).getCorX();
                 touchY = caves.get(i).getCorY();
                 drawPath.addCircle(touchX, touchY, 50, Path.Direction.CW); //Dibujo una cueva
-                tag = Integer.toString(numCaves);
+                drawCanvas.drawPath(drawPath, drawPaint); //Llama al onDraw
+                tag = Integer.toString(caves.get(i).getId());
                 drawPaint.setStrokeWidth(3);
                 drawPaint.setTextSize(30);
                 drawPaint.setStyle(Paint.Style.STROKE);
                 drawPaint.setColor(0xFFFFFFFF); //Color: Blanco
                 drawCanvas.drawText(tag, touchX - 5, touchY + 5, drawPaint);
+                i++;
             }
-            drawCanvas.drawPath(drawPath, drawPaint); //Llama al onDraw
             drawPath.reset();
-            for (int j = 0; j < relations.size(); ++j) {
-                c1 = searchCave(relations.get(i).x);
-                c2 = searchCave(relations.get(i).y);
+            int k = 0;
+            while (relations.get(k) != null) {
+                c1 = searchCave(relations.get(k).x);
+                c2 = searchCave(relations.get(k).y);
                 addArc(c1, c2);
+                k++;
             }
-        }*/
+            invalidate();
+        }
 
+        /*Este sí sirve para borrar las cuevas solamente
         Cave cave = searchCave(c);
         //Borro todas las aristas relacionadas con esa cueva
         for (int i = 0; i < relations.size(); ++i)
@@ -167,7 +189,7 @@ public class DrawCanvas extends View {
         drawCanvas.drawPath(drawPath, drawPaint);
         drawPath.reset();
         //Borro la cueva
-        /*boolean found = false;
+        *//*boolean found = false;
         int j = 0;
         while (j < numCaves && !found)
         {
@@ -176,9 +198,9 @@ public class DrawCanvas extends View {
                 found = true;
             }
             j++;
-        }*/
+        }*//*
         caves.remove(cave);
-        numCaves--;
+        numCaves--;*/
     }
 
     //Agrega un arco entre 2 cuevas

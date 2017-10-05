@@ -104,7 +104,7 @@ public class DrawMazeActivity extends Activity {
     }
 
     //Borrar un arco
-    /*public void delA(View v){
+    public void delA(View v){
         final Dialog dialogDeleteArc = new Dialog(this);
         dialogDeleteArc.setTitle("Borrar arco");
         dialogDeleteArc.setContentView(R.layout.layout_choosecaves);
@@ -132,7 +132,7 @@ public class DrawMazeActivity extends Activity {
             }
         });
         dialogDeleteArc.show();
-    }*/
+    }
 
     //Reiniciar el dibujo
     public void newD(View v){
