@@ -74,14 +74,20 @@ public class SelectFromLibActivity extends Activity {
         names = new ArrayList<String>();
         if (cursor.moveToFirst()) {
             do{
-                String dato = "Name: " + cursor.getString(0) + "\nNumber of caves: " + cursor.getString(1);
+                String dato = "Nombre: " + cursor.getString(0) + "\nNúmero de cuevas: " + cursor.getString(1);
                 datos.add(dato);
                 names.add(cursor.getString(0));
             }while(cursor.moveToNext());
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,datos);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.layout_list_view_item ,datos);
         mazeList.setAdapter(adapter);
         cursor.close();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
 }

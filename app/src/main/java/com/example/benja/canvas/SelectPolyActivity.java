@@ -1,5 +1,7 @@
 package com.example.benja.canvas;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,7 +15,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class SelectPolyActivity extends AppCompatActivity  {
+public class SelectPolyActivity extends Activity {
 
     ViewPager viewPager;
     CustomSwip  customSwip;
@@ -25,7 +27,7 @@ public class SelectPolyActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_select_poly);
         currentPage = 1;
         viewPager=(ViewPager)findViewById(R.id.ImageSlider);
-        int[] imageResources = {R.drawable.tetra,R.drawable.octa,R.drawable.cube,R.drawable.icosa,R.drawable.dodeca};
+        int[] imageResources = {R.drawable.tetra_light,R.drawable.octa_light,R.drawable.cube_light,R.drawable.icosa_light,R.drawable.dodeca_light};
         customSwip = new CustomSwip(this,imageResources);
         viewPager.setAdapter(customSwip);
         viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -80,15 +82,21 @@ public class SelectPolyActivity extends AppCompatActivity  {
     public void drawLabyrinthView(View view)
     {
         Intent i = new Intent(this,DrawMazeActivity.class);
-        startActivity(i);
-
+        ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.fade_in, R.anim.fade_out);
+        startActivity(i, options.toBundle());
     }
 
     public void selectFromLibView(View view)
     {
         Intent i = new Intent(this,SelectFromLibActivity.class);
-        startActivity(i);
+        ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.fade_in, R.anim.fade_out);
+        startActivity(i, options.toBundle());
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
     }
 
     public void startGame(View view) {
