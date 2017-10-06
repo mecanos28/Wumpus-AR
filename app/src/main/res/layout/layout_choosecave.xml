@@ -18,7 +18,7 @@
             android:layout_weight="1"
             android:background="@android:color/background_light"
             android:gravity="center_horizontal|center"
-            android:text="Ingrese el número de cueva que desea borrar"
+            android:text="Ingrese la cueva que desea"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@android:color/background_dark"
             android:textSize="16sp" />
@@ -48,34 +48,24 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btnAccept"
+            android:layout_width="124dp"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_gravity="right|center_horizontal|center"
+            android:layout_weight="1"
+            android:text="Aceptar" />
 
-            <Button
-                android:id="@+id/btnAccept"
-                android:layout_width="128dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center"
-                android:text="Aceptar" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="124dp"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/btnCancel"
-                android:layout_width="128dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center"
-                android:text="Cancelar"
-                android:textAlignment="center" />
-        </LinearLayout>
+            android:layout_gravity="left|center_horizontal|center"
+            android:layout_weight="1"
+            android:text="Cancelar" />
 
     </LinearLayout>
 

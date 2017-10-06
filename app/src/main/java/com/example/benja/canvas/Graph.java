@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class Graph {
 
-
     private ArrayList<Cave> allCaves;
     private boolean[][] cavesRelations;
     private int maximumCaves;
@@ -13,7 +12,14 @@ public class Graph {
     public Graph() {
         this.maximumCaves = 20;
         this.cavesRelations = new boolean[20][20];
-        this.allCaves = new ArrayList<Cave>();
+        //this.allCaves = new ArrayList<Cave>();
+    }
+
+    //Creates an empty graph for irregular mazes with the specified number of caves.
+    public Graph(int numCaves) {
+        this.maximumCaves = numCaves;
+        this.cavesRelations = new boolean[numCaves][numCaves];
+        //this.allCaves = new ArrayList<Cave>();
     }
 
     //Creates a graph from a relation's string and the corresponding number of caves.
@@ -21,7 +27,7 @@ public class Graph {
         this.maximumCaves = numberOfCaves;
         this.cavesRelations = new boolean[this.maximumCaves][this.maximumCaves];
         this.stringToArray(relations);
-        this.allCaves = new ArrayList<Cave>();
+        //this.allCaves = new ArrayList<Cave>();
     }
 
     /*
@@ -32,13 +38,21 @@ public class Graph {
     }
     */
 
+    public void fillGraph(ArrayList<IntPair> relations){
+        for(int i = 0; i < relations.size(); i++)
+        {
+            add_Bi_Relation(relations.get(i).x,relations.get(i).y);
+            //cavesRelations[relations.get(i).x][relations.get(i).y] = true;
+        }
+    }
+
     public void addCave(Cave cave) {
         this.maximumCaves--;
-        allCaves.add(cave);
+        //allCaves.add(cave);
     }
 
     public void removeCave(int cave) {
-        boolean found = false;
+        /*boolean found = false;
         int i = 0;
         while(!found && i < maximumCaves) {
             if (allCaves.get(i).getId() == cave) {
@@ -46,7 +60,7 @@ public class Graph {
                 allCaves.remove(cave);
             }
             ++i;
-        }
+        }*/
         this.maximumCaves++;
     }
 
@@ -65,7 +79,7 @@ public class Graph {
         this.cavesRelations[caveY_id][caveX_id] = false;
     }
 
-    public Cave getFirstCave(Cave caveFather) {
+    /*public Cave getFirstCave(Cave caveFather) {
         Cave first = null;
         int index = 0;
         boolean repeat = true;
@@ -78,9 +92,9 @@ public class Graph {
             }
         }
         return first;
-    }
+    }*/
 
-    public Cave getNextCave(Cave caveFather, Cave caveChild) {
+    /*public Cave getNextCave(Cave caveFather, Cave caveChild) {
         Cave next = null;
         int index = allCaves.indexOf(caveChild);
         boolean repeat = true;
@@ -93,7 +107,7 @@ public class Graph {
             }
         }
         return next;
-    }
+    }*/
 
     /*
     * Converts a string of relations into an array.
@@ -180,19 +194,4 @@ public class Graph {
         }
         return valid;
     }
-
-    //Busca la cueva con el id especificado
-    public Cave searchCave(int id){
-        boolean found = false;
-        int i = 0;
-        while(!found && i < maximumCaves){
-            if (allCaves.get(i).getId() == id) {
-                found = true;
-                return allCaves.get(i);
-            }
-            ++i;
-        }
-        return null;
-    }
-
 }
