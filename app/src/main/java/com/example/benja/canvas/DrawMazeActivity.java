@@ -12,7 +12,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.widget.EditText;
-import android.widget.ImageButton;
 
 public class DrawMazeActivity extends Activity {
 
@@ -24,31 +23,36 @@ public class DrawMazeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draw);
-        myCanvas = (DrawCanvas)findViewById(R.id.viewDrawCanvas);
-        //customMaze = myCanvas.getCustomMaze();
+        myCanvas = findViewById(R.id.viewDrawCanvas);
+        Toast.makeText(DrawMazeActivity.this, "Una vez que presione la pantalla, se capturarán las coordenadas para crear la próxima cueva.", Toast.LENGTH_LONG).show();
     }
 
     //Agregar una cueva
     public void addC(View v){
-        //Deshabilitar el canvas hasta que se presione el botón de agregar
-        //OnTouch
-        //myCanvas.setEnabled(true);
+        myCanvas.addCave();
+        Toast.makeText(DrawMazeActivity.this, "Recuerde que para agregar una nueva cueva, debe presionar primero su ubicación en la pantalla.", Toast.LENGTH_SHORT).show();
+
     }
 
     //Borrar una cueva
     public void delC(View v){
         final Dialog dialogDeleteCave= new Dialog(this);
-        dialogDeleteCave.setTitle("Borrar cueva");
         dialogDeleteCave.setContentView(R.layout.layout_choosecave);
-        final EditText edtTxtCaveToDelete = (EditText)dialogDeleteCave.findViewById(R.id.editTxtNumCave);
-        Button btnAcceptDeleteCave = (Button)dialogDeleteCave.findViewById(R.id.btnAccept);
-        Button btnCancelDeleteCave = (Button)dialogDeleteCave.findViewById(R.id.btnCancel);
+        final EditText edtTxtCaveToDelete = dialogDeleteCave.findViewById(R.id.editTxtNumCave);
+        Button btnAcceptDeleteCave = dialogDeleteCave.findViewById(R.id.btnAccept);
+        Button btnCancelDeleteCave = dialogDeleteCave.findViewById(R.id.btnCancel);
         btnAcceptDeleteCave.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 caveToDelete = Integer.parseInt(edtTxtCaveToDelete.getText().toString());
-                myCanvas.deleteCave(caveToDelete);
-                dialogDeleteCave.dismiss();
+                if(caveToDelete < myCanvas.getNumCave()) {
+                    myCanvas.deleteCave(caveToDelete);
+                    dialogDeleteCave.dismiss();
+                }
+                else
+                {
+                    Toast.makeText(DrawMazeActivity.this, "Error, vuelva a ingresar la cueva que desea eliminar.", Toast.LENGTH_LONG).show();
+                }
             }
         });
         btnCancelDeleteCave.setOnClickListener(new View.OnClickListener(){
@@ -64,32 +68,40 @@ public class DrawMazeActivity extends Activity {
     public void addA(View v)
     {
         final Dialog dialogAddArc = new Dialog(this);
-        dialogAddArc.setTitle("Agregar arco");
         dialogAddArc.setContentView(R.layout.layout_choosecaves);
-        final EditText edtTxtCave1 = (EditText)dialogAddArc.findViewById(R.id.editTxtCave1);
-        final EditText edtTxtCave2 = (EditText)dialogAddArc.findViewById(R.id.editTxtCave2);
-        Button btnAcceptAddArc = (Button)dialogAddArc.findViewById(R.id.btnAccept);
-        Button btnCancelAddArc = (Button)dialogAddArc.findViewById(R.id.btnCancel);
+        final EditText edtTxtCave1 = dialogAddArc.findViewById(R.id.editTxtCave1);
+        final EditText edtTxtCave2 = dialogAddArc.findViewById(R.id.editTxtCave2);
+        Button btnAcceptAddArc = dialogAddArc.findViewById(R.id.btnAccept);
+        Button btnCancelAddArc = dialogAddArc.findViewById(R.id.btnCancel);
         btnAcceptAddArc.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 cave1 = Integer.parseInt(edtTxtCave1.getText().toString());
                 cave2 = Integer.parseInt(edtTxtCave2.getText().toString());
-                Cave c1 = myCanvas.searchCave(cave1);
-                Cave c2 = myCanvas.searchCave(cave2);
-                if(c1 != null && c2 != null){
-                    myCanvas.addArc(c1, c2);
-                    myCanvas.getRelations().add(new IntPair(c1.getId(),c2.getId()));
-                    myCanvas.getRelations().add(new IntPair(c2.getId(),c1.getId()));
+                if(cave1 < myCanvas.getNumCave() && cave2 < myCanvas.getNumCave()){
+                    if (cave1 != cave2)
+                    {
+                        Cave c1 = myCanvas.searchCave(cave1);
+                        Cave c2 = myCanvas.searchCave(cave2);
+                        if(c1 != null && c2 != null) {
+                            myCanvas.addArc(c1, c2);
+                            myCanvas.getRelations().add(new IntPair(c1.getId(), c2.getId()));
+                        }
+                    }
+                    else
+                    {
+                        Toast.makeText(DrawMazeActivity.this, "Error, no puede haber un camino hacia la misma cueva.", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
-                else if(c1 == null && c2 != null){
-                    Toast.makeText(DrawMazeActivity.this, "Error, type the first cave's number again.", Toast.LENGTH_SHORT).show();
+                else if(cave1 > myCanvas.getNumCave() && cave2 < myCanvas.getNumCave()){
+                    Toast.makeText(DrawMazeActivity.this, "Error, vuelva a ingresar la primera cueva.", Toast.LENGTH_SHORT).show();
                 }
-                else if (c1 != null && c2 == null){
-                    Toast.makeText(DrawMazeActivity.this, "Error, type the second cave's number again.", Toast.LENGTH_SHORT).show();
+                else if (cave1 < myCanvas.getNumCave() && cave2 > myCanvas.getNumCave()){
+                    Toast.makeText(DrawMazeActivity.this, "Error, vuelva a ingresar la segunda cueva", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(DrawMazeActivity.this, "Error, type the caves' number again.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DrawMazeActivity.this, "Error, vuelva a ingresar las cuevas.", Toast.LENGTH_SHORT).show();
                 }
                 dialogAddArc.dismiss();
             }
@@ -106,21 +118,38 @@ public class DrawMazeActivity extends Activity {
     //Borrar un arco
     public void delA(View v){
         final Dialog dialogDeleteArc = new Dialog(this);
-        dialogDeleteArc.setTitle("Borrar arco");
         dialogDeleteArc.setContentView(R.layout.layout_choosecaves);
-        final EditText edtTxtCaveDel1 = (EditText)dialogDeleteArc.findViewById(R.id.editTxtCave1);
-        final EditText edtTxtCaveDel2 = (EditText)dialogDeleteArc.findViewById(R.id.editTxtCave2);
-        Button btnAcceptDelArc = (Button)dialogDeleteArc.findViewById(R.id.btnAccept);
-        Button btnCancelDelArc = (Button)dialogDeleteArc.findViewById(R.id.btnCancel);
+        final EditText edtTxtCaveDel1 = dialogDeleteArc.findViewById(R.id.editTxtCave1);
+        final EditText edtTxtCaveDel2 = dialogDeleteArc.findViewById(R.id.editTxtCave2);
+        Button btnAcceptDelArc = dialogDeleteArc.findViewById(R.id.btnAccept);
+        Button btnCancelDelArc = dialogDeleteArc.findViewById(R.id.btnCancel);
         btnAcceptDelArc.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 cave1 = Integer.parseInt(edtTxtCaveDel1.getText().toString());
                 cave2 = Integer.parseInt(edtTxtCaveDel2.getText().toString());
-                Cave c1 = myCanvas.searchCave(cave1);
-                Cave c2 = myCanvas.searchCave(cave2);
-                if(cave1 < customMaze.getMaximumCaves() && cave2 < customMaze.getMaximumCaves()) {
-                    myCanvas.deleteArc(c1, c2);
+                if(cave1 < myCanvas.getNumCave() && cave2 < myCanvas.getNumCave()){
+                    if (cave1 != cave2)
+                    {
+                        Cave c1 = myCanvas.searchCave(cave1);
+                        Cave c2 = myCanvas.searchCave(cave2);
+                        if(c1 != null && c2 != null) {
+                            myCanvas.deleteArc(c1, c2);
+                        }
+                    }
+                    else
+                    {
+                        Toast.makeText(DrawMazeActivity.this, "Error, no hay caminos hacia la misma cueva.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else if(cave1 > myCanvas.getNumCave() && cave2 < myCanvas.getNumCave()){
+                    Toast.makeText(DrawMazeActivity.this, "Error, vuelva a ingresar el número de la primera cueva.", Toast.LENGTH_SHORT).show();
+                }
+                else if (cave1 < myCanvas.getNumCave()&& cave2 > myCanvas.getNumCave()){
+                    Toast.makeText(DrawMazeActivity.this, "Error, vuelva a ingresar el número de la segunda cueva", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(DrawMazeActivity.this, "Error, vuelva a ingresar el número de las cuevas.", Toast.LENGTH_SHORT).show();
                 }
                 dialogDeleteArc.dismiss();
             }
@@ -138,12 +167,11 @@ public class DrawMazeActivity extends Activity {
     public void newD(View v){
         //¿Reiniciar el dibujo o guardar el que estaba haciendo y empezar uno nuevo?
         AlertDialog.Builder newDialog = new AlertDialog.Builder(this);
-        newDialog.setTitle("Nuevo Laberinto");
-        newDialog.setMessage("¿Está seguro que desea comenzar un nuevo dibujo? Perderá el dibujo actual.");
+        newDialog.setTitle("Reiniciar laberinto");
+        newDialog.setMessage("¿Está seguro que desea comenzar un nuevo dibujo? Perderá el progreso actual.");
         newDialog.setPositiveButton("Sí", new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int which){
                 myCanvas.newDraw();
-                myCanvas.setupDrawing();
                 dialog.dismiss();
             }
         });
@@ -155,8 +183,8 @@ public class DrawMazeActivity extends Activity {
         newDialog.show();
     }
 
-    public void check(View v){
-        customMaze = new Graph(myCanvas.getNumCaves());
+    public void checkD(View v){
+        customMaze = new Graph(myCanvas.getNumCave());
         customMaze.fillGraph(myCanvas.getRelations());
         saveMaze();
     }
