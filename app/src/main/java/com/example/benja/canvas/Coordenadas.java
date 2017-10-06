@@ -34,6 +34,8 @@ public class Coordenadas extends AppCompatActivity  {
     TextView tv_info, tv_dist;
     boolean flag;
     Spinner spn_distances;
+    String info;
+    int caves;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +68,8 @@ public class Coordenadas extends AppCompatActivity  {
 
         Cursor cell = db.rawQuery("SELECT GRAPH.relations, GRAPH.number_of_caves FROM GRAPH WHERE GRAPH.id = \"" + graphID +"\";", null);
         if (cell.moveToFirst()){
-            String info=cell.getString(0);
-            String caves=cell.getString(1);
+            info=cell.getString(0);
+            caves=cell.getInt(1);
             cell.close();
             Toast.makeText(this, "ID: " + graphID + "\nrelaciones: " + info + "\ncaves: " + caves,  Toast.LENGTH_LONG).show();
         }
@@ -190,6 +192,406 @@ public class Coordenadas extends AppCompatActivity  {
         public void onNothingSelected(AdapterView<?> parent) {
             selected = false;
         }
+    }
+
+    public void putCaves () {
+        for (int i = 0; i < caves; ++i) {
+            putCave(i);
+        }
+    }
+
+    public void putCave (int cave) {
+        switch (caves) {
+            case 2:
+                /*
+                *  1 - 2
+                */
+                createCave(1, latitudeGPS, longitudeGPS);
+                createCave(2, latitudeGPS + distancia, longitudeGPS);
+                break;
+            case 3:
+                /*
+                *   3
+                * 1 - 2
+                */
+                createCave(1, latitudeGPS, longitudeGPS);
+                createCave(2, latitudeGPS + distancia, longitudeGPS);
+                createCave(3, latitudeGPS + (distancia/2), longitudeGPS + distancia);
+                break;
+            case 4:
+                /*
+                *  3 - 4
+                *  |   |
+                *  1 - 2
+                */
+                createCave(1, latitudeGPS, longitudeGPS);
+                createCave(2, latitudeGPS + distancia, longitudeGPS);
+                createCave(3, latitudeGPS + distancia, longitudeGPS + distancia);
+                createCave(4, latitudeGPS, longitudeGPS + distancia);
+                break;
+            case 5:
+                /*
+                *  4  -  2
+                *  |  1  |
+                *  5  -  3
+                */
+                createCave(1, latitudeGPS, longitudeGPS);
+                createCave(2, latitudeGPS + distancia, longitudeGPS + distancia);
+                createCave(3, latitudeGPS + distancia, longitudeGPS - distancia);
+                createCave(4, latitudeGPS - distancia, longitudeGPS + distancia);
+                createCave(5, latitudeGPS - distancia, longitudeGPS - distancia);
+                break;
+            case 6:
+                /*
+                *  2 - 5
+                *  |   |
+                *  1 - 4
+                *  |   |
+                *  3 - 6
+                */
+                createCave(1, latitudeGPS, longitudeGPS);
+                createCave(2, latitudeGPS, longitudeGPS + distancia);
+                createCave(3, latitudeGPS, longitudeGPS - distancia);
+                createCave(4, latitudeGPS + distancia, longitudeGPS);
+                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
+                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
+                break;
+            case 7:
+                /*
+                *      2 - 5
+                *      |   |
+                *  7 - 1 - 4
+                *      |   |
+                *      3 - 6
+                */
+                createCave(1, latitudeGPS, longitudeGPS);
+                createCave(2, latitudeGPS, longitudeGPS + distancia);
+                createCave(3, latitudeGPS, longitudeGPS - distancia);
+                createCave(4, latitudeGPS + distancia, longitudeGPS);
+                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
+                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
+                createCave(7, latitudeGPS - distancia, longitudeGPS);
+                break;
+            case 8:
+                /*
+                *  8 - 2 - 5
+                *  |   |   |
+                *  7 - 1 - 4
+                *      |   |
+                *      3 - 6
+                */
+                createCave(1, latitudeGPS, longitudeGPS);
+                createCave(2, latitudeGPS, longitudeGPS + distancia);
+                createCave(3, latitudeGPS, longitudeGPS - distancia);
+                createCave(4, latitudeGPS + distancia, longitudeGPS);
+                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
+                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
+                createCave(7, latitudeGPS - distancia, longitudeGPS);
+                createCave(8, latitudeGPS - distancia, longitudeGPS + distancia);
+                break;
+            case 9:
+                /*
+                *  8 - 2 - 5
+                *  |   |   |
+                *  7 - 1 - 4
+                *  |   |   |
+                *  9 - 3 - 6
+                */
+                createCave(1, latitudeGPS, longitudeGPS);
+                createCave(2, latitudeGPS, longitudeGPS + distancia);
+                createCave(3, latitudeGPS, longitudeGPS - distancia);
+                createCave(4, latitudeGPS + distancia, longitudeGPS);
+                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
+                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
+                createCave(7, latitudeGPS - distancia, longitudeGPS);
+                createCave(8, latitudeGPS - distancia, longitudeGPS + distancia);
+                createCave(9, latitudeGPS - distancia, longitudeGPS - distancia);
+                break;
+            case 10:
+                /*
+                *  8 - 2 - 5
+                *  |   |   |
+                *  7 - 1 - 4 - 10
+                *  |   |   |
+                *  9 - 3 - 6
+                */
+                createCave(1, latitudeGPS, longitudeGPS);
+                createCave(2, latitudeGPS, longitudeGPS + distancia);
+                createCave(3, latitudeGPS, longitudeGPS - distancia);
+                createCave(4, latitudeGPS + distancia, longitudeGPS);
+                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
+                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
+                createCave(7, latitudeGPS - distancia, longitudeGPS);
+                createCave(8, latitudeGPS - distancia, longitudeGPS + distancia);
+                createCave(9, latitudeGPS - distancia, longitudeGPS - distancia);
+                createCave(10, latitudeGPS + (distancia * 2), longitudeGPS);
+                break;
+            case 11:
+                /*
+                *  8 - 2 - 5 - 11
+                *  |   |   |   |
+                *  7 - 1 - 4 - 10
+                *  |   |   |
+                *  9 - 3 - 6
+                */
+                createCave(1, latitudeGPS, longitudeGPS);
+                createCave(2, latitudeGPS, longitudeGPS + distancia);
+                createCave(3, latitudeGPS, longitudeGPS - distancia);
+                createCave(4, latitudeGPS + distancia, longitudeGPS);
+                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
+                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
+                createCave(7, latitudeGPS - distancia, longitudeGPS);
+                createCave(8, latitudeGPS - distancia, longitudeGPS + distancia);
+                createCave(9, latitudeGPS - distancia, longitudeGPS - distancia);
+                createCave(10, latitudeGPS + (distancia * 2), longitudeGPS);
+                createCave(11, latitudeGPS + (distancia * 2), longitudeGPS + distancia);
+                break;
+            case 12:
+                /*
+                *  8 - 2 - 5 - 11
+                *  |   |   |   |
+                *  7 - 1 - 4 - 10
+                *  |   |   |   |
+                *  9 - 3 - 6 - 12
+                */
+                createCave(1, latitudeGPS, longitudeGPS);
+                createCave(2, latitudeGPS, longitudeGPS + distancia);
+                createCave(3, latitudeGPS, longitudeGPS - distancia);
+                createCave(4, latitudeGPS + distancia, longitudeGPS);
+                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
+                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
+                createCave(7, latitudeGPS - distancia, longitudeGPS);
+                createCave(8, latitudeGPS - distancia, longitudeGPS + distancia);
+                createCave(9, latitudeGPS - distancia, longitudeGPS - distancia);
+                createCave(10, latitudeGPS + (distancia * 2), longitudeGPS);
+                createCave(11, latitudeGPS + (distancia * 2), longitudeGPS + distancia);
+                createCave(12, latitudeGPS + (distancia * 2), longitudeGPS - distancia);
+                break;
+            case 13:
+                /*
+                *  8 - 2 - 5 - 11
+                *  |   |   |   |
+                *  7 - 1 - 4 - 10
+                *  |   |   |   |
+                *  9 - 3 - 6 - 12
+                *  |
+                *  13
+                */
+                createCave(1, latitudeGPS, longitudeGPS);
+                createCave(2, latitudeGPS, longitudeGPS + distancia);
+                createCave(3, latitudeGPS, longitudeGPS - distancia);
+                createCave(4, latitudeGPS + distancia, longitudeGPS);
+                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
+                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
+                createCave(7, latitudeGPS - distancia, longitudeGPS);
+                createCave(8, latitudeGPS - distancia, longitudeGPS + distancia);
+                createCave(9, latitudeGPS - distancia, longitudeGPS - distancia);
+                createCave(10, latitudeGPS + (distancia * 2), longitudeGPS);
+                createCave(11, latitudeGPS + (distancia * 2), longitudeGPS + distancia);
+                createCave(12, latitudeGPS + (distancia * 2), longitudeGPS - distancia);
+                createCave(13, latitudeGPS - (distancia * 2), longitudeGPS - distancia);
+                break;
+            case 14:
+                /*
+                *  8 - 2 - 5 - 11
+                *  |   |   |   |
+                *  7 - 1 - 4 - 10
+                *  |   |   |   |
+                *  9 - 3 - 6 - 12
+                *  |   |
+                *  13- 14
+                */
+                createCave(1, latitudeGPS, longitudeGPS);
+                createCave(2, latitudeGPS, longitudeGPS + distancia);
+                createCave(3, latitudeGPS, longitudeGPS - distancia);
+                createCave(4, latitudeGPS + distancia, longitudeGPS);
+                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
+                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
+                createCave(7, latitudeGPS - distancia, longitudeGPS);
+                createCave(8, latitudeGPS - distancia, longitudeGPS + distancia);
+                createCave(9, latitudeGPS - distancia, longitudeGPS - distancia);
+                createCave(10, latitudeGPS + (distancia * 2), longitudeGPS);
+                createCave(11, latitudeGPS + (distancia * 2), longitudeGPS + distancia);
+                createCave(12, latitudeGPS + (distancia * 2), longitudeGPS - distancia);
+                createCave(13, latitudeGPS - distancia, longitudeGPS - (distancia * 2));
+                createCave(14, latitudeGPS, longitudeGPS - (distancia * 2));
+                break;
+            case 15:
+                /*
+                *  8 - 2 - 5 - 11
+                *  |   |   |   |
+                *  7 - 1 - 4 - 10
+                *  |   |   |   |
+                *  9 - 3 - 6 - 12
+                *  |   |   |
+                *  13- 14- 15
+                */
+                createCave(1, latitudeGPS, longitudeGPS);
+                createCave(2, latitudeGPS, longitudeGPS + distancia);
+                createCave(3, latitudeGPS, longitudeGPS - distancia);
+                createCave(4, latitudeGPS + distancia, longitudeGPS);
+                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
+                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
+                createCave(7, latitudeGPS - distancia, longitudeGPS);
+                createCave(8, latitudeGPS - distancia, longitudeGPS + distancia);
+                createCave(9, latitudeGPS - distancia, longitudeGPS - distancia);
+                createCave(10, latitudeGPS + (distancia * 2), longitudeGPS);
+                createCave(11, latitudeGPS + (distancia * 2), longitudeGPS + distancia);
+                createCave(12, latitudeGPS + (distancia * 2), longitudeGPS - distancia);
+                createCave(13, latitudeGPS - distancia, longitudeGPS - (distancia * 2));
+                createCave(14, latitudeGPS, longitudeGPS - (distancia * 2));
+                createCave(15, latitudeGPS + distancia, longitudeGPS - (distancia * 2));
+                break;
+            case 16:
+                /*
+                *  8 - 2 - 5 - 11
+                *  |   |   |   |
+                *  7 - 1 - 4 - 10
+                *  |   |   |   |
+                *  9 - 3 - 6 - 12
+                *  |   |   |   |
+                *  13- 14- 15- 16
+                */
+                createCave(1, latitudeGPS, longitudeGPS);
+                createCave(2, latitudeGPS, longitudeGPS + distancia);
+                createCave(3, latitudeGPS, longitudeGPS - distancia);
+                createCave(4, latitudeGPS + distancia, longitudeGPS);
+                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
+                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
+                createCave(7, latitudeGPS - distancia, longitudeGPS);
+                createCave(8, latitudeGPS - distancia, longitudeGPS + distancia);
+                createCave(9, latitudeGPS - distancia, longitudeGPS - distancia);
+                createCave(10, latitudeGPS + (distancia * 2), longitudeGPS);
+                createCave(11, latitudeGPS + (distancia * 2), longitudeGPS + distancia);
+                createCave(12, latitudeGPS + (distancia * 2), longitudeGPS - distancia);
+                createCave(13, latitudeGPS - distancia, longitudeGPS - (distancia * 2));
+                createCave(14, latitudeGPS, longitudeGPS - (distancia * 2));
+                createCave(15, latitudeGPS + distancia, longitudeGPS - (distancia * 2));
+                createCave(16, latitudeGPS + (distancia * 2), longitudeGPS - (distancia * 2));
+                break;
+            case 17:
+                /*
+                *  17- 8 - 2 - 5 - 11
+                *      |   |   |   |
+                *      7 - 1 - 4 - 10
+                *      |   |   |   |
+                *      9 - 3 - 6 - 12
+                *      |   |   |   |
+                *      13- 14- 15- 16
+                */
+                createCave(1, latitudeGPS, longitudeGPS);
+                createCave(2, latitudeGPS, longitudeGPS + distancia);
+                createCave(3, latitudeGPS, longitudeGPS - distancia);
+                createCave(4, latitudeGPS + distancia, longitudeGPS);
+                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
+                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
+                createCave(7, latitudeGPS - distancia, longitudeGPS);
+                createCave(8, latitudeGPS - distancia, longitudeGPS + distancia);
+                createCave(9, latitudeGPS - distancia, longitudeGPS - distancia);
+                createCave(10, latitudeGPS + (distancia * 2), longitudeGPS);
+                createCave(11, latitudeGPS + (distancia * 2), longitudeGPS + distancia);
+                createCave(12, latitudeGPS + (distancia * 2), longitudeGPS - distancia);
+                createCave(13, latitudeGPS - distancia, longitudeGPS - (distancia * 2));
+                createCave(14, latitudeGPS, longitudeGPS - (distancia * 2));
+                createCave(15, latitudeGPS + distancia, longitudeGPS - (distancia * 2));
+                createCave(16, latitudeGPS + (distancia * 2), longitudeGPS - (distancia * 2));
+                createCave(17, latitudeGPS - (distancia * 2), longitudeGPS + distancia);
+                break;
+            case 18:
+                /*
+                *  17- 8 - 2 - 5 - 11
+                *  |   |   |   |   |
+                *  18- 7 - 1 - 4 - 10
+                *      |   |   |   |
+                *      9 - 3 - 6 - 12
+                *      |   |   |   |
+                *      13- 14- 15- 16
+                */
+                createCave(1, latitudeGPS, longitudeGPS);
+                createCave(2, latitudeGPS, longitudeGPS + distancia);
+                createCave(3, latitudeGPS, longitudeGPS - distancia);
+                createCave(4, latitudeGPS + distancia, longitudeGPS);
+                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
+                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
+                createCave(7, latitudeGPS - distancia, longitudeGPS);
+                createCave(8, latitudeGPS - distancia, longitudeGPS + distancia);
+                createCave(9, latitudeGPS - distancia, longitudeGPS - distancia);
+                createCave(10, latitudeGPS + (distancia * 2), longitudeGPS);
+                createCave(11, latitudeGPS + (distancia * 2), longitudeGPS + distancia);
+                createCave(12, latitudeGPS + (distancia * 2), longitudeGPS - distancia);
+                createCave(13, latitudeGPS - distancia, longitudeGPS - (distancia * 2));
+                createCave(14, latitudeGPS, longitudeGPS - (distancia * 2));
+                createCave(15, latitudeGPS + distancia, longitudeGPS - (distancia * 2));
+                createCave(16, latitudeGPS + (distancia * 2), longitudeGPS - (distancia * 2));
+                createCave(17, latitudeGPS - (distancia * 2), longitudeGPS + distancia);
+                createCave(18, latitudeGPS - (distancia * 2), longitudeGPS);
+                break;
+            case 19:
+                /*
+                *  17- 8 - 2 - 5 - 11
+                *  |   |   |   |   |
+                *  18- 7 - 1 - 4 - 10
+                *  |   |   |   |   |
+                *  19- 9 - 3 - 6 - 12
+                *      |   |   |   |
+                *      13- 14- 15- 16
+                */
+                createCave(1, latitudeGPS, longitudeGPS);
+                createCave(2, latitudeGPS, longitudeGPS + distancia);
+                createCave(3, latitudeGPS, longitudeGPS - distancia);
+                createCave(4, latitudeGPS + distancia, longitudeGPS);
+                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
+                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
+                createCave(7, latitudeGPS - distancia, longitudeGPS);
+                createCave(8, latitudeGPS - distancia, longitudeGPS + distancia);
+                createCave(9, latitudeGPS - distancia, longitudeGPS - distancia);
+                createCave(10, latitudeGPS + (distancia * 2), longitudeGPS);
+                createCave(11, latitudeGPS + (distancia * 2), longitudeGPS + distancia);
+                createCave(12, latitudeGPS + (distancia * 2), longitudeGPS - distancia);
+                createCave(13, latitudeGPS - distancia, longitudeGPS - (distancia * 2));
+                createCave(14, latitudeGPS, longitudeGPS - (distancia * 2));
+                createCave(15, latitudeGPS + distancia, longitudeGPS - (distancia * 2));
+                createCave(16, latitudeGPS + (distancia * 2), longitudeGPS - (distancia * 2));
+                createCave(17, latitudeGPS - (distancia * 2), longitudeGPS + distancia);
+                createCave(18, latitudeGPS - (distancia * 2), longitudeGPS);
+                createCave(19, latitudeGPS - (distancia * 2), longitudeGPS - distancia);
+                break;
+            case 20:
+                /*
+                *  17- 8 - 2 - 5 - 11
+                *  |   |   |   |   |
+                *  18- 7 - 1 - 4 - 10
+                *  |   |   |   |   |
+                *  19- 9 - 3 - 6 - 12
+                *  |   |   |   |   |
+                *  20- 13- 14- 15- 16
+                */
+                createCave(1, latitudeGPS, longitudeGPS);
+                createCave(2, latitudeGPS, longitudeGPS + distancia);
+                createCave(3, latitudeGPS, longitudeGPS - distancia);
+                createCave(4, latitudeGPS + distancia, longitudeGPS);
+                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
+                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
+                createCave(7, latitudeGPS - distancia, longitudeGPS);
+                createCave(8, latitudeGPS - distancia, longitudeGPS + distancia);
+                createCave(9, latitudeGPS - distancia, longitudeGPS - distancia);
+                createCave(10, latitudeGPS + (distancia * 2), longitudeGPS);
+                createCave(11, latitudeGPS + (distancia * 2), longitudeGPS + distancia);
+                createCave(12, latitudeGPS + (distancia * 2), longitudeGPS - distancia);
+                createCave(13, latitudeGPS - distancia, longitudeGPS - (distancia * 2));
+                createCave(14, latitudeGPS, longitudeGPS - (distancia * 2));
+                createCave(15, latitudeGPS + distancia, longitudeGPS - (distancia * 2));
+                createCave(16, latitudeGPS + (distancia * 2), longitudeGPS - (distancia * 2));
+                createCave(17, latitudeGPS - (distancia * 2), longitudeGPS + distancia);
+                createCave(18, latitudeGPS - (distancia * 2), longitudeGPS);
+                createCave(19, latitudeGPS - (distancia * 2), longitudeGPS - distancia);
+                createCave(20, latitudeGPS - (distancia * 2), longitudeGPS - (distancia * 2));
+                break;
+        }
+    }
+
+    public void createCave (int numberOfCave, double coordX, double coordY) {
+        //TODO: INSERTAR EN LA BASE DE DATOS
     }
 
 }
