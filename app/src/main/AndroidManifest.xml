@@ -21,8 +21,8 @@
         </activity>
         <activity android:name=".SelectPolyActivity"/>
         <activity android:name=".SelectFromLibActivity"/>
-        <activity android:name=".DrawMazeActivity">
-        </activity>
+        <activity android:name=".DrawMazeActivity"/>
+        <activity android:name=".BluetoothSettings"/>
 
     </application>
 

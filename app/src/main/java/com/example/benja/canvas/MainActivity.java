@@ -27,9 +27,8 @@ public class MainActivity extends Activity {
 
     public void tipoMultijugador(View vista)
     {
-        Intent i = new Intent(this,SelectPolyActivity.class);
-        ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.slide_in_down, R.anim.slide_out_down);
-        startActivity(i, options.toBundle());
+        Intent i = new Intent(this, BluetoothSettings.class);
+        startActivity(i);
     }
 
 }
