@@ -4,9 +4,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/titulo"
-        android:label="@string/app_name"
-        android:roundIcon="@drawable/titulo"
+        android:icon="@drawable/wumpus_icon"
+        android:label="Wumpus"
+        android:roundIcon="@drawable/wumpus_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
@@ -18,7 +18,9 @@
         </activity>
         <activity android:name=".SelectPolyActivity"/>
         <activity android:name=".SelectFromLibActivity"></activity>
-        <activity android:name=".Coordenadas" />
+        <activity android:name=".Coordenadas"></activity>
+        <activity android:name=".DrawMazeActivity"></activity>
+        
 
     </application>
 

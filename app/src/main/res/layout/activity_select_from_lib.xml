@@ -4,12 +4,29 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.benja.canvas.SelectFromLibActivity">
+    tools:context="com.example.benja.canvas.SelectFromLibActivity"
+    android:background="@drawable/other_background">
+
+    <TextView
+        android:id="@+id/lblChooseLib"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Seleccione un laberinto"
+        android:textSize="20sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
 
     <ListView
         android:id="@+id/listViewMazes"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </ListView>
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp"
+        android:background="@color/white_button"
+        android:divider="@color/white_button"
+        android:dividerHeight="2dp">
+     </ListView>
 
 </LinearLayout>

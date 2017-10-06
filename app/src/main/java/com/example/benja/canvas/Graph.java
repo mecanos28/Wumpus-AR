@@ -11,7 +11,7 @@ public class Graph {
 
     //Creates an empty graph for irregular mazes.
     public Graph() {
-        this.maximumCaves = 0;
+        this.maximumCaves = 20;
         this.cavesRelations = new boolean[20][20];
         this.allCaves = new ArrayList<Cave>();
     }
@@ -32,12 +32,22 @@ public class Graph {
     }
     */
 
-    public void addCave() {
-        this.maximumCaves++;
+    public void addCave(Cave cave) {
+        this.maximumCaves--;
+        allCaves.add(cave);
     }
 
-    public void removeCave() {
-        this.maximumCaves--;
+    public void removeCave(int cave) {
+        boolean found = false;
+        int i = 0;
+        while(!found && i < maximumCaves) {
+            if (allCaves.get(i).getId() == cave) {
+                found = true;
+                allCaves.remove(cave);
+            }
+            ++i;
+        }
+        this.maximumCaves++;
     }
 
     public int getMaximumCaves () {
@@ -51,9 +61,8 @@ public class Graph {
     }
 
     public void remove_Bi_Relation(int caveX_id, int caveY_id) {
-
-        this.cavesRelations[caveX_id][caveY_id] = true;
-        this.cavesRelations[caveY_id][caveX_id] = true;
+        this.cavesRelations[caveX_id][caveY_id] = false;
+        this.cavesRelations[caveY_id][caveX_id] = false;
     }
 
     public Cave getFirstCave(Cave caveFather) {
@@ -142,11 +151,11 @@ public class Graph {
     * Checks if a cave is isolated.
     */
     public boolean isIsolated(int cave) {
-        boolean isolated = false;
+        boolean isolated = true;
         int i = 0;
         while (!isolated && i < this.maximumCaves) {
             if (this.areConnected(i, cave)) {
-                isolated = true;
+                isolated = false;
             }
             ++i;
         }
@@ -170,6 +179,20 @@ public class Graph {
             ++i;
         }
         return valid;
+    }
+
+    //Busca la cueva con el id especificado
+    public Cave searchCave(int id){
+        boolean found = false;
+        int i = 0;
+        while(!found && i < maximumCaves){
+            if (allCaves.get(i).getId() == id) {
+                found = true;
+                return allCaves.get(i);
+            }
+            ++i;
+        }
+        return null;
     }
 
 }
