@@ -22,7 +22,6 @@ public class MainActivity extends Activity {
         Intent i = new Intent(this,SelectPolyActivity.class);
         ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.slide_in_down, R.anim.slide_out_down);
         startActivity(i, options.toBundle());
-
     }
 
     public void tipoMultijugador(View vista)
