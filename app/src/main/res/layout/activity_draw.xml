@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.benja.canvas.DrawMazeActivity">
+    tools:context="com.example.benja.canvas.DrawMazeActivity"
+    android:background="@drawable/other_background">
 
     <view
         android:id="@+id/viewDrawCanvas"
@@ -14,12 +15,11 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="5.17"
-        android:background="#FFFFFFFF"/>
+        android:background="@color/transparent"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="81dp"
-        android:background="@android:color/background_dark"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -36,6 +36,11 @@
                 android:onClick="addC"
                 android:text="Agregar cueva"
                 android:textSize="11sp"
+                android:textColor="@color/white"
+                android:background="@color/white_button"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
                 tools:ignore="ContentDescription" />
 
             <Button
@@ -46,6 +51,11 @@
                 android:onClick="delC"
                 android:text="Eliminar cueva"
                 android:textSize="11sp"
+                android:textColor="@color/white"
+                android:background="@color/white_button"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
                 tools:ignore="ContentDescription" />
 
         </LinearLayout>
@@ -64,6 +74,10 @@
                 android:onClick="addA"
                 android:text="Agregar camino"
                 android:textSize="11sp"
+                android:textColor="@color/white"
+                android:background="@color/white_button"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
                 tools:ignore="ContentDescription" />
 
             <Button
@@ -74,6 +88,10 @@
                 android:onClick="delA"
                 android:text="Eliminar camino"
                 android:textSize="11sp"
+                android:textColor="@color/white"
+                android:background="@color/white_button"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
                 tools:ignore="ContentDescription" />
 
         </LinearLayout>
@@ -92,6 +110,10 @@
                 android:onClick="newD"
                 android:text="Reiniciar dibujo"
                 android:textSize="11sp"
+                android:textColor="@color/white"
+                android:background="@color/white_button"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
                 tools:ignore="ContentDescription" />
 
             <Button
@@ -103,6 +125,10 @@
                 android:onClick="checkD"
                 android:text="Guardar dibujo"
                 android:textSize="11sp"
+                android:textColor="@color/white"
+                android:background="@color/white_button"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
                 tools:ignore="ContentDescription" />
         </LinearLayout>
 

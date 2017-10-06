@@ -9,4 +9,5 @@
     <color name="black_button">#80000000</color>
     <color name="white_button">#30FFFFFF</color>
     <color name="white_transparent">#50FFFFFF</color>
+    <color name="transparent">#80000000</color>
 </resources>
