@@ -3,8 +3,10 @@ package com.example.benja.canvas;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -97,13 +99,13 @@ public class DrawCanvas extends View {
                 drawPath.addCircle(touchX, touchY, 50, Path.Direction.CW); //Dibujo una cueva en esas coordenadas
                 drawCanvas.drawPath(drawPath, drawPaint);
                 drawPath.reset();
-                tag = Integer.toString(numCave);
+                tag = Integer.toString(totalCaves);
                 drawPaint.setStrokeWidth(3);
                 drawPaint.setTextSize(30);
                 drawPaint.setStyle(Paint.Style.STROKE);
                 drawPaint.setColor(0xFF000000);//Negro //(0xFFFFFFFF); //Blanco
                 drawCanvas.drawText(tag, touchX - 5, touchY + 5, drawPaint);
-                caves.add(numCave, new Cave(totalCaves, touchX, touchY)); //Añado la nueva cueva a la lista
+                caves.add(new Cave(totalCaves, touchX, touchY)); //Añado la nueva cueva a la lista
                 totalCaves++;
                 numCave++;
                 invalidate();
@@ -115,7 +117,7 @@ public class DrawCanvas extends View {
     public void deleteCave(int c){ //Recibo el id de la cueva que deseo borrar
         String tag;
         Cave c1, c2;
-        drawCanvas.drawColor(0xFF000000);
+        canvasBitmap.eraseColor(Color.BLACK);
         //Borro todas las aristas relacionadas con esa cueva
         int l = 0;
         IntPair pair;
