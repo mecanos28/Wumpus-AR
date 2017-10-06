@@ -75,7 +75,6 @@ public class Graph {
     }
 
     public void remove_Bi_Relation(int caveX_id, int caveY_id) {
-
         this.cavesRelations[caveX_id][caveY_id] = false;
         this.cavesRelations[caveY_id][caveX_id] = false;
     }

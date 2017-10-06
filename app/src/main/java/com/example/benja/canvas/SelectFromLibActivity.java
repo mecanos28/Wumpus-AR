@@ -18,7 +18,8 @@ import java.util.ArrayList;
 public class SelectFromLibActivity extends Activity {
 
     ListView mazeList;
-    String[] data;
+    ArrayList<String> datos;
+    ArrayList<String> names;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +34,32 @@ public class SelectFromLibActivity extends Activity {
             */
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String value = data[position];
-                Toast.makeText(SelectFromLibActivity.this, value, Toast.LENGTH_SHORT).show();
-                //TODO: Send the data to the next layout.
+                String[] value = names.toArray(new String [names.size()]);
+                String name = value[position];
+                int graphID = getGraphID(name);
+                Toast.makeText(SelectFromLibActivity.this, "ID: " + graphID + "\nName: " + name, Toast.LENGTH_SHORT).show();
+                //Intent i = new Intent(this, EmplazarActivity.class);
+                //i.putExtra("graphID",graphID);
+                //startActivity(i);
             }
         });
+    }
+
+    public int getGraphID(String graphName) {
+        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 5);
+        SQLiteDatabase db = admin.getWritableDatabase();
+        Cursor cell = db.rawQuery("SELECT GRAPH.id FROM GRAPH WHERE GRAPH.name = \"" + graphName +"\";", null);
+        if (cell.moveToFirst()){
+            int graphID = cell.getInt(0);
+            cell.close();
+            return graphID;
+        }
+        else {
+            Toast.makeText(this, "The Wumpus isn't around this caves. Try another one!", Toast.LENGTH_LONG).show();
+            db.close();
+        }
+        cell.close();
+        return 0;
     }
 
     /*
@@ -48,16 +70,23 @@ public class SelectFromLibActivity extends Activity {
         AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 5);
         SQLiteDatabase db = admin.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT name, number_of_caves FROM GRAPH", null);
-        ArrayList<String> datos = new ArrayList<String>();
+        datos = new ArrayList<String>();
+        names = new ArrayList<String>();
         if (cursor.moveToFirst()) {
             do{
-                String dato = "Name: " + cursor.getString(0) + "\nNumber of caves: " + cursor.getString(1);
+                String dato = "Nombre: " + cursor.getString(0) + "\nNúmero de cuevas: " + cursor.getString(1);
                 datos.add(dato);
+                names.add(cursor.getString(0));
             }while(cursor.moveToNext());
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,datos);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.layout_list_view_item ,datos);
         mazeList.setAdapter(adapter);
         cursor.close();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
 }

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ public class DrawMazeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_draw);
         myCanvas = findViewById(R.id.viewDrawCanvas);
         Toast.makeText(DrawMazeActivity.this, "Una vez que presione la pantalla, se capturarán las coordenadas para crear la próxima cueva.", Toast.LENGTH_LONG).show();

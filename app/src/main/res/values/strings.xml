@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Wumpus Game</string>
+
+    <string-array name="distances">
+        <item>6 metros</item>
+        <item>8 metros</item>
+        <item>10 metros</item>
+        <item>12 metros</item>
+    </string-array>
 </resources>
