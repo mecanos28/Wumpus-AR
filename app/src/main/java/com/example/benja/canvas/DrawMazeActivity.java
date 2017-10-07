@@ -174,9 +174,9 @@ public class DrawMazeActivity extends Activity {
     //Borrar un arco
     public void delA(View v){
         final Dialog dialogDeleteArc = new Dialog(this);
-        dialogDeleteArc.setContentView(R.layout.layout_choosecaves);
-        final EditText edtTxtCaveDel1 = dialogDeleteArc.findViewById(R.id.editTxtCave1);
-        final EditText edtTxtCaveDel2 = dialogDeleteArc.findViewById(R.id.editTxtCave2);
+        dialogDeleteArc.setContentView(R.layout.layout_delete_relation);
+        final EditText edtTxtCaveDel1 = dialogDeleteArc.findViewById(R.id.editTxtCave01);
+        final EditText edtTxtCaveDel2 = dialogDeleteArc.findViewById(R.id.editTxtCave02);
         Button btnAcceptDelArc = dialogDeleteArc.findViewById(R.id.btnAccept);
         Button btnCancelDelArc = dialogDeleteArc.findViewById(R.id.btnCancel);
         btnAcceptDelArc.setOnClickListener(new View.OnClickListener(){
@@ -318,6 +318,12 @@ public class DrawMazeActivity extends Activity {
             });
             alert.show();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
 }
