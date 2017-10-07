@@ -3,8 +3,10 @@ package com.example.benja.canvas;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -59,7 +61,7 @@ public class DrawCanvas extends View {
         super.onSizeChanged(w,h,oldw,oldh);
         canvasBitmap = Bitmap.createBitmap(w,h,Bitmap.Config.ARGB_8888);
         drawCanvas = new Canvas(canvasBitmap);
-        drawCanvas.drawColor(0xFF000000);//(0xFF560056); //Morado //(0xFF800080); //Morado claro
+        drawCanvas.drawColor(Color.TRANSPARENT);//(0xFF000000); //Negro
     }
 
     //Pinta la vista, se llama desde el OnTouchEvent
@@ -82,7 +84,7 @@ public class DrawCanvas extends View {
     //Reinicializa la pantalla
     public void newDraw(){
         setupDrawing();
-        drawCanvas.drawColor(0xFF000000);
+        drawCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
         invalidate();
     }
 
@@ -103,7 +105,7 @@ public class DrawCanvas extends View {
                 drawPaint.setStyle(Paint.Style.STROKE);
                 drawPaint.setColor(0xFF000000);//Negro //(0xFFFFFFFF); //Blanco
                 drawCanvas.drawText(tag, touchX - 5, touchY + 5, drawPaint);
-                caves.add(numCave, new Cave(totalCaves, touchX, touchY)); //Añado la nueva cueva a la lista
+                caves.add(new Cave(numCave, touchX, touchY)); //Añado la nueva cueva a la lista
                 totalCaves++;
                 numCave++;
                 invalidate();
@@ -115,7 +117,7 @@ public class DrawCanvas extends View {
     public void deleteCave(int c){ //Recibo el id de la cueva que deseo borrar
         String tag;
         Cave c1, c2;
-        drawCanvas.drawColor(0xFF000000);
+        drawCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
         //Borro todas las aristas relacionadas con esa cueva
         int l = 0;
         IntPair pair;
@@ -229,7 +231,7 @@ public class DrawCanvas extends View {
     //Elimina un camino/arco entre 2 cuevas
     public void deleteArc(Cave c1, Cave c2){
         String tag;
-        drawCanvas.drawColor(0xFF000000);
+        drawCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
         //Borro los caminos entre esas cuevas
         int l = 0;
         IntPair pair;
@@ -279,17 +281,16 @@ public class DrawCanvas extends View {
 
     //Busca la cueva con el id especificado y la devuelve
     public Cave searchCave(int id){
-        boolean found = false;
         int i = 0;
-        while(i < totalCaves && !found){
+        while(i < totalCaves){
             if (caves.get(i).getId() == id) {
-                found = true;
+                return caves.get(i);
             }
             else{
                 i++;
             }
         }
-        return caves.get(i);
+        return null;
     }
 
     public ArrayList<IntPair> getRelations() {

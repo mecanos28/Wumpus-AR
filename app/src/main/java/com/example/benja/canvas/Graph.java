@@ -187,7 +187,7 @@ public class Graph {
         }
         int i = 0;
         while (i < this.maximumCaves && valid) {
-            if (this.isIsolated(i)) {
+            if (!this.isIsolated(i)) {
                 valid = false;
             }
             ++i;
