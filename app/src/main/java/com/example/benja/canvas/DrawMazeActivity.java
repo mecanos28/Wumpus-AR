@@ -1,6 +1,8 @@
 package com.example.benja.canvas;
 
+import android.app.ActivityOptions;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -295,11 +297,25 @@ public class DrawMazeActivity extends Activity {
 
             Cursor cell = db.rawQuery("SELECT id FROM GRAPH WHERE GRAPH.relations = \"" + relations + "\"", null);
             if (cell.moveToFirst()) {
-                int graphID = cell.getInt(0);
+                final String graphID = cell.getString(0);
                 cell.close();
                 db.close();
-                //TODO: Ask if they want to keep drawing or if they want to play with the new maze.
-                //TODO: If they want to play, send the graphID to the next Layout.
+                AlertDialog.Builder newDialog = new AlertDialog.Builder(this);
+                newDialog.setTitle("El dibujo ha sido guardado");
+                newDialog.setMessage("¿Desea iniciar una partida con este laberinto?");
+                newDialog.setPositiveButton("Sí", new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int which){
+                        dialog.dismiss();
+                        startGame(graphID);
+                    }
+                });
+                newDialog.setNegativeButton("No", new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int which){
+                        myCanvas.newDraw();
+                        dialog.dismiss();
+                    }
+                });
+                newDialog.show();
             } else {
                 alert.setTitle("Error");
                 alert.setMessage("Hubo un problema guardando el laberinto.");
@@ -357,6 +373,13 @@ public class DrawMazeActivity extends Activity {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
+
+    public void startGame (String stringGraphID) {
+        Intent i = new Intent(this, Coordenadas.class);
+        i.putExtra("graphID",stringGraphID);
+        ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.fade_in, R.anim.fade_out);
+        startActivity(i, options.toBundle());
     }
 
 }
