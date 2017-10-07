@@ -145,7 +145,9 @@ public class Graph {
                     result = result + "0";
                 }
             }
-            result = result + "*";
+            if (i != (maximumCaves - 1)){
+                result = result + "*";
+            }
         }
         return result;
     }

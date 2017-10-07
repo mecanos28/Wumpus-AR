@@ -69,7 +69,7 @@ public class SelectFromLibActivity extends Activity {
         mazeList = (ListView)findViewById(R.id.listViewMazes);
         AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 5);
         SQLiteDatabase db = admin.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT name, number_of_caves FROM GRAPH", null);
+        Cursor cursor = db.rawQuery("SELECT name, number_of_caves FROM GRAPH WHERE custom = 1", null);
         datos = new ArrayList<String>();
         names = new ArrayList<String>();
         if (cursor.moveToFirst()) {

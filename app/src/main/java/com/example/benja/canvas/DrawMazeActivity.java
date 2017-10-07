@@ -19,6 +19,7 @@ public class DrawMazeActivity extends Activity {
     private DrawCanvas myCanvas;
     private Graph customMaze;
     private int caveToDelete, cave1, cave2;
+    private String name;
     AlertDialog.Builder alert;
 
     @Override
@@ -270,7 +271,7 @@ public class DrawMazeActivity extends Activity {
     public void checkD(View v){
         customMaze = new Graph(myCanvas.getNumCave());
         customMaze.fillGraph(myCanvas.getRelations());
-        saveMaze();
+        askMazeName();
     }
 
     /*
@@ -280,15 +281,19 @@ public class DrawMazeActivity extends Activity {
         if (customMaze.valid()) {
             String relations = customMaze.arrayToString();
 
-            AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 1);
+            AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 5);
             SQLiteDatabase db = admin.getWritableDatabase();
 
+            Long tsLong = System.currentTimeMillis()/1000;
+            String ts = "-" + tsLong.toString();
+
             ContentValues data = new ContentValues();
+            data.put("name", name + ts);
             data.put("relations", relations);
             data.put("number_of_caves", customMaze.getMaximumCaves());
             db.insert("GRAPH", null, data);
 
-            Cursor cell = db.rawQuery("SELECT id FROM GRAPH WHERE GRAPH.relations = " + relations, null);
+            Cursor cell = db.rawQuery("SELECT id FROM GRAPH WHERE GRAPH.relations = \"" + relations + "\"", null);
             if (cell.moveToFirst()) {
                 int graphID = cell.getInt(0);
                 cell.close();
@@ -318,6 +323,34 @@ public class DrawMazeActivity extends Activity {
             });
             alert.show();
         }
+    }
+
+    public void askMazeName () {
+        final Dialog dialogAddArc = new Dialog(this);
+        dialogAddArc.setContentView(R.layout.layout_maze_name);
+        final EditText edtTxtName = dialogAddArc.findViewById(R.id.editTxtNameMaze);
+        Button btnAccept = dialogAddArc.findViewById(R.id.btnAcceptName);
+        btnAccept.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if (!edtTxtName.getText().toString().equals("")){
+                    name =  edtTxtName.getText().toString();
+                    dialogAddArc.dismiss();
+                    saveMaze();
+                }
+                else {
+                    alert.setTitle("Error");
+                    alert.setMessage("Debe introducir un nombre para el dibujo");
+                    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
+                        public void onClick(DialogInterface dialog, int which){
+                            dialog.dismiss();
+                        }
+                    });
+                    alert.show();
+                }
+            }
+        });
+        dialogAddArc.show();
     }
 
     @Override
