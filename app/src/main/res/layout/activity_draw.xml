@@ -8,6 +8,15 @@
     tools:context="com.example.benja.canvas.DrawMazeActivity"
     android:background="@drawable/other_background">
 
+    <Button
+        android:id="@+id/btnInfo"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:onClick="info"
+        android:background="@drawable/info_icon"
+        android:layout_gravity="end"
+        tools:ignore="ContentDescription" />
+
     <view
         android:id="@+id/viewDrawCanvas"
         class="com.example.benja.canvas.DrawCanvas"
@@ -15,6 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="5.17"
+        android:layout_marginBottom="5dp"
         android:background="@color/transparent"/>
 
     <LinearLayout

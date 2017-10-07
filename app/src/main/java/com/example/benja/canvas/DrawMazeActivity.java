@@ -26,14 +26,32 @@ public class DrawMazeActivity extends Activity {
 
         setContentView(R.layout.activity_draw);
         myCanvas = findViewById(R.id.viewDrawCanvas);
-        Toast.makeText(DrawMazeActivity.this, "Una vez que presione la pantalla, se capturarán las coordenadas para crear la próxima cueva.", Toast.LENGTH_LONG).show();
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Instrucciones");
+        alert.setMessage("- Para agregar una cueva debe presionar la pantalla donde desea colocarla, seguidamente presionar el botón \"Agregar Cueva\".\n\n- Para agregar o eliminar un camino entre dos cuevas, presione el botón \"Agregar Camino\" o \"Eliminar Camino\" e indique las dos cuevas que desea conectar o desconectar.\n\n- Para eliminar una cueva, presione el botón \"Eliminar Cueva\" e indique el número de la cueva que desea eliminar, esto eliminará a su vez los caminos conectados a esta cueva.\n\n- Una vez finalizado el dibujo presione el botón \"Guardar Dibujo\" lo que almacenará el laberinto en la biblioteca y permitirá utilizarlo para jugar.");
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int which){
+                dialog.dismiss();
+            }
+        });
+        alert.show();
+    }
+
+    public void info (View v) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Instrucciones");
+        alert.setMessage("- Para agregar una cueva debe presionar la pantalla donde desea colocarla, seguidamente presionar el botón \"Agregar Cueva\".\n\n- Para eliminar una cueva, presione el botón \"Eliminar Cueva\" e indique el número de la cueva que desea eliminar, esto eliminará a su vez los caminos conectados a esta cueva.\n\nq    111111111111111111fgvcbd- Para agregar o eliminar un camino entre dos cuevas, presione el botón \"Agregar Camino\" o \"Eliminar Camino\" e indique las dos cuevas que desea conectar o desconectar.\n\n- Una vez finalizado el dibujo presione el botón \"Guardar Dibujo\" lo que almacenará el laberinto en la biblioteca y permitirá utilizarlo para jugar.");
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int which){
+                dialog.dismiss();
+            }
+        });
+        alert.show();
     }
 
     //Agregar una cueva
     public void addC(View v){
         myCanvas.addCave();
-        Toast.makeText(DrawMazeActivity.this, "Recuerde que para agregar una nueva cueva, debe presionar primero su ubicación en la pantalla.", Toast.LENGTH_SHORT).show();
-
     }
 
     //Borrar una cueva
