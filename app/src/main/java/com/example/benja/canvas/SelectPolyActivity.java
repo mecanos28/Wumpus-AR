@@ -27,7 +27,7 @@ public class SelectPolyActivity extends Activity {
         setContentView(R.layout.activity_select_poly);
         currentPage = 1;
         viewPager=(ViewPager)findViewById(R.id.ImageSlider);
-        int[] imageResources = {R.drawable.tetra_light,R.drawable.octa_light,R.drawable.cube_light,R.drawable.icosa_light,R.drawable.dodeca_light};
+        int[] imageResources = {R.drawable.tetra_light, R.drawable.octa_light, R.drawable.cube_light, R.drawable.icosa_light, R.drawable.dodeca_light};
         customSwip = new CustomSwip(this,imageResources);
         viewPager.setAdapter(customSwip);
         viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
