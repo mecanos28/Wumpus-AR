@@ -145,7 +145,9 @@ public class Graph {
                     result = result + "0";
                 }
             }
-            result = result + "*";
+            if (i != (maximumCaves - 1)){
+                result = result + "*";
+            }
         }
         return result;
     }
@@ -167,7 +169,7 @@ public class Graph {
     public boolean isIsolated(int cave) {
         boolean isolated = true;
         int i = 0;
-        while (!isolated && i < this.maximumCaves) {
+        while (isolated && i < this.maximumCaves) {
             if (this.areConnected(i, cave)) {
                 isolated = false;
             }

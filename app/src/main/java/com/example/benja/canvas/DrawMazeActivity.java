@@ -1,6 +1,8 @@
 package com.example.benja.canvas;
 
+import android.app.ActivityOptions;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -19,6 +21,8 @@ public class DrawMazeActivity extends Activity {
     private DrawCanvas myCanvas;
     private Graph customMaze;
     private int caveToDelete, cave1, cave2;
+    private String name;
+    AlertDialog.Builder alert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,14 +30,32 @@ public class DrawMazeActivity extends Activity {
 
         setContentView(R.layout.activity_draw);
         myCanvas = findViewById(R.id.viewDrawCanvas);
-        Toast.makeText(DrawMazeActivity.this, "Una vez que presione la pantalla, se capturarán las coordenadas para crear la próxima cueva.", Toast.LENGTH_LONG).show();
+        alert = new AlertDialog.Builder(this);
+        alert.setTitle("Instrucciones");
+        alert.setMessage("- Para agregar una cueva debe presionar la pantalla donde desea colocarla, seguidamente presionar el botón \"Agregar Cueva\".\n\n- Para eliminar una cueva, presione el botón \"Eliminar Cueva\" e indique el número de la cueva que desea eliminar, esto eliminará a su vez los caminos conectados a esta cueva.\n\n- Para agregar o eliminar un camino entre dos cuevas, presione el botón \"Agregar Camino\" o \"Eliminar Camino\" e indique las dos cuevas que desea conectar o desconectar.\n\n- Una vez finalizado el dibujo presione el botón \"Guardar Dibujo\" lo que almacenará el laberinto en la biblioteca y permitirá utilizarlo para jugar.");
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int which){
+                dialog.dismiss();
+            }
+        });
+        alert.show();
+    }
+
+    public void info (View v) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Instrucciones");
+        alert.setMessage("- Para agregar una cueva debe presionar la pantalla donde desea colocarla, seguidamente presionar el botón \"Agregar Cueva\".\n\n- Para eliminar una cueva, presione el botón \"Eliminar Cueva\" e indique el número de la cueva que desea eliminar, esto eliminará a su vez los caminos conectados a esta cueva.\n\n- Para agregar o eliminar un camino entre dos cuevas, presione el botón \"Agregar Camino\" o \"Eliminar Camino\" e indique las dos cuevas que desea conectar o desconectar.\n\n- Una vez finalizado el dibujo presione el botón \"Guardar Dibujo\" lo que almacenará el laberinto en la biblioteca y permitirá utilizarlo para jugar.");
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int which){
+                dialog.dismiss();
+            }
+        });
+        alert.show();
     }
 
     //Agregar una cueva
     public void addC(View v){
         myCanvas.addCave();
-        Toast.makeText(DrawMazeActivity.this, "Recuerde que para agregar una nueva cueva, debe presionar primero su ubicación en la pantalla.", Toast.LENGTH_SHORT).show();
-
     }
 
     //Borrar una cueva
@@ -53,7 +75,14 @@ public class DrawMazeActivity extends Activity {
                 }
                 else
                 {
-                    Toast.makeText(DrawMazeActivity.this, "Error, vuelva a ingresar la cueva que desea eliminar.", Toast.LENGTH_LONG).show();
+                    alert.setTitle("Error");
+                    alert.setMessage("La cueva que desea borrar no existe.");
+                    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
+                        public void onClick(DialogInterface dialog, int which){
+                            dialog.dismiss();
+                        }
+                    });
+                    alert.show();
                 }
             }
         });
@@ -92,18 +121,46 @@ public class DrawMazeActivity extends Activity {
                     }
                     else
                     {
-                        Toast.makeText(DrawMazeActivity.this, "Error, no puede haber un camino hacia la misma cueva.", Toast.LENGTH_SHORT).show();
+                        alert.setTitle("Error");
+                        alert.setMessage("No puede haber un camino de una cueva hacia sí misma.");
+                        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialog, int which){
+                                dialog.dismiss();
+                            }
+                        });
+                        alert.show();
                     }
 
                 }
                 else if(cave1 > myCanvas.getNumCave() && cave2 < myCanvas.getNumCave()){
-                    Toast.makeText(DrawMazeActivity.this, "Error, vuelva a ingresar la primera cueva.", Toast.LENGTH_SHORT).show();
+                    alert.setTitle("Error");
+                    alert.setMessage("La primera cueva que ingresó no existe.");
+                    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
+                        public void onClick(DialogInterface dialog, int which){
+                            dialog.dismiss();
+                        }
+                    });
+                    alert.show();
                 }
                 else if (cave1 < myCanvas.getNumCave() && cave2 > myCanvas.getNumCave()){
-                    Toast.makeText(DrawMazeActivity.this, "Error, vuelva a ingresar la segunda cueva", Toast.LENGTH_SHORT).show();
+                    alert.setTitle("Error");
+                    alert.setMessage("La segunda cueva que ingresó no existe.");
+                    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
+                        public void onClick(DialogInterface dialog, int which){
+                            dialog.dismiss();
+                        }
+                    });
+                    alert.show();
                 }
                 else {
-                    Toast.makeText(DrawMazeActivity.this, "Error, vuelva a ingresar las cuevas.", Toast.LENGTH_SHORT).show();
+                    alert.setTitle("Error");
+                    alert.setMessage("Las cuevas que ingresó no existen.");
+                    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
+                        public void onClick(DialogInterface dialog, int which){
+                            dialog.dismiss();
+                        }
+                    });
+                    alert.show();
                 }
                 dialogAddArc.dismiss();
             }
@@ -120,9 +177,9 @@ public class DrawMazeActivity extends Activity {
     //Borrar un arco
     public void delA(View v){
         final Dialog dialogDeleteArc = new Dialog(this);
-        dialogDeleteArc.setContentView(R.layout.layout_choosecaves);
-        final EditText edtTxtCaveDel1 = dialogDeleteArc.findViewById(R.id.editTxtCave1);
-        final EditText edtTxtCaveDel2 = dialogDeleteArc.findViewById(R.id.editTxtCave2);
+        dialogDeleteArc.setContentView(R.layout.layout_delete_relation);
+        final EditText edtTxtCaveDel1 = dialogDeleteArc.findViewById(R.id.editTxtCave01);
+        final EditText edtTxtCaveDel2 = dialogDeleteArc.findViewById(R.id.editTxtCave02);
         Button btnAcceptDelArc = dialogDeleteArc.findViewById(R.id.btnAccept);
         Button btnCancelDelArc = dialogDeleteArc.findViewById(R.id.btnCancel);
         btnAcceptDelArc.setOnClickListener(new View.OnClickListener(){
@@ -141,17 +198,45 @@ public class DrawMazeActivity extends Activity {
                     }
                     else
                     {
-                        Toast.makeText(DrawMazeActivity.this, "Error, no hay caminos hacia la misma cueva.", Toast.LENGTH_SHORT).show();
+                        alert.setTitle("Error");
+                        alert.setMessage("El camino que desea borrar no existe.");
+                        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialog, int which){
+                                dialog.dismiss();
+                            }
+                        });
+                        alert.show();
                     }
                 }
                 else if(cave1 > myCanvas.getNumCave() && cave2 < myCanvas.getNumCave()){
-                    Toast.makeText(DrawMazeActivity.this, "Error, vuelva a ingresar el número de la primera cueva.", Toast.LENGTH_SHORT).show();
+                    alert.setTitle("Error");
+                    alert.setMessage("La primera cueva que ingresó no existe.");
+                    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
+                        public void onClick(DialogInterface dialog, int which){
+                            dialog.dismiss();
+                        }
+                    });
+                    alert.show();
                 }
                 else if (cave1 < myCanvas.getNumCave()&& cave2 > myCanvas.getNumCave()){
-                    Toast.makeText(DrawMazeActivity.this, "Error, vuelva a ingresar el número de la segunda cueva", Toast.LENGTH_SHORT).show();
+                    alert.setTitle("Error");
+                    alert.setMessage("La segunda cueva que ingresó no existe.");
+                    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
+                        public void onClick(DialogInterface dialog, int which){
+                            dialog.dismiss();
+                        }
+                    });
+                    alert.show();
                 }
                 else {
-                    Toast.makeText(DrawMazeActivity.this, "Error, vuelva a ingresar el número de las cuevas.", Toast.LENGTH_SHORT).show();
+                    alert.setTitle("Error");
+                    alert.setMessage("Las cuevas que ingresó no existen.");
+                    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
+                        public void onClick(DialogInterface dialog, int which){
+                            dialog.dismiss();
+                        }
+                    });
+                    alert.show();
                 }
                 dialogDeleteArc.dismiss();
             }
@@ -188,40 +273,120 @@ public class DrawMazeActivity extends Activity {
     public void checkD(View v){
         customMaze = new Graph(myCanvas.getNumCave());
         customMaze.fillGraph(myCanvas.getRelations());
-        saveMaze();
+        if (customMaze.valid()) {
+            askMazeName();
+        }
+        else {
+            alert.setTitle("Error");
+            alert.setMessage("No se puede capturar al wumpus en este dibujo creado, porfavor verifique que las siguientes restricciones se cumplan:\n\n-Deben haber al menos 2 cuevas.\n\n-No deben haber más de 20 cuevas.\n\n- No pueden existir cuevas aisladas, es decir, se puede llegar de una cueva a cualquier otra a través de uno o varios caminos.");
+            alert.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
+                public void onClick(DialogInterface dialog, int which){
+                    dialog.dismiss();
+                }
+            });
+            alert.show();
+        }
     }
 
     /*
     * Saves the actual maze.
     */
     public void saveMaze() {
-        if (customMaze.valid()) {
-            String relations = customMaze.arrayToString();
+        String relations = customMaze.arrayToString();
 
-            AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 1);
-            SQLiteDatabase db = admin.getWritableDatabase();
+        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 5);
+        SQLiteDatabase db = admin.getWritableDatabase();
 
-            ContentValues data = new ContentValues();
-            data.put("relations", relations);
-            data.put("number_of_caves", customMaze.getMaximumCaves());
-            db.insert("GRAPH", null, data);
+        Long tsLong = System.currentTimeMillis()/1000;
+        String ts = "-" + tsLong.toString();
 
-            Cursor cell = db.rawQuery("SELECT id FROM GRAPH WHERE GRAPH.relations = " + relations, null);
-            if (cell.moveToFirst()) {
-                int graphID = cell.getInt(0);
-                cell.close();
-                db.close();
-                //TODO: Ask if they want to keep drawing or if they want to play with the new maze.
-                //TODO: If they want to play, send the graphID to the next Layout.
-            } else {
-                Toast.makeText(this, "The Wumpus doesn't seem to like this caves. Try drawing another one!", Toast.LENGTH_LONG).show();
-            }
+        ContentValues data = new ContentValues();
+        data.put("name", name + ts);
+        data.put("relations", relations);
+        data.put("number_of_caves", customMaze.getMaximumCaves());
+        db.insert("GRAPH", null, data);
+
+        Cursor cell = db.rawQuery("SELECT id FROM GRAPH WHERE GRAPH.relations = \"" + relations + "\"", null);
+        if (cell.moveToFirst()) {
+            final String graphID = cell.getString(0);
             cell.close();
             db.close();
+            AlertDialog.Builder newDialog = new AlertDialog.Builder(this);
+            newDialog.setTitle("El dibujo ha sido guardado");
+            newDialog.setMessage("¿Desea iniciar una partida con este laberinto?");
+            newDialog.setPositiveButton("Sí", new DialogInterface.OnClickListener(){
+                public void onClick(DialogInterface dialog, int which){
+                    dialog.dismiss();
+                    startGame(graphID);
+                }
+            });
+            newDialog.setNegativeButton("No", new DialogInterface.OnClickListener(){
+                public void onClick(DialogInterface dialog, int which){
+                    myCanvas.newDraw();
+                    dialog.dismiss();
+                }
+            });
+            newDialog.show();
+        } else {
+            alert.setTitle("Error");
+            alert.setMessage("Hubo un problema guardando el laberinto.");
+            alert.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
+                public void onClick(DialogInterface dialog, int which){
+                    dialog.dismiss();
+                }
+            });
+            alert.show();
         }
-        else {
-            Toast.makeText(this, "The Wumpus doesn't seem to like this caves. Try drawing another one!", Toast.LENGTH_LONG).show();
-        }
+        cell.close();
+        db.close();
+    }
+
+    public void askMazeName () {
+        final Dialog dialogAddArc = new Dialog(this);
+        dialogAddArc.setContentView(R.layout.layout_maze_name);
+        final EditText edtTxtName = dialogAddArc.findViewById(R.id.editTxtNameMaze);
+        Button btnAccept = dialogAddArc.findViewById(R.id.btnAcceptName);
+        Button btnCancel = dialogAddArc.findViewById(R.id.btnCancelName);
+        btnAccept.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if (!edtTxtName.getText().toString().equals("")){
+                    name =  edtTxtName.getText().toString();
+                    dialogAddArc.dismiss();
+                    saveMaze();
+                }
+                else {
+                    alert.setTitle("Error");
+                    alert.setMessage("Debe introducir un nombre para el dibujo");
+                    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
+                        public void onClick(DialogInterface dialog, int which){
+                            dialog.dismiss();
+                        }
+                    });
+                    alert.show();
+                }
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                dialogAddArc.cancel();
+            }
+        });
+        dialogAddArc.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
+
+    public void startGame (String stringGraphID) {
+        Intent i = new Intent(this, Coordenadas.class);
+        i.putExtra("graphID",stringGraphID);
+        ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.fade_in, R.anim.fade_out);
+        startActivity(i, options.toBundle());
     }
 
 }
