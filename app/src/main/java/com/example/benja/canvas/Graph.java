@@ -7,6 +7,7 @@ public class Graph {
     private ArrayList<Cave> allCaves;
     private boolean[][] cavesRelations;
     private int maximumCaves;
+    private boolean[] connected;
 
     //Creates an empty graph for irregular mazes.
     public Graph() {
@@ -194,6 +195,27 @@ public class Graph {
             }
             ++i;
         }
+        if (valid) {
+            connected = new boolean[maximumCaves];
+            checkConnectedCaves(0);
+            i = 0;
+            while (valid && i < maximumCaves){
+                if (!connected[i]) {
+                    valid = false;
+                }
+                ++i;
+            }
+        }
         return valid;
+    }
+
+    private void checkConnectedCaves(int cave)
+    {
+        connected[cave] = true;
+        for (int i = 0; i != maximumCaves; ++i) {
+            if ((i != cave) && areConnected(i, cave) && !connected[i]){
+                checkConnectedCaves(i);
+            }
+        }
     }
 }
