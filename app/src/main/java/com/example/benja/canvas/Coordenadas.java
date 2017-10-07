@@ -19,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,10 +28,11 @@ import android.widget.Toast;
 public class Coordenadas extends AppCompatActivity  {
 
     LocationManager locationManager;
+    ProgressBar loading;
     SpinnerActivity sp;
     double latitudeGPS;
     double longitudeGPS;
-    int distancia;
+    double distance, meterToCoordinates;
     TextView tv_info, tv_dist;
     boolean flag;
     Spinner spn_distances;
@@ -47,6 +49,8 @@ public class Coordenadas extends AppCompatActivity  {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         longitudeGPS = 0.0;
         latitudeGPS = 0.0;
+        meterToCoordinates = 0.0000095;
+        
         flag = false;
 
         //Spinner
@@ -56,6 +60,10 @@ public class Coordenadas extends AppCompatActivity  {
         spn_distances.setAdapter(adapter);
         sp = new SpinnerActivity();
         spn_distances.setOnItemSelectedListener(sp);
+
+        //loading bar
+        loading = (ProgressBar)findViewById(R.id.progressBar);
+        loading.setVisibility(View.GONE);
 
         //Recibe el id del grafo
         Bundle b = new Bundle();
@@ -88,7 +96,10 @@ public class Coordenadas extends AppCompatActivity  {
                     return;
                 }
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2 * 20 * 1000, 10, locationListenerGPS);
-                tv_dist.setText(distancia + " metros.");
+                loading.setVisibility(View.VISIBLE);
+                while( (getLatitudeGPS() == 0.0) || (getLongitudeGPS() == 0.0) ){}
+                loading.setVisibility(View.GONE);
+                tv_dist.append("\n" + distance + " metros.");
             }
             else {
                 Toast.makeText(this, "Por favor indique la distancia deseada.", Toast.LENGTH_LONG).show();
@@ -172,16 +183,16 @@ public class Coordenadas extends AppCompatActivity  {
             selected = true;
             switch(pos){
                 case 0:
-                    distancia = 6;
+                    distance = 6 * meterToCoordinates;
                     break;
                 case 1:
-                    distancia = 8;
+                    distance = 8 * meterToCoordinates;
                     break;
                 case 2:
-                    distancia = 10;
+                    distance = 10 * meterToCoordinates;
                     break;
                 case 3:
-                    distancia = 12;
+                    distance = 12 * meterToCoordinates;
                     break;
                 default:
                     break;
@@ -207,7 +218,7 @@ public class Coordenadas extends AppCompatActivity  {
                 *  1 - 2
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS + distancia, longitudeGPS);
+                createCave(2, latitudeGPS + distance, longitudeGPS);
                 break;
             case 3:
                 /*
@@ -215,8 +226,8 @@ public class Coordenadas extends AppCompatActivity  {
                 * 1 - 2
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS + distancia, longitudeGPS);
-                createCave(3, latitudeGPS + (distancia/2), longitudeGPS + distancia);
+                createCave(2, latitudeGPS + distance, longitudeGPS);
+                createCave(3, latitudeGPS + (distance/2), longitudeGPS + distance);
                 break;
             case 4:
                 /*
@@ -225,9 +236,9 @@ public class Coordenadas extends AppCompatActivity  {
                 *  1 - 2
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS + distancia, longitudeGPS);
-                createCave(3, latitudeGPS + distancia, longitudeGPS + distancia);
-                createCave(4, latitudeGPS, longitudeGPS + distancia);
+                createCave(2, latitudeGPS + distance, longitudeGPS);
+                createCave(3, latitudeGPS + distance, longitudeGPS + distance);
+                createCave(4, latitudeGPS, longitudeGPS + distance);
                 break;
             case 5:
                 /*
@@ -236,10 +247,10 @@ public class Coordenadas extends AppCompatActivity  {
                 *  5  -  3
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS + distancia, longitudeGPS + distancia);
-                createCave(3, latitudeGPS + distancia, longitudeGPS - distancia);
-                createCave(4, latitudeGPS - distancia, longitudeGPS + distancia);
-                createCave(5, latitudeGPS - distancia, longitudeGPS - distancia);
+                createCave(2, latitudeGPS + distance, longitudeGPS + distance);
+                createCave(3, latitudeGPS + distance, longitudeGPS - distance);
+                createCave(4, latitudeGPS - distance, longitudeGPS + distance);
+                createCave(5, latitudeGPS - distance, longitudeGPS - distance);
                 break;
             case 6:
                 /*
@@ -250,11 +261,11 @@ public class Coordenadas extends AppCompatActivity  {
                 *  3 - 6
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, longitudeGPS + distancia);
-                createCave(3, latitudeGPS, longitudeGPS - distancia);
-                createCave(4, latitudeGPS + distancia, longitudeGPS);
-                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
-                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
+                createCave(2, latitudeGPS, longitudeGPS + distance);
+                createCave(3, latitudeGPS, longitudeGPS - distance);
+                createCave(4, latitudeGPS + distance, longitudeGPS);
+                createCave(5, latitudeGPS + distance, longitudeGPS + distance);
+                createCave(6, latitudeGPS + distance, longitudeGPS - distance);
                 break;
             case 7:
                 /*
@@ -265,12 +276,12 @@ public class Coordenadas extends AppCompatActivity  {
                 *      3 - 6
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, longitudeGPS + distancia);
-                createCave(3, latitudeGPS, longitudeGPS - distancia);
-                createCave(4, latitudeGPS + distancia, longitudeGPS);
-                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
-                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
-                createCave(7, latitudeGPS - distancia, longitudeGPS);
+                createCave(2, latitudeGPS, longitudeGPS + distance);
+                createCave(3, latitudeGPS, longitudeGPS - distance);
+                createCave(4, latitudeGPS + distance, longitudeGPS);
+                createCave(5, latitudeGPS + distance, longitudeGPS + distance);
+                createCave(6, latitudeGPS + distance, longitudeGPS - distance);
+                createCave(7, latitudeGPS - distance, longitudeGPS);
                 break;
             case 8:
                 /*
@@ -281,13 +292,13 @@ public class Coordenadas extends AppCompatActivity  {
                 *      3 - 6
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, longitudeGPS + distancia);
-                createCave(3, latitudeGPS, longitudeGPS - distancia);
-                createCave(4, latitudeGPS + distancia, longitudeGPS);
-                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
-                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
-                createCave(7, latitudeGPS - distancia, longitudeGPS);
-                createCave(8, latitudeGPS - distancia, longitudeGPS + distancia);
+                createCave(2, latitudeGPS, longitudeGPS + distance);
+                createCave(3, latitudeGPS, longitudeGPS - distance);
+                createCave(4, latitudeGPS + distance, longitudeGPS);
+                createCave(5, latitudeGPS + distance, longitudeGPS + distance);
+                createCave(6, latitudeGPS + distance, longitudeGPS - distance);
+                createCave(7, latitudeGPS - distance, longitudeGPS);
+                createCave(8, latitudeGPS - distance, longitudeGPS + distance);
                 break;
             case 9:
                 /*
@@ -298,14 +309,14 @@ public class Coordenadas extends AppCompatActivity  {
                 *  9 - 3 - 6
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, longitudeGPS + distancia);
-                createCave(3, latitudeGPS, longitudeGPS - distancia);
-                createCave(4, latitudeGPS + distancia, longitudeGPS);
-                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
-                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
-                createCave(7, latitudeGPS - distancia, longitudeGPS);
-                createCave(8, latitudeGPS - distancia, longitudeGPS + distancia);
-                createCave(9, latitudeGPS - distancia, longitudeGPS - distancia);
+                createCave(2, latitudeGPS, longitudeGPS + distance);
+                createCave(3, latitudeGPS, longitudeGPS - distance);
+                createCave(4, latitudeGPS + distance, longitudeGPS);
+                createCave(5, latitudeGPS + distance, longitudeGPS + distance);
+                createCave(6, latitudeGPS + distance, longitudeGPS - distance);
+                createCave(7, latitudeGPS - distance, longitudeGPS);
+                createCave(8, latitudeGPS - distance, longitudeGPS + distance);
+                createCave(9, latitudeGPS - distance, longitudeGPS - distance);
                 break;
             case 10:
                 /*
@@ -316,15 +327,15 @@ public class Coordenadas extends AppCompatActivity  {
                 *  9 - 3 - 6
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, longitudeGPS + distancia);
-                createCave(3, latitudeGPS, longitudeGPS - distancia);
-                createCave(4, latitudeGPS + distancia, longitudeGPS);
-                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
-                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
-                createCave(7, latitudeGPS - distancia, longitudeGPS);
-                createCave(8, latitudeGPS - distancia, longitudeGPS + distancia);
-                createCave(9, latitudeGPS - distancia, longitudeGPS - distancia);
-                createCave(10, latitudeGPS + (distancia * 2), longitudeGPS);
+                createCave(2, latitudeGPS, longitudeGPS + distance);
+                createCave(3, latitudeGPS, longitudeGPS - distance);
+                createCave(4, latitudeGPS + distance, longitudeGPS);
+                createCave(5, latitudeGPS + distance, longitudeGPS + distance);
+                createCave(6, latitudeGPS + distance, longitudeGPS - distance);
+                createCave(7, latitudeGPS - distance, longitudeGPS);
+                createCave(8, latitudeGPS - distance, longitudeGPS + distance);
+                createCave(9, latitudeGPS - distance, longitudeGPS - distance);
+                createCave(10, latitudeGPS + (distance * 2), longitudeGPS);
                 break;
             case 11:
                 /*
@@ -335,16 +346,16 @@ public class Coordenadas extends AppCompatActivity  {
                 *  9 - 3 - 6
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, longitudeGPS + distancia);
-                createCave(3, latitudeGPS, longitudeGPS - distancia);
-                createCave(4, latitudeGPS + distancia, longitudeGPS);
-                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
-                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
-                createCave(7, latitudeGPS - distancia, longitudeGPS);
-                createCave(8, latitudeGPS - distancia, longitudeGPS + distancia);
-                createCave(9, latitudeGPS - distancia, longitudeGPS - distancia);
-                createCave(10, latitudeGPS + (distancia * 2), longitudeGPS);
-                createCave(11, latitudeGPS + (distancia * 2), longitudeGPS + distancia);
+                createCave(2, latitudeGPS, longitudeGPS + distance);
+                createCave(3, latitudeGPS, longitudeGPS - distance);
+                createCave(4, latitudeGPS + distance, longitudeGPS);
+                createCave(5, latitudeGPS + distance, longitudeGPS + distance);
+                createCave(6, latitudeGPS + distance, longitudeGPS - distance);
+                createCave(7, latitudeGPS - distance, longitudeGPS);
+                createCave(8, latitudeGPS - distance, longitudeGPS + distance);
+                createCave(9, latitudeGPS - distance, longitudeGPS - distance);
+                createCave(10, latitudeGPS + (distance * 2), longitudeGPS);
+                createCave(11, latitudeGPS + (distance * 2), longitudeGPS + distance);
                 break;
             case 12:
                 /*
@@ -355,17 +366,17 @@ public class Coordenadas extends AppCompatActivity  {
                 *  9 - 3 - 6 - 12
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, longitudeGPS + distancia);
-                createCave(3, latitudeGPS, longitudeGPS - distancia);
-                createCave(4, latitudeGPS + distancia, longitudeGPS);
-                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
-                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
-                createCave(7, latitudeGPS - distancia, longitudeGPS);
-                createCave(8, latitudeGPS - distancia, longitudeGPS + distancia);
-                createCave(9, latitudeGPS - distancia, longitudeGPS - distancia);
-                createCave(10, latitudeGPS + (distancia * 2), longitudeGPS);
-                createCave(11, latitudeGPS + (distancia * 2), longitudeGPS + distancia);
-                createCave(12, latitudeGPS + (distancia * 2), longitudeGPS - distancia);
+                createCave(2, latitudeGPS, longitudeGPS + distance);
+                createCave(3, latitudeGPS, longitudeGPS - distance);
+                createCave(4, latitudeGPS + distance, longitudeGPS);
+                createCave(5, latitudeGPS + distance, longitudeGPS + distance);
+                createCave(6, latitudeGPS + distance, longitudeGPS - distance);
+                createCave(7, latitudeGPS - distance, longitudeGPS);
+                createCave(8, latitudeGPS - distance, longitudeGPS + distance);
+                createCave(9, latitudeGPS - distance, longitudeGPS - distance);
+                createCave(10, latitudeGPS + (distance * 2), longitudeGPS);
+                createCave(11, latitudeGPS + (distance * 2), longitudeGPS + distance);
+                createCave(12, latitudeGPS + (distance * 2), longitudeGPS - distance);
                 break;
             case 13:
                 /*
@@ -378,18 +389,18 @@ public class Coordenadas extends AppCompatActivity  {
                 *  13
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, longitudeGPS + distancia);
-                createCave(3, latitudeGPS, longitudeGPS - distancia);
-                createCave(4, latitudeGPS + distancia, longitudeGPS);
-                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
-                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
-                createCave(7, latitudeGPS - distancia, longitudeGPS);
-                createCave(8, latitudeGPS - distancia, longitudeGPS + distancia);
-                createCave(9, latitudeGPS - distancia, longitudeGPS - distancia);
-                createCave(10, latitudeGPS + (distancia * 2), longitudeGPS);
-                createCave(11, latitudeGPS + (distancia * 2), longitudeGPS + distancia);
-                createCave(12, latitudeGPS + (distancia * 2), longitudeGPS - distancia);
-                createCave(13, latitudeGPS - (distancia * 2), longitudeGPS - distancia);
+                createCave(2, latitudeGPS, longitudeGPS + distance);
+                createCave(3, latitudeGPS, longitudeGPS - distance);
+                createCave(4, latitudeGPS + distance, longitudeGPS);
+                createCave(5, latitudeGPS + distance, longitudeGPS + distance);
+                createCave(6, latitudeGPS + distance, longitudeGPS - distance);
+                createCave(7, latitudeGPS - distance, longitudeGPS);
+                createCave(8, latitudeGPS - distance, longitudeGPS + distance);
+                createCave(9, latitudeGPS - distance, longitudeGPS - distance);
+                createCave(10, latitudeGPS + (distance * 2), longitudeGPS);
+                createCave(11, latitudeGPS + (distance * 2), longitudeGPS + distance);
+                createCave(12, latitudeGPS + (distance * 2), longitudeGPS - distance);
+                createCave(13, latitudeGPS - (distance * 2), longitudeGPS - distance);
                 break;
             case 14:
                 /*
@@ -402,19 +413,19 @@ public class Coordenadas extends AppCompatActivity  {
                 *  13- 14
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, longitudeGPS + distancia);
-                createCave(3, latitudeGPS, longitudeGPS - distancia);
-                createCave(4, latitudeGPS + distancia, longitudeGPS);
-                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
-                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
-                createCave(7, latitudeGPS - distancia, longitudeGPS);
-                createCave(8, latitudeGPS - distancia, longitudeGPS + distancia);
-                createCave(9, latitudeGPS - distancia, longitudeGPS - distancia);
-                createCave(10, latitudeGPS + (distancia * 2), longitudeGPS);
-                createCave(11, latitudeGPS + (distancia * 2), longitudeGPS + distancia);
-                createCave(12, latitudeGPS + (distancia * 2), longitudeGPS - distancia);
-                createCave(13, latitudeGPS - distancia, longitudeGPS - (distancia * 2));
-                createCave(14, latitudeGPS, longitudeGPS - (distancia * 2));
+                createCave(2, latitudeGPS, longitudeGPS + distance);
+                createCave(3, latitudeGPS, longitudeGPS - distance);
+                createCave(4, latitudeGPS + distance, longitudeGPS);
+                createCave(5, latitudeGPS + distance, longitudeGPS + distance);
+                createCave(6, latitudeGPS + distance, longitudeGPS - distance);
+                createCave(7, latitudeGPS - distance, longitudeGPS);
+                createCave(8, latitudeGPS - distance, longitudeGPS + distance);
+                createCave(9, latitudeGPS - distance, longitudeGPS - distance);
+                createCave(10, latitudeGPS + (distance * 2), longitudeGPS);
+                createCave(11, latitudeGPS + (distance * 2), longitudeGPS + distance);
+                createCave(12, latitudeGPS + (distance * 2), longitudeGPS - distance);
+                createCave(13, latitudeGPS - distance, longitudeGPS - (distance * 2));
+                createCave(14, latitudeGPS, longitudeGPS - (distance * 2));
                 break;
             case 15:
                 /*
@@ -427,20 +438,20 @@ public class Coordenadas extends AppCompatActivity  {
                 *  13- 14- 15
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, longitudeGPS + distancia);
-                createCave(3, latitudeGPS, longitudeGPS - distancia);
-                createCave(4, latitudeGPS + distancia, longitudeGPS);
-                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
-                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
-                createCave(7, latitudeGPS - distancia, longitudeGPS);
-                createCave(8, latitudeGPS - distancia, longitudeGPS + distancia);
-                createCave(9, latitudeGPS - distancia, longitudeGPS - distancia);
-                createCave(10, latitudeGPS + (distancia * 2), longitudeGPS);
-                createCave(11, latitudeGPS + (distancia * 2), longitudeGPS + distancia);
-                createCave(12, latitudeGPS + (distancia * 2), longitudeGPS - distancia);
-                createCave(13, latitudeGPS - distancia, longitudeGPS - (distancia * 2));
-                createCave(14, latitudeGPS, longitudeGPS - (distancia * 2));
-                createCave(15, latitudeGPS + distancia, longitudeGPS - (distancia * 2));
+                createCave(2, latitudeGPS, longitudeGPS + distance);
+                createCave(3, latitudeGPS, longitudeGPS - distance);
+                createCave(4, latitudeGPS + distance, longitudeGPS);
+                createCave(5, latitudeGPS + distance, longitudeGPS + distance);
+                createCave(6, latitudeGPS + distance, longitudeGPS - distance);
+                createCave(7, latitudeGPS - distance, longitudeGPS);
+                createCave(8, latitudeGPS - distance, longitudeGPS + distance);
+                createCave(9, latitudeGPS - distance, longitudeGPS - distance);
+                createCave(10, latitudeGPS + (distance * 2), longitudeGPS);
+                createCave(11, latitudeGPS + (distance * 2), longitudeGPS + distance);
+                createCave(12, latitudeGPS + (distance * 2), longitudeGPS - distance);
+                createCave(13, latitudeGPS - distance, longitudeGPS - (distance * 2));
+                createCave(14, latitudeGPS, longitudeGPS - (distance * 2));
+                createCave(15, latitudeGPS + distance, longitudeGPS - (distance * 2));
                 break;
             case 16:
                 /*
@@ -453,21 +464,21 @@ public class Coordenadas extends AppCompatActivity  {
                 *  13- 14- 15- 16
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, longitudeGPS + distancia);
-                createCave(3, latitudeGPS, longitudeGPS - distancia);
-                createCave(4, latitudeGPS + distancia, longitudeGPS);
-                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
-                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
-                createCave(7, latitudeGPS - distancia, longitudeGPS);
-                createCave(8, latitudeGPS - distancia, longitudeGPS + distancia);
-                createCave(9, latitudeGPS - distancia, longitudeGPS - distancia);
-                createCave(10, latitudeGPS + (distancia * 2), longitudeGPS);
-                createCave(11, latitudeGPS + (distancia * 2), longitudeGPS + distancia);
-                createCave(12, latitudeGPS + (distancia * 2), longitudeGPS - distancia);
-                createCave(13, latitudeGPS - distancia, longitudeGPS - (distancia * 2));
-                createCave(14, latitudeGPS, longitudeGPS - (distancia * 2));
-                createCave(15, latitudeGPS + distancia, longitudeGPS - (distancia * 2));
-                createCave(16, latitudeGPS + (distancia * 2), longitudeGPS - (distancia * 2));
+                createCave(2, latitudeGPS, longitudeGPS + distance);
+                createCave(3, latitudeGPS, longitudeGPS - distance);
+                createCave(4, latitudeGPS + distance, longitudeGPS);
+                createCave(5, latitudeGPS + distance, longitudeGPS + distance);
+                createCave(6, latitudeGPS + distance, longitudeGPS - distance);
+                createCave(7, latitudeGPS - distance, longitudeGPS);
+                createCave(8, latitudeGPS - distance, longitudeGPS + distance);
+                createCave(9, latitudeGPS - distance, longitudeGPS - distance);
+                createCave(10, latitudeGPS + (distance * 2), longitudeGPS);
+                createCave(11, latitudeGPS + (distance * 2), longitudeGPS + distance);
+                createCave(12, latitudeGPS + (distance * 2), longitudeGPS - distance);
+                createCave(13, latitudeGPS - distance, longitudeGPS - (distance * 2));
+                createCave(14, latitudeGPS, longitudeGPS - (distance * 2));
+                createCave(15, latitudeGPS + distance, longitudeGPS - (distance * 2));
+                createCave(16, latitudeGPS + (distance * 2), longitudeGPS - (distance * 2));
                 break;
             case 17:
                 /*
@@ -480,22 +491,22 @@ public class Coordenadas extends AppCompatActivity  {
                 *      13- 14- 15- 16
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, longitudeGPS + distancia);
-                createCave(3, latitudeGPS, longitudeGPS - distancia);
-                createCave(4, latitudeGPS + distancia, longitudeGPS);
-                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
-                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
-                createCave(7, latitudeGPS - distancia, longitudeGPS);
-                createCave(8, latitudeGPS - distancia, longitudeGPS + distancia);
-                createCave(9, latitudeGPS - distancia, longitudeGPS - distancia);
-                createCave(10, latitudeGPS + (distancia * 2), longitudeGPS);
-                createCave(11, latitudeGPS + (distancia * 2), longitudeGPS + distancia);
-                createCave(12, latitudeGPS + (distancia * 2), longitudeGPS - distancia);
-                createCave(13, latitudeGPS - distancia, longitudeGPS - (distancia * 2));
-                createCave(14, latitudeGPS, longitudeGPS - (distancia * 2));
-                createCave(15, latitudeGPS + distancia, longitudeGPS - (distancia * 2));
-                createCave(16, latitudeGPS + (distancia * 2), longitudeGPS - (distancia * 2));
-                createCave(17, latitudeGPS - (distancia * 2), longitudeGPS + distancia);
+                createCave(2, latitudeGPS, longitudeGPS + distance);
+                createCave(3, latitudeGPS, longitudeGPS - distance);
+                createCave(4, latitudeGPS + distance, longitudeGPS);
+                createCave(5, latitudeGPS + distance, longitudeGPS + distance);
+                createCave(6, latitudeGPS + distance, longitudeGPS - distance);
+                createCave(7, latitudeGPS - distance, longitudeGPS);
+                createCave(8, latitudeGPS - distance, longitudeGPS + distance);
+                createCave(9, latitudeGPS - distance, longitudeGPS - distance);
+                createCave(10, latitudeGPS + (distance * 2), longitudeGPS);
+                createCave(11, latitudeGPS + (distance * 2), longitudeGPS + distance);
+                createCave(12, latitudeGPS + (distance * 2), longitudeGPS - distance);
+                createCave(13, latitudeGPS - distance, longitudeGPS - (distance * 2));
+                createCave(14, latitudeGPS, longitudeGPS - (distance * 2));
+                createCave(15, latitudeGPS + distance, longitudeGPS - (distance * 2));
+                createCave(16, latitudeGPS + (distance * 2), longitudeGPS - (distance * 2));
+                createCave(17, latitudeGPS - (distance * 2), longitudeGPS + distance);
                 break;
             case 18:
                 /*
@@ -508,23 +519,23 @@ public class Coordenadas extends AppCompatActivity  {
                 *      13- 14- 15- 16
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, longitudeGPS + distancia);
-                createCave(3, latitudeGPS, longitudeGPS - distancia);
-                createCave(4, latitudeGPS + distancia, longitudeGPS);
-                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
-                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
-                createCave(7, latitudeGPS - distancia, longitudeGPS);
-                createCave(8, latitudeGPS - distancia, longitudeGPS + distancia);
-                createCave(9, latitudeGPS - distancia, longitudeGPS - distancia);
-                createCave(10, latitudeGPS + (distancia * 2), longitudeGPS);
-                createCave(11, latitudeGPS + (distancia * 2), longitudeGPS + distancia);
-                createCave(12, latitudeGPS + (distancia * 2), longitudeGPS - distancia);
-                createCave(13, latitudeGPS - distancia, longitudeGPS - (distancia * 2));
-                createCave(14, latitudeGPS, longitudeGPS - (distancia * 2));
-                createCave(15, latitudeGPS + distancia, longitudeGPS - (distancia * 2));
-                createCave(16, latitudeGPS + (distancia * 2), longitudeGPS - (distancia * 2));
-                createCave(17, latitudeGPS - (distancia * 2), longitudeGPS + distancia);
-                createCave(18, latitudeGPS - (distancia * 2), longitudeGPS);
+                createCave(2, latitudeGPS, longitudeGPS + distance);
+                createCave(3, latitudeGPS, longitudeGPS - distance);
+                createCave(4, latitudeGPS + distance, longitudeGPS);
+                createCave(5, latitudeGPS + distance, longitudeGPS + distance);
+                createCave(6, latitudeGPS + distance, longitudeGPS - distance);
+                createCave(7, latitudeGPS - distance, longitudeGPS);
+                createCave(8, latitudeGPS - distance, longitudeGPS + distance);
+                createCave(9, latitudeGPS - distance, longitudeGPS - distance);
+                createCave(10, latitudeGPS + (distance * 2), longitudeGPS);
+                createCave(11, latitudeGPS + (distance * 2), longitudeGPS + distance);
+                createCave(12, latitudeGPS + (distance * 2), longitudeGPS - distance);
+                createCave(13, latitudeGPS - distance, longitudeGPS - (distance * 2));
+                createCave(14, latitudeGPS, longitudeGPS - (distance * 2));
+                createCave(15, latitudeGPS + distance, longitudeGPS - (distance * 2));
+                createCave(16, latitudeGPS + (distance * 2), longitudeGPS - (distance * 2));
+                createCave(17, latitudeGPS - (distance * 2), longitudeGPS + distance);
+                createCave(18, latitudeGPS - (distance * 2), longitudeGPS);
                 break;
             case 19:
                 /*
@@ -537,24 +548,24 @@ public class Coordenadas extends AppCompatActivity  {
                 *      13- 14- 15- 16
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, longitudeGPS + distancia);
-                createCave(3, latitudeGPS, longitudeGPS - distancia);
-                createCave(4, latitudeGPS + distancia, longitudeGPS);
-                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
-                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
-                createCave(7, latitudeGPS - distancia, longitudeGPS);
-                createCave(8, latitudeGPS - distancia, longitudeGPS + distancia);
-                createCave(9, latitudeGPS - distancia, longitudeGPS - distancia);
-                createCave(10, latitudeGPS + (distancia * 2), longitudeGPS);
-                createCave(11, latitudeGPS + (distancia * 2), longitudeGPS + distancia);
-                createCave(12, latitudeGPS + (distancia * 2), longitudeGPS - distancia);
-                createCave(13, latitudeGPS - distancia, longitudeGPS - (distancia * 2));
-                createCave(14, latitudeGPS, longitudeGPS - (distancia * 2));
-                createCave(15, latitudeGPS + distancia, longitudeGPS - (distancia * 2));
-                createCave(16, latitudeGPS + (distancia * 2), longitudeGPS - (distancia * 2));
-                createCave(17, latitudeGPS - (distancia * 2), longitudeGPS + distancia);
-                createCave(18, latitudeGPS - (distancia * 2), longitudeGPS);
-                createCave(19, latitudeGPS - (distancia * 2), longitudeGPS - distancia);
+                createCave(2, latitudeGPS, longitudeGPS + distance);
+                createCave(3, latitudeGPS, longitudeGPS - distance);
+                createCave(4, latitudeGPS + distance, longitudeGPS);
+                createCave(5, latitudeGPS + distance, longitudeGPS + distance);
+                createCave(6, latitudeGPS + distance, longitudeGPS - distance);
+                createCave(7, latitudeGPS - distance, longitudeGPS);
+                createCave(8, latitudeGPS - distance, longitudeGPS + distance);
+                createCave(9, latitudeGPS - distance, longitudeGPS - distance);
+                createCave(10, latitudeGPS + (distance * 2), longitudeGPS);
+                createCave(11, latitudeGPS + (distance * 2), longitudeGPS + distance);
+                createCave(12, latitudeGPS + (distance * 2), longitudeGPS - distance);
+                createCave(13, latitudeGPS - distance, longitudeGPS - (distance * 2));
+                createCave(14, latitudeGPS, longitudeGPS - (distance * 2));
+                createCave(15, latitudeGPS + distance, longitudeGPS - (distance * 2));
+                createCave(16, latitudeGPS + (distance * 2), longitudeGPS - (distance * 2));
+                createCave(17, latitudeGPS - (distance * 2), longitudeGPS + distance);
+                createCave(18, latitudeGPS - (distance * 2), longitudeGPS);
+                createCave(19, latitudeGPS - (distance * 2), longitudeGPS - distance);
                 break;
             case 20:
                 /*
@@ -567,25 +578,25 @@ public class Coordenadas extends AppCompatActivity  {
                 *  20- 13- 14- 15- 16
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, longitudeGPS + distancia);
-                createCave(3, latitudeGPS, longitudeGPS - distancia);
-                createCave(4, latitudeGPS + distancia, longitudeGPS);
-                createCave(5, latitudeGPS + distancia, longitudeGPS + distancia);
-                createCave(6, latitudeGPS + distancia, longitudeGPS - distancia);
-                createCave(7, latitudeGPS - distancia, longitudeGPS);
-                createCave(8, latitudeGPS - distancia, longitudeGPS + distancia);
-                createCave(9, latitudeGPS - distancia, longitudeGPS - distancia);
-                createCave(10, latitudeGPS + (distancia * 2), longitudeGPS);
-                createCave(11, latitudeGPS + (distancia * 2), longitudeGPS + distancia);
-                createCave(12, latitudeGPS + (distancia * 2), longitudeGPS - distancia);
-                createCave(13, latitudeGPS - distancia, longitudeGPS - (distancia * 2));
-                createCave(14, latitudeGPS, longitudeGPS - (distancia * 2));
-                createCave(15, latitudeGPS + distancia, longitudeGPS - (distancia * 2));
-                createCave(16, latitudeGPS + (distancia * 2), longitudeGPS - (distancia * 2));
-                createCave(17, latitudeGPS - (distancia * 2), longitudeGPS + distancia);
-                createCave(18, latitudeGPS - (distancia * 2), longitudeGPS);
-                createCave(19, latitudeGPS - (distancia * 2), longitudeGPS - distancia);
-                createCave(20, latitudeGPS - (distancia * 2), longitudeGPS - (distancia * 2));
+                createCave(2, latitudeGPS, longitudeGPS + distance);
+                createCave(3, latitudeGPS, longitudeGPS - distance);
+                createCave(4, latitudeGPS + distance, longitudeGPS);
+                createCave(5, latitudeGPS + distance, longitudeGPS + distance);
+                createCave(6, latitudeGPS + distance, longitudeGPS - distance);
+                createCave(7, latitudeGPS - distance, longitudeGPS);
+                createCave(8, latitudeGPS - distance, longitudeGPS + distance);
+                createCave(9, latitudeGPS - distance, longitudeGPS - distance);
+                createCave(10, latitudeGPS + (distance * 2), longitudeGPS);
+                createCave(11, latitudeGPS + (distance * 2), longitudeGPS + distance);
+                createCave(12, latitudeGPS + (distance * 2), longitudeGPS - distance);
+                createCave(13, latitudeGPS - distance, longitudeGPS - (distance * 2));
+                createCave(14, latitudeGPS, longitudeGPS - (distance * 2));
+                createCave(15, latitudeGPS + distance, longitudeGPS - (distance * 2));
+                createCave(16, latitudeGPS + (distance * 2), longitudeGPS - (distance * 2));
+                createCave(17, latitudeGPS - (distance * 2), longitudeGPS + distance);
+                createCave(18, latitudeGPS - (distance * 2), longitudeGPS);
+                createCave(19, latitudeGPS - (distance * 2), longitudeGPS - distance);
+                createCave(20, latitudeGPS - (distance * 2), longitudeGPS - (distance * 2));
                 break;
         }
     }
