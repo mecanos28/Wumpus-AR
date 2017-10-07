@@ -169,7 +169,7 @@ public class Graph {
     public boolean isIsolated(int cave) {
         boolean isolated = true;
         int i = 0;
-        while (!isolated && i < this.maximumCaves) {
+        while (isolated && i < this.maximumCaves) {
             if (this.areConnected(i, cave)) {
                 isolated = false;
             }
@@ -189,7 +189,7 @@ public class Graph {
         }
         int i = 0;
         while (i < this.maximumCaves && valid) {
-            if (!this.isIsolated(i)) {
+            if (this.isIsolated(i)) {
                 valid = false;
             }
             ++i;

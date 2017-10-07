@@ -65,7 +65,19 @@
             android:textColor="@color/white"
             android:background="@color/white_button"
             android:text="Aceptar"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:layout_marginRight="10dp"/>
+
+        <Button
+            android:id="@+id/btnCancelName"
+            android:layout_width="120dp"
+            android:layout_height="45dp"
+            android:layout_gravity="left|center_horizontal|center"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:background="@color/white_button"
+            android:text="Cancelar"
+            android:textSize="18sp"/>
 
 
     </LinearLayout>

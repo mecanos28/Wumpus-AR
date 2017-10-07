@@ -273,65 +273,12 @@ public class DrawMazeActivity extends Activity {
     public void checkD(View v){
         customMaze = new Graph(myCanvas.getNumCave());
         customMaze.fillGraph(myCanvas.getRelations());
-        askMazeName();
-    }
-
-    /*
-    * Saves the actual maze.
-    */
-    public void saveMaze() {
         if (customMaze.valid()) {
-            String relations = customMaze.arrayToString();
-
-            AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 5);
-            SQLiteDatabase db = admin.getWritableDatabase();
-
-            Long tsLong = System.currentTimeMillis()/1000;
-            String ts = "-" + tsLong.toString();
-
-            ContentValues data = new ContentValues();
-            data.put("name", name + ts);
-            data.put("relations", relations);
-            data.put("number_of_caves", customMaze.getMaximumCaves());
-            db.insert("GRAPH", null, data);
-
-            Cursor cell = db.rawQuery("SELECT id FROM GRAPH WHERE GRAPH.relations = \"" + relations + "\"", null);
-            if (cell.moveToFirst()) {
-                final String graphID = cell.getString(0);
-                cell.close();
-                db.close();
-                AlertDialog.Builder newDialog = new AlertDialog.Builder(this);
-                newDialog.setTitle("El dibujo ha sido guardado");
-                newDialog.setMessage("¿Desea iniciar una partida con este laberinto?");
-                newDialog.setPositiveButton("Sí", new DialogInterface.OnClickListener(){
-                    public void onClick(DialogInterface dialog, int which){
-                        dialog.dismiss();
-                        startGame(graphID);
-                    }
-                });
-                newDialog.setNegativeButton("No", new DialogInterface.OnClickListener(){
-                    public void onClick(DialogInterface dialog, int which){
-                        myCanvas.newDraw();
-                        dialog.dismiss();
-                    }
-                });
-                newDialog.show();
-            } else {
-                alert.setTitle("Error");
-                alert.setMessage("Hubo un problema guardando el laberinto.");
-                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
-                    public void onClick(DialogInterface dialog, int which){
-                        dialog.dismiss();
-                    }
-                });
-                alert.show();
-            }
-            cell.close();
-            db.close();
+            askMazeName();
         }
         else {
             alert.setTitle("Error");
-            alert.setMessage("No se puede capturar al wumpus en este dibujo creado, porfavor verifique que las siguientes restricciones se cumplan:\n\n-Deben haber al menos 2 cuevas.\n\n-No deben haber más de 20 cuevas.\n\n- No pueden existir cuevas aisladas, es decir que se puede llegar de una cueva a cualquier otra en el dibujo a través de uno o varios caminos.");
+            alert.setMessage("No se puede capturar al wumpus en este dibujo creado, porfavor verifique que las siguientes restricciones se cumplan:\n\n-Deben haber al menos 2 cuevas.\n\n-No deben haber más de 20 cuevas.\n\n- No pueden existir cuevas aisladas, es decir, se puede llegar de una cueva a cualquier otra a través de uno o varios caminos.");
             alert.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
                 public void onClick(DialogInterface dialog, int which){
                     dialog.dismiss();
@@ -341,11 +288,65 @@ public class DrawMazeActivity extends Activity {
         }
     }
 
+    /*
+    * Saves the actual maze.
+    */
+    public void saveMaze() {
+        String relations = customMaze.arrayToString();
+
+        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 5);
+        SQLiteDatabase db = admin.getWritableDatabase();
+
+        Long tsLong = System.currentTimeMillis()/1000;
+        String ts = "-" + tsLong.toString();
+
+        ContentValues data = new ContentValues();
+        data.put("name", name + ts);
+        data.put("relations", relations);
+        data.put("number_of_caves", customMaze.getMaximumCaves());
+        db.insert("GRAPH", null, data);
+
+        Cursor cell = db.rawQuery("SELECT id FROM GRAPH WHERE GRAPH.relations = \"" + relations + "\"", null);
+        if (cell.moveToFirst()) {
+            final String graphID = cell.getString(0);
+            cell.close();
+            db.close();
+            AlertDialog.Builder newDialog = new AlertDialog.Builder(this);
+            newDialog.setTitle("El dibujo ha sido guardado");
+            newDialog.setMessage("¿Desea iniciar una partida con este laberinto?");
+            newDialog.setPositiveButton("Sí", new DialogInterface.OnClickListener(){
+                public void onClick(DialogInterface dialog, int which){
+                    dialog.dismiss();
+                    startGame(graphID);
+                }
+            });
+            newDialog.setNegativeButton("No", new DialogInterface.OnClickListener(){
+                public void onClick(DialogInterface dialog, int which){
+                    myCanvas.newDraw();
+                    dialog.dismiss();
+                }
+            });
+            newDialog.show();
+        } else {
+            alert.setTitle("Error");
+            alert.setMessage("Hubo un problema guardando el laberinto.");
+            alert.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
+                public void onClick(DialogInterface dialog, int which){
+                    dialog.dismiss();
+                }
+            });
+            alert.show();
+        }
+        cell.close();
+        db.close();
+    }
+
     public void askMazeName () {
         final Dialog dialogAddArc = new Dialog(this);
         dialogAddArc.setContentView(R.layout.layout_maze_name);
         final EditText edtTxtName = dialogAddArc.findViewById(R.id.editTxtNameMaze);
         Button btnAccept = dialogAddArc.findViewById(R.id.btnAcceptName);
+        Button btnCancel = dialogAddArc.findViewById(R.id.btnCancelName);
         btnAccept.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -364,6 +365,12 @@ public class DrawMazeActivity extends Activity {
                     });
                     alert.show();
                 }
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                dialogAddArc.cancel();
             }
         });
         dialogAddArc.show();
