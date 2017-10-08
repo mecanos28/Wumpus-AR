@@ -341,7 +341,7 @@ public class DrawMazeActivity extends Activity {
     }
 
     public void checkD(View v){
-        customMaze = new Graph(myCanvas.getNumCave());
+        customMaze = new Graph(myCanvas.getTotalCaves());
         customMaze.fillGraph(myCanvas.getRelations());
         if (customMaze.valid()) {
             askMazeName();

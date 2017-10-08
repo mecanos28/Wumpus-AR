@@ -28,7 +28,14 @@ public class DrawCanvas extends View {
     private ArrayList<IntPair> relations; //Array que almacena todas las relaciones existentes
     private ArrayList<Cave> caves; //Array que almacena todas las cuevas existentes
     private float touchX, touchY; //Coordenadas
-    private int numCave, totalCaves, maxCaves; //Contador para asignar un id a cada cueva; Contador del total de cuevas; Máximo de cuevas definido
+    private int numCave;
+
+    public int getTotalCaves() {
+        return totalCaves;
+    }
+
+    private int totalCaves;
+    private int maxCaves; //Contador para asignar un id a cada cueva; Contador del total de cuevas; Máximo de cuevas definido
 
     public DrawCanvas(Context context, AttributeSet attrs) {
         super(context, attrs);
