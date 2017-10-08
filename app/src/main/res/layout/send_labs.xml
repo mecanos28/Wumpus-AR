@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/other_background_purple">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginTop="100px"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/button_send"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="50dp"
+            android:background="@color/white_button"
+            android:onClick="send"
+            android:text="Enviar laberinto"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/scan"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="50dp"
+            android:background="@color/white_button"
+            android:onClick="connect"
+            android:text="Seleccione un dispositivo"
+            android:textColor="@color/white" />
+
+
+    </LinearLayout>
+</LinearLayout>

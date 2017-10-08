@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.benja.canvas">
 
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/wumpus_icon"
@@ -20,8 +23,9 @@
         <activity android:name=".SelectFromLibActivity"></activity>
         <activity android:name=".Coordenadas"></activity>
         <activity android:name=".DrawMazeActivity"></activity>
-        
-
+        <activity android:name=".Bluetooth.BluetoothChat"></activity>
+        <activity android:name=".Bluetooth.DeviceListActivity"></activity>
+        <activity android:name=".Bluetooth.SelectLabToShare"></activity>
     </application>
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>

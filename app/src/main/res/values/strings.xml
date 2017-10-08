@@ -1,6 +1,28 @@
 <resources>
     <string name="app_name">Wumpus Game</string>
-
+    <string name="toolbarTitle">Wumpus Game</string>
+    <!-- Layout chat-->
+    <string name="openbt">Open Bluetooth</string>
+    <string name="makeVisible">Visibilidad</string>
+    <string name="findDevices">Encontrar dispositivos</string>
+    <!--  BluetoothChat -->
+    <string name="send">Enviar</string>
+    <string name="not_connected">No está conectado a un dispositivo</string>
+    <string name="bt_not_enabled_leaving">El bluetooth no está habilitado</string>
+    <string name="title_connecting">Conectando</string>
+    <string name="title_connected_to">Conectado: </string>
+    <string name="title_not_connected">No conectado</string>
+    <!--  DeviceListActivity -->
+    <string name="scanning">Buscando dispositivos</string>
+    <string name="select_device">Seleccione un dispositivo</string>
+    <string name="none_paired">No se ha emparejado ningún dispositivo</string>
+    <string name="none_found">No se encontraron dispositivos</string>
+    <string name="title_paired_devices">Dispositivos emparejados</string>
+    <string name="title_other_devices">Otros dispositivos</string>
+    <string name="button_scan">Buscar Dispositivos</string>
+    <!-- Options Menu -->
+    <string name="connect">Dispositivos</string>
+    <string name="discoverable">Visibilidad</string>
     <string-array name="distances">
         <item>6 metros</item>
         <item>8 metros</item>
