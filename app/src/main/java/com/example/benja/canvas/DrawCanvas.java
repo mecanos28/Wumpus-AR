@@ -26,6 +26,11 @@ public class DrawCanvas extends View {
     private Canvas drawCanvas; //Lienzo
     private Bitmap canvasBitmap; //Para guardar
     private ArrayList<IntPair> relations; //Array que almacena todas las relaciones existentes
+
+    public ArrayList<Cave> getCaves() {
+        return caves;
+    }
+
     private ArrayList<Cave> caves; //Array que almacena todas las cuevas existentes
     private float touchX, touchY; //Coordenadas
     private int numCave;

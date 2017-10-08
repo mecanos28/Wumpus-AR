@@ -8,6 +8,7 @@ public class Graph {
     private boolean[][] cavesRelations;
     private int maximumCaves;
     private boolean[] connected;
+    private int[] caveToArrayMapping;
 
     //Creates an empty graph for irregular mazes.
     public Graph() {
@@ -20,6 +21,15 @@ public class Graph {
     public Graph(int numCaves) {
         this.maximumCaves = numCaves;
         this.cavesRelations = new boolean[numCaves][numCaves];
+        //this.allCaves = new ArrayList<Cave>();
+    }
+
+    //Creates an empty graph for irregular mazes with the specified number of caves.
+    public Graph(int numCaves, ArrayList<Cave> caveArrayList) {
+        this.maximumCaves = numCaves;
+        this.allCaves = caveArrayList;
+        this.cavesRelations = new boolean[numCaves][numCaves];
+        this.caveToArrayMapping = new int[numCaves];
         //this.allCaves = new ArrayList<Cave>();
     }
 
@@ -39,13 +49,34 @@ public class Graph {
     }
     */
 
+    public int searchIdInArray (int x){
+        //Devuelve índice en el array del id
+        int result=0;
+        for (int i=0; i<this.caveToArrayMapping.length; i++)
+        {
+            result = i;
+            if(caveToArrayMapping[i]==x)
+                break;
+        }
+        return  result;
+    }
+
     public void fillGraph(ArrayList<IntPair> relations){
+
+        //Mapea
+        int l = 0;
+        while(l < this.allCaves.size()) {
+            this.caveToArrayMapping[l] = allCaves.get(l).getId();
+            l++;
+        }
+        //Mete las relaciones
         for(int i = 0; i < relations.size(); i++)
         {
-            add_Bi_Relation(relations.get(i).x,relations.get(i).y);
+            add_Bi_Relation(searchIdInArray(relations.get(i).x),searchIdInArray(relations.get(i).y));
             //cavesRelations[relations.get(i).x][relations.get(i).y] = true;
         }
     }
+
 
     public void addCave(Cave cave) {
         this.maximumCaves--;
