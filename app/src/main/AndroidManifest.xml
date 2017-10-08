@@ -22,8 +22,11 @@
         <activity android:name=".SelectPolyActivity"/>
         <activity android:name=".SelectFromLibActivity"/>
         <activity android:name=".DrawMazeActivity"/>
-        <activity android:name=".BluetoothSettings"/>
-
+        <activity android:name=".Bluetooth.BluetoothChat"/>
+        <activity android:name=".Bluetooth.DeviceListActivity"/>
+        <activity android:name=".Bluetooth.SelectLabToShare"/>
     </application>
+
+
 
 </manifest>

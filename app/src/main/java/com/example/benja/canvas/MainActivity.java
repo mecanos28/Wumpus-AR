@@ -7,8 +7,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.benja.canvas.Bluetooth.BluetoothChat;
+import com.example.benja.canvas.Bluetooth.SelectLabToShare;
+
 
 public class MainActivity extends Activity {
+
+    boolean multiplayerSubMenu = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,10 +30,35 @@ public class MainActivity extends Activity {
 
     }
 
-    public void tipoMultijugador(View vista)
-    {
-        Intent i = new Intent(this, BluetoothSettings.class);
+
+    public void send(View vista){
+        Intent i = new Intent(this, SelectLabToShare.class);
         startActivity(i);
     }
+
+    public void receive(View vista){
+        Intent i = new Intent(this, BluetoothChat.class);
+        i.putExtra("funcion","recibir");
+        startActivity(i);
+    }
+
+    public void tipoMultijugador(View vista)
+    {
+        setContentView(R.layout.multiplayer_sr_layout);
+        multiplayerSubMenu = true;
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if(multiplayerSubMenu){
+            setContentView(R.layout.activity_main);
+            multiplayerSubMenu = false;
+        }else{
+            super.onBackPressed();
+        }
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
+
 
 }
