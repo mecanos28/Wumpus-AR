@@ -260,4 +260,10 @@ public class BluetoothChat extends Activity {
         return mensaje;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
+
 }

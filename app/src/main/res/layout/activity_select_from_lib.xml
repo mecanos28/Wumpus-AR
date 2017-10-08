@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="20dp"
-        android:background="@color/white_button"
+        android:textColor="#ffffff"
         android:divider="@color/white_button"
         android:dividerHeight="2dp">
      </ListView>

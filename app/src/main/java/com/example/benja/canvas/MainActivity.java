@@ -13,7 +13,7 @@ import com.example.benja.canvas.Bluetooth.SelectLabToShare;
 
 public class MainActivity extends Activity {
 
-    boolean multiplayerSubMenu = false;
+    //boolean multiplayerSubMenu = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,26 +29,15 @@ public class MainActivity extends Activity {
         startActivity(i, options.toBundle());
     }
 
-
-    public void send(View vista){
-        Intent i = new Intent(this, SelectLabToShare.class);
-        startActivity(i);
-    }
-
-    public void receive(View vista){
-        Intent i = new Intent(this, BluetoothChat.class);
-        i.putExtra("funcion","recibir");
-        startActivity(i);
-    }
-
     public void tipoMultijugador(View vista)
     {
-        setContentView(R.layout.multiplayer_sr_layout);
-        multiplayerSubMenu = true;
+        Intent i = new Intent(this,Multiplayer.class);
+        ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.slide_in_down, R.anim.slide_out_down);
+        startActivity(i, options.toBundle());
     }
 
 
-    @Override
+    /*@Override
     public void onBackPressed() {
         if(multiplayerSubMenu){
             setContentView(R.layout.activity_main);
@@ -57,7 +46,6 @@ public class MainActivity extends Activity {
             super.onBackPressed();
         }
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-    }
-
+    }*/
 
 }

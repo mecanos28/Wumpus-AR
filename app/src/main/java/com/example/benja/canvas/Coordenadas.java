@@ -63,13 +63,14 @@ public class Coordenadas extends AppCompatActivity  {
         //Recibe el id del grafo
         Bundle b = new Bundle();
         b = getIntent().getExtras();
-        graph_id = b.getInt("graphID");
+        String graphID = b.getString("graphID");
+        graph_id = Integer.parseInt(graphID);
 
         //Acceso a la BD
         AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 6);
         SQLiteDatabase db = admin.getWritableDatabase();
 
-        Cursor cell = db.rawQuery("SELECT GRAPH.relations, GRAPH.number_of_caves FROM GRAPH WHERE GRAPH.id = " + graph_id +";", null);
+        Cursor cell = db.rawQuery("SELECT GRAPH.relations, GRAPH.number_of_caves FROM GRAPH WHERE GRAPH.id = " + graphID +";", null);
         if (cell.moveToFirst()){
             info=cell.getString(0);
             caves=cell.getInt(1);

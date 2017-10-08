@@ -5,13 +5,13 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/other_background_purple"
-    tools:context="com.example.benja.canvas.MainActivity">
+    tools:context="com.example.benja.canvas.Multiplayer">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
-        android:layout_marginTop="100px"
+        android:layout_marginTop="50dp"
         android:gravity="center"
         android:textStyle="bold"
         android:textSize="20sp"
@@ -33,6 +33,7 @@
                 android:background="@color/white_button"
                 android:onClick="send"
                 android:text="Enviar"
+                android:textSize="18sp"
                 android:textColor="@color/white" />
 
 
@@ -44,6 +45,7 @@
                 android:background="@color/white_button"
                 android:onClick="receive"
                 android:text="Recibir"
+                android:textSize="18sp"
                 android:textColor="@color/white" />
     </LinearLayout>
 

@@ -1,6 +1,7 @@
 package com.example.benja.canvas.Bluetooth;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -56,7 +57,7 @@ public class SelectLabToShare extends Activity {
     }
 
     public String getLaberinto(int id, String name){
-        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 5);
+        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 6);
         SQLiteDatabase db = admin.getWritableDatabase();
         Cursor cell = db.rawQuery("SELECT * FROM GRAPH WHERE GRAPH.name = \"" + name +"\";", null);
         String laberintoObtenido = "";
@@ -77,7 +78,7 @@ public class SelectLabToShare extends Activity {
 
 
     public int getGraphID(String graphName) {
-        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 5);
+        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 6);
         SQLiteDatabase db = admin.getWritableDatabase();
         Cursor cell = db.rawQuery("SELECT GRAPH.id FROM GRAPH WHERE GRAPH.name = \"" + graphName +"\";", null);
         if (cell.moveToFirst()){
@@ -98,9 +99,9 @@ public class SelectLabToShare extends Activity {
     */
     public void populateListView() {
         mazeList = (ListView)findViewById(R.id.listViewMazes);
-        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 5);
+        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 6);
         SQLiteDatabase db = admin.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT name, number_of_caves FROM GRAPH", null);
+        Cursor cursor = db.rawQuery("SELECT name, number_of_caves FROM GRAPH WHERE custom = 1", null);
         datos = new ArrayList<String>();
         names = new ArrayList<String>();
         if (cursor.moveToFirst()) {
@@ -126,7 +127,8 @@ public class SelectLabToShare extends Activity {
         i.putExtra("laberinto",laberinto);
         i.putExtra("nombreLaberinto", nombre);
         i.putExtra("funcion","enviar");
-        startActivity(i);
+        ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.fade_in, R.anim.fade_out);
+        startActivity(i, options.toBundle());
     }
 
 }

@@ -206,14 +206,6 @@ public class BluetoothChatService {
         mHandler.sendMessage(msg);
     }
 
-
-
-
-
-
-
-
-
     private class AcceptThread extends Thread {
         // The local server socket
         private final BluetoothServerSocket mmServerSocket;
@@ -271,12 +263,6 @@ public class BluetoothChatService {
         }
     }
 
-
-
-
-
-
-
     private class ConnectThread extends Thread {
         private final BluetoothSocket mmSocket;
         private final BluetoothDevice mmDevice;
@@ -328,12 +314,6 @@ public class BluetoothChatService {
             }
         }
     }
-
-
-
-
-
-
 
     private class ConnectedThread extends Thread {
         private final BluetoothSocket mmSocket;

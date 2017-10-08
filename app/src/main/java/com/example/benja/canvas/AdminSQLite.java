@@ -40,7 +40,7 @@ public class AdminSQLite extends SQLiteOpenHelper {
                 "graph_id INTEGER," +
                 "cave_number INTEGER NOT NULL," +
                 "latitude TEXT," +
-                "longitude TEXT" +
+                "longitude TEXT," +
                 "content INTEGER," +
                 "PRIMARY KEY (id, cave_number)," +
                 "FOREIGN KEY (graph_id) REFERENCES GRAPH(id)," +
@@ -67,7 +67,6 @@ public class AdminSQLite extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL("DROP TABLE IF EXISTS GRAPH;");
-        db.execSQL("DROP TABLE IF EXISTS CAVE;");
         db.execSQL("DROP TABLE IF EXISTS GAME;");
         db.execSQL("DROP TABLE IF EXISTS CAVE_CONTENT;");
         onCreate(db);
