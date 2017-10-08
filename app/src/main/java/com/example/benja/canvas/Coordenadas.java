@@ -20,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,10 +29,11 @@ import android.widget.Toast;
 public class Coordenadas extends AppCompatActivity  {
 
     LocationManager locationManager;
+    ProgressBar loading;
     SpinnerActivity sp;
     double latitudeGPS;
     double longitudeGPS;
-    int distancia;
+    double distance, meterToCoordinates;
     TextView tv_info, tv_dist;
     boolean flag;
     Spinner spn_distances;
@@ -50,6 +52,8 @@ public class Coordenadas extends AppCompatActivity  {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         longitudeGPS = 0.0;
         latitudeGPS = 0.0;
+        meterToCoordinates = 0.0000095;
+        
         flag = false;
 
         //Spinner
@@ -59,6 +63,10 @@ public class Coordenadas extends AppCompatActivity  {
         spn_distances.setAdapter(adapter);
         sp = new SpinnerActivity();
         spn_distances.setOnItemSelectedListener(sp);
+
+        //loading bar
+        loading = (ProgressBar)findViewById(R.id.progressBar);
+        loading.setVisibility(View.GONE);
 
         //Recibe el id del grafo
         Bundle b = new Bundle();
@@ -103,7 +111,10 @@ public class Coordenadas extends AppCompatActivity  {
                     return;
                 }
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2 * 20 * 1000, 10, locationListenerGPS);
-                tv_dist.setText(distancia + " metros.");
+                loading.setVisibility(View.VISIBLE);
+                while( (getLatitudeGPS() == 0.0) || (getLongitudeGPS() == 0.0) ){}
+                loading.setVisibility(View.GONE);
+                tv_dist.append("\n" + distance + " metros.");
             }
             else {
                 Toast.makeText(this, "Por favor indique la distancia deseada.", Toast.LENGTH_LONG).show();
@@ -187,16 +198,16 @@ public class Coordenadas extends AppCompatActivity  {
             selected = true;
             switch(pos){
                 case 0:
-                    distancia = 6;
+                    distance = 6 * meterToCoordinates;
                     break;
                 case 1:
-                    distancia = 8;
+                    distance = 8 * meterToCoordinates;
                     break;
                 case 2:
-                    distancia = 10;
+                    distance = 10 * meterToCoordinates;
                     break;
                 case 3:
-                    distancia = 12;
+                    distance = 12 * meterToCoordinates;
                     break;
                 default:
                     break;
