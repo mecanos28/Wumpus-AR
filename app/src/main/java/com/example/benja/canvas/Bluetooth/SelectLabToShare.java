@@ -1,33 +1,42 @@
-package com.example.benja.canvas;
-
+package com.example.benja.canvas.Bluetooth;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.widget.SimpleCursorAdapter;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.StringTokenizer;
+import com.example.benja.canvas.AdminSQLite;
+import com.example.benja.canvas.R;
+import com.example.benja.canvas.SelectFromLibActivity;
 
-public class SelectFromLibActivity extends Activity {
+import java.util.ArrayList;
+
+/**
+ * Created by JorgeRemon on 7/10/17.
+ */
+
+public class SelectLabToShare extends Activity {
 
     ListView mazeList;
     ArrayList<String> datos;
     ArrayList<String> names;
+    private static final int REQUEST_CONNECT_DEVICE = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_from_lib);
+        setContentView(R.layout.labs_to_share);
 
         populateListView();
 
@@ -39,18 +48,41 @@ public class SelectFromLibActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String[] value = names.toArray(new String [names.size()]);
                 String name = value[position];
-                String graphID = getGraphID(name);
-                startGame(graphID);
+                int graphID = getGraphID(name);
+                Toast.makeText(SelectLabToShare.this, "ID: " + graphID + "\nName: " + name, Toast.LENGTH_SHORT).show();
+                String laberinto = getLaberinto(graphID, name);
+                listDevices(view, laberinto, name);
             }
         });
     }
 
-    public String getGraphID(String graphName) {
+    public String getLaberinto(int id, String name){
+        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 6);
+        SQLiteDatabase db = admin.getWritableDatabase();
+        Cursor cell = db.rawQuery("SELECT * FROM GRAPH WHERE GRAPH.name = \"" + name +"\";", null);
+        String laberintoObtenido = "";
+        String laberintoObtenido2 = "";
+        String laberintoObtenido3 = "";
+        if (cell.moveToFirst()){
+            laberintoObtenido = cell.getString(1);
+            laberintoObtenido2 = cell.getString(2);
+            laberintoObtenido3 = cell.getString(3);
+            cell.close();
+        }
+        else {
+            Toast.makeText(this, "The Wumpus isn't around this caves. Try another one!", Toast.LENGTH_LONG).show();
+            db.close();
+        }
+        return laberintoObtenido + "%" + laberintoObtenido2 + "%" + laberintoObtenido3;
+    }
+
+
+    public int getGraphID(String graphName) {
         AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 6);
         SQLiteDatabase db = admin.getWritableDatabase();
         Cursor cell = db.rawQuery("SELECT GRAPH.id FROM GRAPH WHERE GRAPH.name = \"" + graphName +"\";", null);
         if (cell.moveToFirst()){
-            String graphID = cell.getString(0);
+            int graphID = cell.getInt(0);
             cell.close();
             return graphID;
         }
@@ -59,7 +91,7 @@ public class SelectFromLibActivity extends Activity {
             db.close();
         }
         cell.close();
-        return "";
+        return 0;
     }
 
     /*
@@ -90,10 +122,17 @@ public class SelectFromLibActivity extends Activity {
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
-    public void startGame (String stringGraphID) {
-        Intent i = new Intent(this, Coordenadas.class);
-        i.putExtra("graphID",stringGraphID);
+    public void listDevices(View vista, String laberinto, String nombre){
+        Intent i = new Intent(this, BluetoothChat.class);
+        i.putExtra("laberinto",laberinto);
+        i.putExtra("nombreLaberinto", nombre);
+        i.putExtra("funcion","enviar");
         ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.fade_in, R.anim.fade_out);
         startActivity(i, options.toBundle());
     }
+
 }
+
+
+
+

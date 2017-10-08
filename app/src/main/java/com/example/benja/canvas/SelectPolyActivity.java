@@ -27,7 +27,7 @@ public class SelectPolyActivity extends Activity {
         setContentView(R.layout.activity_select_poly);
         currentPage = 1;
         viewPager=(ViewPager)findViewById(R.id.ImageSlider);
-        int[] imageResources = {R.drawable.tetra_light,R.drawable.octa_light,R.drawable.cube_light,R.drawable.icosa_light,R.drawable.dodeca_light};
+        int[] imageResources = {R.drawable.tetra_light, R.drawable.octa_light, R.drawable.cube_light, R.drawable.icosa_light, R.drawable.dodeca_light};
         customSwip = new CustomSwip(this,imageResources);
         viewPager.setAdapter(customSwip);
         viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -42,7 +42,7 @@ public class SelectPolyActivity extends Activity {
     * Gets a regular maze from the DB once an image is clicked.
     */
     public void imageClicked(int graph) {
-        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 5);
+        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 6);
         SQLiteDatabase db = admin.getWritableDatabase();
         String graphName = "";
         switch (graph) {

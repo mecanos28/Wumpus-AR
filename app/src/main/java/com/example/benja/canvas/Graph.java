@@ -4,16 +4,23 @@ import java.util.ArrayList;
 
 public class Graph {
 
-
     private ArrayList<Cave> allCaves;
     private boolean[][] cavesRelations;
     private int maximumCaves;
+    private boolean[] connected;
 
     //Creates an empty graph for irregular mazes.
     public Graph() {
         this.maximumCaves = 20;
         this.cavesRelations = new boolean[20][20];
-        this.allCaves = new ArrayList<Cave>();
+        //this.allCaves = new ArrayList<Cave>();
+    }
+
+    //Creates an empty graph for irregular mazes with the specified number of caves.
+    public Graph(int numCaves) {
+        this.maximumCaves = numCaves;
+        this.cavesRelations = new boolean[numCaves][numCaves];
+        //this.allCaves = new ArrayList<Cave>();
     }
 
     //Creates a graph from a relation's string and the corresponding number of caves.
@@ -21,7 +28,7 @@ public class Graph {
         this.maximumCaves = numberOfCaves;
         this.cavesRelations = new boolean[this.maximumCaves][this.maximumCaves];
         this.stringToArray(relations);
-        this.allCaves = new ArrayList<Cave>();
+        //this.allCaves = new ArrayList<Cave>();
     }
 
     /*
@@ -32,13 +39,21 @@ public class Graph {
     }
     */
 
+    public void fillGraph(ArrayList<IntPair> relations){
+        for(int i = 0; i < relations.size(); i++)
+        {
+            add_Bi_Relation(relations.get(i).x,relations.get(i).y);
+            //cavesRelations[relations.get(i).x][relations.get(i).y] = true;
+        }
+    }
+
     public void addCave(Cave cave) {
         this.maximumCaves--;
-        allCaves.add(cave);
+        //allCaves.add(cave);
     }
 
     public void removeCave(int cave) {
-        boolean found = false;
+        /*boolean found = false;
         int i = 0;
         while(!found && i < maximumCaves) {
             if (allCaves.get(i).getId() == cave) {
@@ -46,7 +61,7 @@ public class Graph {
                 allCaves.remove(cave);
             }
             ++i;
-        }
+        }*/
         this.maximumCaves++;
     }
 
@@ -65,7 +80,7 @@ public class Graph {
         this.cavesRelations[caveY_id][caveX_id] = false;
     }
 
-    public Cave getFirstCave(Cave caveFather) {
+    /*public Cave getFirstCave(Cave caveFather) {
         Cave first = null;
         int index = 0;
         boolean repeat = true;
@@ -78,9 +93,9 @@ public class Graph {
             }
         }
         return first;
-    }
+    }*/
 
-    public Cave getNextCave(Cave caveFather, Cave caveChild) {
+    /*public Cave getNextCave(Cave caveFather, Cave caveChild) {
         Cave next = null;
         int index = allCaves.indexOf(caveChild);
         boolean repeat = true;
@@ -93,7 +108,7 @@ public class Graph {
             }
         }
         return next;
-    }
+    }*/
 
     /*
     * Converts a string of relations into an array.
@@ -131,7 +146,9 @@ public class Graph {
                     result = result + "0";
                 }
             }
-            result = result + "*";
+            if (i != (maximumCaves - 1)){
+                result = result + "*";
+            }
         }
         return result;
     }
@@ -153,7 +170,7 @@ public class Graph {
     public boolean isIsolated(int cave) {
         boolean isolated = true;
         int i = 0;
-        while (!isolated && i < this.maximumCaves) {
+        while (isolated && i < this.maximumCaves) {
             if (this.areConnected(i, cave)) {
                 isolated = false;
             }
@@ -178,21 +195,27 @@ public class Graph {
             }
             ++i;
         }
+        if (valid) {
+            connected = new boolean[maximumCaves];
+            checkConnectedCaves(0);
+            i = 0;
+            while (valid && i < maximumCaves){
+                if (!connected[i]) {
+                    valid = false;
+                }
+                ++i;
+            }
+        }
         return valid;
     }
 
-    //Busca la cueva con el id especificado
-    public Cave searchCave(int id){
-        boolean found = false;
-        int i = 0;
-        while(!found && i < maximumCaves){
-            if (allCaves.get(i).getId() == id) {
-                found = true;
-                return allCaves.get(i);
+    private void checkConnectedCaves(int cave)
+    {
+        connected[cave] = true;
+        for (int i = 0; i != maximumCaves; ++i) {
+            if ((i != cave) && areConnected(i, cave) && !connected[i]){
+                checkConnectedCaves(i);
             }
-            ++i;
         }
-        return null;
     }
-
 }
