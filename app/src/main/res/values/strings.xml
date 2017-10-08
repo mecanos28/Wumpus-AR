@@ -23,4 +23,10 @@
     <!-- Options Menu -->
     <string name="connect">Dispositivos</string>
     <string name="discoverable">Visibilidad</string>
+    <string-array name="distances">
+        <item>6 metros</item>
+        <item>8 metros</item>
+        <item>10 metros</item>
+        <item>12 metros</item>
+    </string-array>
 </resources>

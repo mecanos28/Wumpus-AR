@@ -27,7 +27,7 @@ public class SelectPolyActivity extends Activity {
         setContentView(R.layout.activity_select_poly);
         currentPage = 1;
         viewPager=(ViewPager)findViewById(R.id.ImageSlider);
-        int[] imageResources = {R.drawable.tetra_light,R.drawable.octa_light,R.drawable.cube_light,R.drawable.icosa_light,R.drawable.dodeca_light};
+        int[] imageResources = {R.drawable.tetra_light, R.drawable.octa_light, R.drawable.cube_light, R.drawable.icosa_light, R.drawable.dodeca_light};
         customSwip = new CustomSwip(this,imageResources);
         viewPager.setAdapter(customSwip);
         viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -42,7 +42,7 @@ public class SelectPolyActivity extends Activity {
     * Gets a regular maze from the DB once an image is clicked.
     */
     public void imageClicked(int graph) {
-        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 5);
+        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 6);
         SQLiteDatabase db = admin.getWritableDatabase();
         String graphName = "";
         switch (graph) {
@@ -66,10 +66,11 @@ public class SelectPolyActivity extends Activity {
         if (cell.moveToFirst()){
             int graphID = cell.getInt(0);
             cell.close();
-            Toast.makeText(this, "ID: " + graphID + "\nName: " + graphName, Toast.LENGTH_LONG).show();
-            //Intent i = new Intent(this, EmplazarActivity.class);
-            //i.putExtra("graphID",graphID);
-            //startActivity(i);
+            String stringGraphID = Integer.toString(graphID);
+            Intent i = new Intent(this, Coordenadas.class);
+            i.putExtra("graphID",stringGraphID);
+            ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.fade_in, R.anim.fade_out);
+            startActivity(i, options.toBundle());
         }
         else {
             Toast.makeText(this, "The Wumpus isn't around this caves. Try another one!", Toast.LENGTH_LONG).show();
@@ -77,7 +78,6 @@ public class SelectPolyActivity extends Activity {
         }
         cell.close();
     }
-
 
     public void drawLabyrinthView(View view)
     {

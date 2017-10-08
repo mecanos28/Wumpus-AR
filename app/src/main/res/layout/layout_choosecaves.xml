@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="300dp"
+    android:layout_height="150dp"
+    android:orientation="vertical"
     android:baselineAligned="false"
-    android:orientation="vertical">
+    android:layout_gravity="center"
+    android:background="@drawable/other_background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,12 +18,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|center"
             android:layout_weight="1"
-            android:background="@android:color/background_light"
             android:gravity="center_horizontal|center"
-            android:text="Ingrese las cuevas que desea relacionar"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:text="Ingrese los números de las cuevas que desea conectar"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            android:textColor="@android:color/background_dark"
-            android:textSize="16sp" />
+            android:textColor="@android:color/white"
+            android:textSize="17sp" />
 
     </LinearLayout>
 
@@ -34,24 +38,26 @@
 
         <EditText
             android:id="@+id/editTxtCave1"
-            android:layout_width="98dp"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:ems="10"
             android:inputType="number"
             android:textAlignment="center"
             android:textIsSelectable="false"
+            android:textColor="@android:color/white"
             android:textSize="18sp" />
 
         <EditText
             android:id="@+id/editTxtCave2"
-            android:layout_width="98dp"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:ems="10"
             android:inputType="number"
             android:textAlignment="center"
             android:textIsSelectable="false"
+            android:textColor="@android:color/white"
             android:textSize="18sp" />
 
     </LinearLayout>
@@ -62,32 +68,28 @@
         android:layout_gravity="center"
         android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="185dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        <Button
+            android:id="@+id/btnAccept"
+            android:layout_width="120dp"
+            android:layout_height="45dp"
+            android:layout_gravity="right|center_horizontal|center"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:background="@color/white_button"
+            android:text="Aceptar"
+            android:textSize="18sp"
+            android:layout_marginRight="10dp"/>
 
-            <Button
-                android:id="@+id/btnAccept"
-                android:layout_width="124dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="right|center_horizontal|center"
-                android:text="Aceptar" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="169dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/btnCancel"
-                android:layout_width="124dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="left|center_horizontal|center"
-                android:text="Cancelar"
-                android:textAlignment="center" />
-        </LinearLayout>
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="120dp"
+            android:layout_height="45dp"
+            android:layout_gravity="left|center_horizontal|center"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:background="@color/white_button"
+            android:text="Cancelar"
+            android:textSize="18sp"/>
 
     </LinearLayout>
 

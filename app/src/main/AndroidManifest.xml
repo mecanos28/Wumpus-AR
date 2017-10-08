@@ -20,13 +20,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".SelectPolyActivity"/>
-        <activity android:name=".SelectFromLibActivity"/>
-        <activity android:name=".DrawMazeActivity"/>
-        <activity android:name=".Bluetooth.BluetoothChat"/>
-        <activity android:name=".Bluetooth.DeviceListActivity"/>
-        <activity android:name=".Bluetooth.SelectLabToShare"/>
+        <activity android:name=".SelectFromLibActivity"></activity>
+        <activity android:name=".Coordenadas"></activity>
+        <activity android:name=".DrawMazeActivity"></activity>
+        <activity android:name=".Bluetooth.BluetoothChat"></activity>
+        <activity android:name=".Bluetooth.DeviceListActivity"></activity>
+        <activity android:name=".Bluetooth.SelectLabToShare"></activity>
     </application>
 
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
 </manifest>

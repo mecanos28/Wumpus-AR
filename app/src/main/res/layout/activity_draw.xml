@@ -5,7 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.benja.canvas.DrawMazeActivity">
+    tools:context="com.example.benja.canvas.DrawMazeActivity"
+    android:background="@drawable/other_background">
+
+    <Button
+        android:id="@+id/btnInfo"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:onClick="info"
+        android:background="@drawable/info_icon"
+        android:layout_gravity="end"
+        tools:ignore="ContentDescription" />
 
     <view
         android:id="@+id/viewDrawCanvas"
@@ -14,48 +24,123 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="5.17"
-        android:background="#FFFFFFFF"/>
+        android:layout_marginBottom="5dp"
+        android:background="@color/transparent"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="81dp"
         android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/imgBtnNew"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:onClick="newD"
-            android:src="@drawable/newdrawing"
-            tools:ignore="ContentDescription,NestedWeights" />
+            android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/imgBtnAddCave"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:onClick="addC"
-            android:src="@drawable/addcave"
-            tools:ignore="ContentDescription" />
+            <Button
+                android:id="@+id/btnAddCave"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="addC"
+                android:text="Agregar cueva"
+                android:textSize="13sp"
+                android:textColor="@color/white"
+                android:background="@color/white_button"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                tools:ignore="ContentDescription" />
 
-        <ImageButton
-            android:id="@+id/imgBtnAddArc"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:onClick="addA"
-            android:src="@drawable/addarc"
-            tools:ignore="ContentDescription" />
+            <Button
+                android:id="@+id/btnDelCave"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="delC"
+                android:text="Eliminar cueva"
+                android:textSize="13sp"
+                android:textColor="@color/white"
+                android:background="@color/white_button"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                tools:ignore="ContentDescription" />
 
-        <ImageButton
-            android:id="@+id/imgBtnDeleteCave"
-            android:layout_width="wrap_content"
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:onClick="delC"
-            android:src="@drawable/deletecave"
-            tools:ignore="ContentDescription" />
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnAddArc"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="addA"
+                android:text="Agregar camino"
+                android:textSize="13sp"
+                android:textColor="@color/white"
+                android:background="@color/white_button"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                tools:ignore="ContentDescription" />
+
+            <Button
+                android:id="@+id/btnDelArc"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="delA"
+                android:text="Eliminar camino"
+                android:textSize="13sp"
+                android:textColor="@color/white"
+                android:background="@color/white_button"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                tools:ignore="ContentDescription" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnNew"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="newD"
+                android:text="Reiniciar dibujo"
+                android:textSize="13sp"
+                android:textColor="@color/white"
+                android:background="@color/white_button"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                tools:ignore="ContentDescription" />
+
+            <Button
+                android:id="@+id/imgBtnCheck"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:elevation="1dp"
+                android:onClick="checkD"
+                android:text="Guardar dibujo"
+                android:textSize="13sp"
+                android:textColor="@color/white"
+                android:background="@color/white_button"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                tools:ignore="ContentDescription" />
+        </LinearLayout>
 
     </LinearLayout>
 

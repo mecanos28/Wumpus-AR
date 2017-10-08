@@ -2,6 +2,8 @@ package com.example.benja.canvas;
 
 
 import android.app.Activity;
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 public class SelectFromLibActivity extends Activity {
 
@@ -36,21 +39,18 @@ public class SelectFromLibActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String[] value = names.toArray(new String [names.size()]);
                 String name = value[position];
-                int graphID = getGraphID(name);
-                Toast.makeText(SelectFromLibActivity.this, "ID: " + graphID + "\nName: " + name, Toast.LENGTH_SHORT).show();
-                //Intent i = new Intent(this, EmplazarActivity.class);
-                //i.putExtra("graphID",graphID);
-                //startActivity(i);
+                String graphID = getGraphID(name);
+                startGame(graphID);
             }
         });
     }
 
-    public int getGraphID(String graphName) {
-        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 5);
+    public String getGraphID(String graphName) {
+        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 6);
         SQLiteDatabase db = admin.getWritableDatabase();
         Cursor cell = db.rawQuery("SELECT GRAPH.id FROM GRAPH WHERE GRAPH.name = \"" + graphName +"\";", null);
         if (cell.moveToFirst()){
-            int graphID = cell.getInt(0);
+            String graphID = cell.getString(0);
             cell.close();
             return graphID;
         }
@@ -59,7 +59,7 @@ public class SelectFromLibActivity extends Activity {
             db.close();
         }
         cell.close();
-        return 0;
+        return "";
     }
 
     /*
@@ -67,9 +67,9 @@ public class SelectFromLibActivity extends Activity {
     */
     public void populateListView() {
         mazeList = (ListView)findViewById(R.id.listViewMazes);
-        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 5);
+        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 6);
         SQLiteDatabase db = admin.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT name, number_of_caves FROM GRAPH", null);
+        Cursor cursor = db.rawQuery("SELECT name, number_of_caves FROM GRAPH WHERE custom = 1", null);
         datos = new ArrayList<String>();
         names = new ArrayList<String>();
         if (cursor.moveToFirst()) {
@@ -90,4 +90,10 @@ public class SelectFromLibActivity extends Activity {
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
+    public void startGame (String stringGraphID) {
+        Intent i = new Intent(this, Coordenadas.class);
+        i.putExtra("graphID",stringGraphID);
+        ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.fade_in, R.anim.fade_out);
+        startActivity(i, options.toBundle());
+    }
 }

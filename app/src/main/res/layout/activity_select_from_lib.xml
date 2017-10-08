@@ -26,6 +26,7 @@
         android:layout_marginBottom="20dp"
         android:background="@color/white_button"
         android:divider="@color/white_button"
-        android:dividerHeight="2dp"></ListView>
+        android:dividerHeight="2dp">
+     </ListView>
 
 </LinearLayout>
