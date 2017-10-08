@@ -1,10 +1,13 @@
 package com.example.benja.canvas.Bluetooth;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,6 +20,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.benja.canvas.AdminSQLite;
+import com.example.benja.canvas.MainActivity;
+import com.example.benja.canvas.Multiplayer;
 import com.example.benja.canvas.R;
 
 
@@ -188,14 +194,44 @@ public class BluetoothChat extends Activity {
                     byte[] readBuf = (byte[]) msg.obj;
                     // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);
-                    String [] splitMessage = tokenizer(readMessage);
+                    final String [] splitMessage = tokenizer(readMessage);
 
                     AlertDialog.Builder alert = new AlertDialog.Builder(BluetoothChat.this);
                     alert.setTitle("Invitación para compartir laberinto");
-                    alert.setMessage("¿Quiere aceptar el laberinto recibido?\nNombre: "+ splitMessage[2] + "\nRelaciones: " + splitMessage[0]+"\nID: "+ splitMessage[1]);
+                    alert.setMessage("¿Quiere aceptar el laberinto recibido?\nNombre: "+ splitMessage[2] + "\nRelaciones: " + splitMessage[0]+"\nNúmero de cuevas: "+ splitMessage[1]);
                     alert.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            AdminSQLite admin = new AdminSQLite(BluetoothChat.this, "WumpusDB", null, 6);
+                            SQLiteDatabase db = admin.getWritableDatabase();
+
+                            ContentValues data = new ContentValues();
+                            data.put("name", splitMessage[2]);
+                            data.put("relations", splitMessage[0]);
+                            data.put("number_of_caves", splitMessage[1]);
+                            db.insert("GRAPH", null, data);
+
+                            db.close();
+                            AlertDialog.Builder newDialog = new AlertDialog.Builder(BluetoothChat.this);
+                            newDialog.setTitle("Se ha guardado el laberinto");
+                            newDialog.setMessage("¿Desea continuar intercambiando laberintos?");
+                            newDialog.setPositiveButton("Sí", new DialogInterface.OnClickListener(){
+                                public void onClick(DialogInterface dialog, int which){
+                                    dialog.dismiss();
+                                    Intent i = new Intent(BluetoothChat.this, Multiplayer.class);
+                                    ActivityOptions options = ActivityOptions.makeCustomAnimation(BluetoothChat.this, R.anim.fade_in, R.anim.fade_out);
+                                    startActivity(i, options.toBundle());
+                                }
+                            });
+                            newDialog.setNegativeButton("No", new DialogInterface.OnClickListener(){
+                                public void onClick(DialogInterface dialog, int which){
+                                    dialog.dismiss();
+                                    Intent i = new Intent(BluetoothChat.this, MainActivity.class);
+                                    ActivityOptions options = ActivityOptions.makeCustomAnimation(BluetoothChat.this, R.anim.slide_in_up, R.anim.slide_out_up);
+                                    startActivity(i, options.toBundle());
+                                }
+                            });
+                            newDialog.show();
                             dialog.dismiss();
                         }
                     });
