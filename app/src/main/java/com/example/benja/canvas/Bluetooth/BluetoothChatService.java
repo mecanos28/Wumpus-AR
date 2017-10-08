@@ -201,7 +201,7 @@ public class BluetoothChatService {
         // Send a failure message back to the Activity
         Message msg = mHandler.obtainMessage(BluetoothChat.MESSAGE_TOAST);
         Bundle bundle = new Bundle();
-        bundle.putString(BluetoothChat.TOAST, "La conexión se perdió");
+        bundle.putString(BluetoothChat.TOAST, "Se cerró la conexión");
         msg.setData(bundle);
         mHandler.sendMessage(msg);
     }

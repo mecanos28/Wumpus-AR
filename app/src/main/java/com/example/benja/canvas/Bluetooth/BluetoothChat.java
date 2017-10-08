@@ -40,6 +40,9 @@ public class BluetoothChat extends Activity {
     private static final int REQUEST_CONNECT_DEVICE = 1;
     private static final int REQUEST_ENABLE_BT = 2;
     public String laberinto = "";
+    public String nombreLaberinto = "";
+    public String funcion = "";
+
 
     private Button mSendButton;
 
@@ -53,7 +56,6 @@ public class BluetoothChat extends Activity {
 
     // Member object for the chat services
     private BluetoothChatService mChatService = null;
-    String funcion = "";
     public int counter = 0;
 
     @Override
@@ -65,6 +67,7 @@ public class BluetoothChat extends Activity {
         if(funcion.equals("enviar")){
             setContentView(R.layout.send_labs);
             laberinto = getIntent().getStringExtra("laberinto");
+            nombreLaberinto = getIntent().getStringExtra("nombreLaberinto");
         }else{
             setContentView(R.layout.searching_labs);
         }
@@ -181,12 +184,15 @@ public class BluetoothChat extends Activity {
                     String writeMessage = new String(writeBuf);
                     break;
                 case MESSAGE_READ:
+
                     byte[] readBuf = (byte[]) msg.obj;
                     // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);
+                    String [] splitMessage = tokenizer(readMessage);
+
                     AlertDialog.Builder alert = new AlertDialog.Builder(BluetoothChat.this);
                     alert.setTitle("Invitación para compartir laberinto");
-                    alert.setMessage("¿Quiere aceptar el laberinto recibido: "+readMessage);
+                    alert.setMessage("¿Quiere aceptar el laberinto recibido?\nNombre: "+ splitMessage[2] + "\nRelaciones: " + splitMessage[0]+"\nID: "+ splitMessage[1]);
                     alert.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -248,4 +254,10 @@ public class BluetoothChat extends Activity {
     public void discoverable(View v) {
         ensureDiscoverable();
     }
+
+    public String[] tokenizer(String msj){
+        String[] mensaje = msj.split("%");
+        return mensaje;
+    }
+
 }

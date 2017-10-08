@@ -49,11 +49,32 @@ public class SelectLabToShare extends Activity {
                 String name = value[position];
                 int graphID = getGraphID(name);
                 Toast.makeText(SelectLabToShare.this, "ID: " + graphID + "\nName: " + name, Toast.LENGTH_SHORT).show();
-                String laberinto = "El laberinto Yeah!";
-                listDevices(view, laberinto);
+                String laberinto = getLaberinto(graphID, name);
+                listDevices(view, laberinto, name);
             }
         });
     }
+
+    public String getLaberinto(int id, String name){
+        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 5);
+        SQLiteDatabase db = admin.getWritableDatabase();
+        Cursor cell = db.rawQuery("SELECT * FROM GRAPH WHERE GRAPH.name = \"" + name +"\";", null);
+        String laberintoObtenido = "";
+        String laberintoObtenido2 = "";
+        String laberintoObtenido3 = "";
+        if (cell.moveToFirst()){
+            laberintoObtenido = cell.getString(1);
+            laberintoObtenido2 = cell.getString(2);
+            laberintoObtenido3 = cell.getString(3);
+            cell.close();
+        }
+        else {
+            Toast.makeText(this, "The Wumpus isn't around this caves. Try another one!", Toast.LENGTH_LONG).show();
+            db.close();
+        }
+        return laberintoObtenido + "%" + laberintoObtenido2 + "%" + laberintoObtenido3;
+    }
+
 
     public int getGraphID(String graphName) {
         AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 5);
@@ -100,9 +121,10 @@ public class SelectLabToShare extends Activity {
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
-    public void listDevices(View vista, String laberinto){
+    public void listDevices(View vista, String laberinto, String nombre){
         Intent i = new Intent(this, BluetoothChat.class);
         i.putExtra("laberinto",laberinto);
+        i.putExtra("nombreLaberinto", nombre);
         i.putExtra("funcion","enviar");
         startActivity(i);
     }
