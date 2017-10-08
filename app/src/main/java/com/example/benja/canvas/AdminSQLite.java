@@ -31,26 +31,19 @@ public class AdminSQLite extends SQLiteOpenHelper {
                 "name TEXT," +
                 "custom INTEGER DEFAULT 1" +
                 ");");
-        db.execSQL("CREATE TABLE CAVE (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-                "graph_id INTEGER," +
-                "cave_number INTEGER," +
-                "FOREIGN KEY (graph_id) REFERENCES GRAPH(id)" +
-                ");");
         db.execSQL("CREATE TABLE CAVE_CONTENT (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                 "content TEXT" +
                 ");");
         db.execSQL("CREATE TABLE GAME (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                "id INTEGER NOT NULL," +
                 "graph_id INTEGER," +
-                "cave_id INTEGER," +
+                "cave_number INTEGER NOT NULL," +
                 "latitude TEXT," +
                 "longitude TEXT" +
-                "cave_number INTEGER," +
                 "content INTEGER," +
+                "PRIMARY KEY (id, cave_number)," +
                 "FOREIGN KEY (graph_id) REFERENCES GRAPH(id)," +
-                "FOREIGN KEY (cave_id) REFERENCES CAVE(id)," +
                 "FOREIGN KEY (content) REFERENCES CAVE_CONTENT(id)" +
                 ");");
 

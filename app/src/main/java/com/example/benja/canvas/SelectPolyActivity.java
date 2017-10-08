@@ -42,7 +42,7 @@ public class SelectPolyActivity extends Activity {
     * Gets a regular maze from the DB once an image is clicked.
     */
     public void imageClicked(int graph) {
-        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 5);
+        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 6);
         SQLiteDatabase db = admin.getWritableDatabase();
         String graphName = "";
         switch (graph) {

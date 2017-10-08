@@ -46,7 +46,7 @@ public class SelectFromLibActivity extends Activity {
     }
 
     public String getGraphID(String graphName) {
-        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 5);
+        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 6);
         SQLiteDatabase db = admin.getWritableDatabase();
         Cursor cell = db.rawQuery("SELECT GRAPH.id FROM GRAPH WHERE GRAPH.name = \"" + graphName +"\";", null);
         if (cell.moveToFirst()){
@@ -67,7 +67,7 @@ public class SelectFromLibActivity extends Activity {
     */
     public void populateListView() {
         mazeList = (ListView)findViewById(R.id.listViewMazes);
-        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 5);
+        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 6);
         SQLiteDatabase db = admin.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT name, number_of_caves FROM GRAPH WHERE custom = 1", null);
         datos = new ArrayList<String>();

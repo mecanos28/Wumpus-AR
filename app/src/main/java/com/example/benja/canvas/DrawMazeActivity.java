@@ -364,7 +364,7 @@ public class DrawMazeActivity extends Activity {
     public void saveMaze() {
         String relations = customMaze.arrayToString();
 
-        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 5);
+        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 6);
         SQLiteDatabase db = admin.getWritableDatabase();
 
         Long tsLong = System.currentTimeMillis()/1000;
