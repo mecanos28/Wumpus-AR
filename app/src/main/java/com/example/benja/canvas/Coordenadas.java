@@ -2,6 +2,7 @@ package com.example.benja.canvas;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -26,9 +27,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class Coordenadas extends AppCompatActivity  {
+public class Coordenadas extends AppCompatActivity {
 
     LocationManager locationManager;
+    LocationListenerGPS locationListenerGPS;
     ProgressBar loading;
     SpinnerActivity sp;
     double latitudeGPS;
@@ -50,22 +52,24 @@ public class Coordenadas extends AppCompatActivity  {
         tv_info = (TextView) findViewById(R.id.tv_information);
         tv_dist = (TextView) findViewById(R.id.tv_dist);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationListenerGPS = new LocationListenerGPS();
         longitudeGPS = 0.0;
         latitudeGPS = 0.0;
         meterToCoordinates = 0.0000095;
-        
+
         flag = false;
 
         //Spinner
         spn_distances = (Spinner) findViewById(R.id.spn_distancias);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.distances, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.distances, R.layout.spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spn_distances.setAdapter(adapter);
         sp = new SpinnerActivity();
         spn_distances.setOnItemSelectedListener(sp);
+        spn_distances.setVisibility(View.VISIBLE);
 
         //loading bar
-        loading = (ProgressBar)findViewById(R.id.progressBar);
+        loading = (ProgressBar) findViewById(R.id.progressBar);
         loading.setVisibility(View.GONE);
 
         //Recibe el id del grafo
@@ -78,25 +82,23 @@ public class Coordenadas extends AppCompatActivity  {
         AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 6);
         SQLiteDatabase db = admin.getWritableDatabase();
 
-        Cursor cell = db.rawQuery("SELECT GRAPH.relations, GRAPH.number_of_caves FROM GRAPH WHERE GRAPH.id = " + graphID +";", null);
-        if (cell.moveToFirst()){
-            info=cell.getString(0);
-            caves=cell.getInt(1);
+        Cursor cell = db.rawQuery("SELECT GRAPH.relations, GRAPH.number_of_caves FROM GRAPH WHERE GRAPH.id = " + graphID + ";", null);
+        if (cell.moveToFirst()) {
+            info = cell.getString(0);
+            caves = cell.getInt(1);
             cell.close();
-            Toast.makeText(this, "ID: " + graph_id + "\nrelaciones: " + info + "\ncaves: " + caves,  Toast.LENGTH_LONG).show();
-        }
-        else {
+            Toast.makeText(this, "ID: " + graph_id + "\nrelaciones: " + info + "\ncaves: " + caves, Toast.LENGTH_LONG).show();
+        } else {
             Toast.makeText(this, "Error obteniendo el las relaciones y el ID!", Toast.LENGTH_LONG).show();
             db.close();
         }
         cell.close();
         cell = db.rawQuery("SELECT MAX(id) FROM GAME;", null);
-        if (cell.moveToFirst()){
+        if (cell.moveToFirst()) {
             game_id = cell.getInt(0) + 1;
             cell.close();
-            Toast.makeText(this, "ID del juego: " + game_id,  Toast.LENGTH_LONG).show();
-        }
-        else {
+            Toast.makeText(this, "ID del juego: " + game_id, Toast.LENGTH_LONG).show();
+        } else {
             Toast.makeText(this, "Error obteniendo el las ID del juego!", Toast.LENGTH_LONG).show();
             db.close();
         }
@@ -106,17 +108,16 @@ public class Coordenadas extends AppCompatActivity  {
     public void getCurrentLocation(View v) {
         flag = displayGpsStatus();
         if (flag) {
-            if(sp.selected){
+            if (sp.selected) {
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2 * 20 * 1000, 10, locationListenerGPS);
+                spn_distances.setVisibility(View.GONE);
                 loading.setVisibility(View.VISIBLE);
-                while( (getLatitudeGPS() == 0.0) || (getLongitudeGPS() == 0.0) ){}
-                loading.setVisibility(View.GONE);
-                tv_dist.append("\n" + distance + " metros.");
-            }
-            else {
+                tv_dist.setText("Distancia: " + distance + " metros.");
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5 * 1000, 0, locationListenerGPS);
+                
+            } else {
                 Toast.makeText(this, "Por favor indique la distancia deseada.", Toast.LENGTH_LONG).show();
             }
         } else {
@@ -128,10 +129,21 @@ public class Coordenadas extends AppCompatActivity  {
         boolean gpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         if (gpsStatus) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
+    }
+
+    public void openSelectPoly(View view) {
+        Intent i = new Intent(this, SelectPolyActivity.class);
+        ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.fade_in, R.anim.fade_out);
+        startActivity(i, options.toBundle());
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
     }
 
     protected void createAlertDialog(String title, String message) {
@@ -157,13 +169,17 @@ public class Coordenadas extends AppCompatActivity  {
         alert.show();
     }
 
-    public double getLatitudeGPS() { return latitudeGPS;  }
+    public double getLatitudeGPS() {
+        return latitudeGPS;
+    }
 
     public double getLongitudeGPS() {
         return longitudeGPS;
     }
 
-    private final LocationListener locationListenerGPS = new LocationListener() {
+    public class LocationListenerGPS implements LocationListener {
+
+        @Override
         public void onLocationChanged(Location location) {
             longitudeGPS = location.getLongitude();
             latitudeGPS = location.getLatitude();
@@ -171,11 +187,13 @@ public class Coordenadas extends AppCompatActivity  {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    String coordinates = "Longitude: " + getLongitudeGPS() + "\nLatitude: " + getLatitudeGPS();
+                    String coordinates = "Latitud: " + getLatitudeGPS() + "\nLongitud: " + getLongitudeGPS();
+                    loading.setVisibility(View.GONE);
                     tv_info.setText(coordinates);
                 }
             });
         }
+
         @Override
         public void onStatusChanged(String s, int i, Bundle bundle) {
         }
@@ -198,16 +216,16 @@ public class Coordenadas extends AppCompatActivity  {
             selected = true;
             switch(pos){
                 case 0:
-                    distance = 6 * meterToCoordinates;
+                    distance = 6;
                     break;
                 case 1:
-                    distance = 8 * meterToCoordinates;
+                    distance = 8;
                     break;
                 case 2:
-                    distance = 10 * meterToCoordinates;
+                    distance = 10;
                     break;
                 case 3:
-                    distance = 12 * meterToCoordinates;
+                    distance = 12;
                     break;
                 default:
                     break;
@@ -229,7 +247,7 @@ public class Coordenadas extends AppCompatActivity  {
     /*
     * Adds a distance in meters to the latitude a number of times.
     */
-    public double addMetersToLatitude (double latitude, int meters, int times, boolean sum) {
+    public double addMetersToLatitude (double latitude, double meters, double times, boolean sum) {
         double result;
         if (sum) {
             result = latitude + (times * (180/Math.PI) * (meters/6378137));
@@ -243,7 +261,7 @@ public class Coordenadas extends AppCompatActivity  {
     /*
     * Adds a distance in meters to the longitude a number of times.
     */
-    public double addMetersToLongitude (double longitude, int meters, int times, boolean sum) {
+    public double addMetersToLongitude (double longitude, double meters, double times, boolean sum) {
         double result;
         if (sum) {
             result = longitude + (times * (180/Math.PI) * (meters/6378137) / Math.cos(Math.PI/180.0 * longitude));
@@ -261,7 +279,7 @@ public class Coordenadas extends AppCompatActivity  {
                 *  1 - 2
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, addMetersToLatitude(latitudeGPS, distancia, 1, true), longitudeGPS);
+                createCave(2, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
                 break;
             case 3:
                 /*
@@ -270,8 +288,8 @@ public class Coordenadas extends AppCompatActivity  {
                 * 1 - 2
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, addMetersToLatitude(latitudeGPS, distancia, 1, true), longitudeGPS);
-                createCave(3, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
+                createCave(2, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
+                createCave(3, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
                 break;
             case 4:
                 /*
@@ -280,9 +298,9 @@ public class Coordenadas extends AppCompatActivity  {
                 *  1 - 2
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, addMetersToLatitude(latitudeGPS, distancia, 1, true), longitudeGPS);
-                createCave(3, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(4, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, true));
+                createCave(2, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
+                createCave(3, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(4, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
                 break;
             case 5:
                 /*
@@ -291,10 +309,10 @@ public class Coordenadas extends AppCompatActivity  {
                 *  5  -  3
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(3, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(4, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(5, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 1, false));
+                createCave(2, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(3, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
                 break;
             case 6:
                 /*
@@ -305,11 +323,11 @@ public class Coordenadas extends AppCompatActivity  {
                 *  3 - 6
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(4, addMetersToLatitude(latitudeGPS, distancia, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, false));
+                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
                 break;
             case 7:
                 /*
@@ -320,12 +338,12 @@ public class Coordenadas extends AppCompatActivity  {
                 *      3 - 6
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(4, addMetersToLatitude(latitudeGPS, distancia, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(7, addMetersToLatitude(latitudeGPS, distancia, 1, false), longitudeGPS);
+                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
                 break;
             case 8:
                 /*
@@ -336,13 +354,13 @@ public class Coordenadas extends AppCompatActivity  {
                 *      3 - 6
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(4, addMetersToLatitude(latitudeGPS, distancia, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(7, addMetersToLatitude(latitudeGPS, distancia, 1, false), longitudeGPS);
-                createCave(8, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 1, true));
+                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
+                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
                 break;
             case 9:
                 /*
@@ -353,14 +371,14 @@ public class Coordenadas extends AppCompatActivity  {
                 *  9 - 3 - 6
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(4, addMetersToLatitude(latitudeGPS, distancia, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(7, addMetersToLatitude(latitudeGPS, distancia, 1, false), longitudeGPS);
-                createCave(8, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(9, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 1, false));
+                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
+                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
                 break;
             case 10:
                 /*
@@ -371,15 +389,15 @@ public class Coordenadas extends AppCompatActivity  {
                 *  9 - 3 - 6
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(4, addMetersToLatitude(latitudeGPS, distancia, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(7, addMetersToLatitude(latitudeGPS, distancia, 1, false), longitudeGPS);
-                createCave(8, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(9, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(10, addMetersToLatitude(latitudeGPS, distancia, 2, true), longitudeGPS);
+                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
+                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(10, addMetersToLatitude(latitudeGPS, distance, 2, true), longitudeGPS);
                 break;
             case 11:
                 /*
@@ -390,16 +408,16 @@ public class Coordenadas extends AppCompatActivity  {
                 *  9 - 3 - 6
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(4, addMetersToLatitude(latitudeGPS, distancia, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(7, addMetersToLatitude(latitudeGPS, distancia, 1, false), longitudeGPS);
-                createCave(8, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(9, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(10, addMetersToLatitude(latitudeGPS, distancia, 2, true), longitudeGPS);
-                createCave(11, addMetersToLatitude(latitudeGPS, distancia, 2, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
+                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
+                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(10, addMetersToLatitude(latitudeGPS, distance, 2, true), longitudeGPS);
+                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
                 break;
             case 12:
                 /*
@@ -410,17 +428,17 @@ public class Coordenadas extends AppCompatActivity  {
                 *  9 - 3 - 6 - 12
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(4, addMetersToLatitude(latitudeGPS, distancia, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(7, addMetersToLatitude(latitudeGPS, distancia, 1, false), longitudeGPS);
-                createCave(8, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(9, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(10, addMetersToLatitude(latitudeGPS, distancia, 2, true), longitudeGPS);
-                createCave(11, addMetersToLatitude(latitudeGPS, distancia, 2, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(12, addMetersToLatitude(latitudeGPS, distancia, 2, true), addMetersToLongitude(longitudeGPS, distancia, 1, false));
+                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
+                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(10, addMetersToLatitude(latitudeGPS, distance, 2, true), longitudeGPS);
+                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(12, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
                 break;
             case 13:
                 /*
@@ -433,18 +451,18 @@ public class Coordenadas extends AppCompatActivity  {
                 *  13
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(4, addMetersToLatitude(latitudeGPS, distancia, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(7, addMetersToLatitude(latitudeGPS, distancia, 1, false), longitudeGPS);
-                createCave(8, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(9, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(10, addMetersToLatitude(latitudeGPS, distancia, 2, true), longitudeGPS);
-                createCave(11, addMetersToLatitude(latitudeGPS, distancia, 2, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(12, addMetersToLatitude(latitudeGPS, distancia, 2, true), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(13, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 2, false));
+                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
+                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(10, addMetersToLatitude(latitudeGPS, distance, 2, true), longitudeGPS);
+                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(12, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(13, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 2, false));
                 break;
             case 14:
                 /*
@@ -457,19 +475,19 @@ public class Coordenadas extends AppCompatActivity  {
                 *  13- 14
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(4, addMetersToLatitude(latitudeGPS, distancia, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(7, addMetersToLatitude(latitudeGPS, distancia, 1, false), longitudeGPS);
-                createCave(8, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(9, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(10, addMetersToLatitude(latitudeGPS, distancia, 2, true), longitudeGPS);
-                createCave(11, addMetersToLatitude(latitudeGPS, distancia, 2, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(12, addMetersToLatitude(latitudeGPS, distancia, 2, true), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(13, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 2, false));
-                createCave(14, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 2, false));
+                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
+                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(10, addMetersToLatitude(latitudeGPS, distance, 2, true), longitudeGPS);
+                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(12, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(13, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(14, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 2, false));
                 break;
             case 15:
                 /*
@@ -482,20 +500,20 @@ public class Coordenadas extends AppCompatActivity  {
                 *  13- 14- 15
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(4, addMetersToLatitude(latitudeGPS, distancia, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(7, addMetersToLatitude(latitudeGPS, distancia, 1, false), longitudeGPS);
-                createCave(8, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(9, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(10, addMetersToLatitude(latitudeGPS, distancia, 2, true), longitudeGPS);
-                createCave(11, addMetersToLatitude(latitudeGPS, distancia, 2, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(12, addMetersToLatitude(latitudeGPS, distancia, 2, true), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(13, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 2, false));
-                createCave(14, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 2, false));
-                createCave(15, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 2, false));
+                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
+                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(10, addMetersToLatitude(latitudeGPS, distance, 2, true), longitudeGPS);
+                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(12, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(13, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(14, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(15, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 2, false));
                 break;
             case 16:
                 /*
@@ -508,21 +526,21 @@ public class Coordenadas extends AppCompatActivity  {
                 *  13- 14- 15- 16
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(4, addMetersToLatitude(latitudeGPS, distancia, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(7, addMetersToLatitude(latitudeGPS, distancia, 1, false), longitudeGPS);
-                createCave(8, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(9, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(10, addMetersToLatitude(latitudeGPS, distancia, 2, true), longitudeGPS);
-                createCave(11, addMetersToLatitude(latitudeGPS, distancia, 2, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(12, addMetersToLatitude(latitudeGPS, distancia, 2, true), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(13, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 2, false));
-                createCave(14, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 2, false));
-                createCave(15, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 2, false));
-                createCave(16, addMetersToLatitude(latitudeGPS, distancia, 2, true), addMetersToLongitude(longitudeGPS, distancia, 2, false));
+                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
+                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(10, addMetersToLatitude(latitudeGPS, distance, 2, true), longitudeGPS);
+                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(12, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(13, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(14, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(15, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(16, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 2, false));
                 break;
             case 17:
                 /*
@@ -535,22 +553,22 @@ public class Coordenadas extends AppCompatActivity  {
                 *      13- 14- 15- 16
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(4, addMetersToLatitude(latitudeGPS, distancia, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(7, addMetersToLatitude(latitudeGPS, distancia, 1, false), longitudeGPS);
-                createCave(8, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(9, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(10, addMetersToLatitude(latitudeGPS, distancia, 2, true), longitudeGPS);
-                createCave(11, addMetersToLatitude(latitudeGPS, distancia, 2, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(12, addMetersToLatitude(latitudeGPS, distancia, 2, true), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(13, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 2, false));
-                createCave(14, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 2, false));
-                createCave(15, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 2, false));
-                createCave(16, addMetersToLatitude(latitudeGPS, distancia, 2, true), addMetersToLongitude(longitudeGPS, distancia, 2, false));
-                createCave(17, addMetersToLatitude(latitudeGPS, distancia, 2, false), addMetersToLongitude(longitudeGPS, distancia, 1, true));
+                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
+                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(10, addMetersToLatitude(latitudeGPS, distance, 2, true), longitudeGPS);
+                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(12, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(13, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(14, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(15, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(16, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(17, addMetersToLatitude(latitudeGPS, distance, 2, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
                 break;
             case 18:
                 /*
@@ -563,23 +581,23 @@ public class Coordenadas extends AppCompatActivity  {
                 *      13- 14- 15- 16
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(4, addMetersToLatitude(latitudeGPS, distancia, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(7, addMetersToLatitude(latitudeGPS, distancia, 1, false), longitudeGPS);
-                createCave(8, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(9, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(10, addMetersToLatitude(latitudeGPS, distancia, 2, true), longitudeGPS);
-                createCave(11, addMetersToLatitude(latitudeGPS, distancia, 2, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(12, addMetersToLatitude(latitudeGPS, distancia, 2, true), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(13, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 2, false));
-                createCave(14, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 2, false));
-                createCave(15, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 2, false));
-                createCave(16, addMetersToLatitude(latitudeGPS, distancia, 2, true), addMetersToLongitude(longitudeGPS, distancia, 2, false));
-                createCave(17, addMetersToLatitude(latitudeGPS, distancia, 2, false), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(18, addMetersToLatitude(latitudeGPS, distancia, 2, false), longitudeGPS);
+                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
+                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(10, addMetersToLatitude(latitudeGPS, distance, 2, true), longitudeGPS);
+                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(12, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(13, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(14, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(15, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(16, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(17, addMetersToLatitude(latitudeGPS, distance, 2, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(18, addMetersToLatitude(latitudeGPS, distance, 2, false), longitudeGPS);
                 break;
             case 19:
                 /*
@@ -592,24 +610,24 @@ public class Coordenadas extends AppCompatActivity  {
                 *      13- 14- 15- 16
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(4, addMetersToLatitude(latitudeGPS, distancia, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(7, addMetersToLatitude(latitudeGPS, distancia, 1, false), longitudeGPS);
-                createCave(8, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(9, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(10, addMetersToLatitude(latitudeGPS, distancia, 2, true), longitudeGPS);
-                createCave(11, addMetersToLatitude(latitudeGPS, distancia, 2, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(12, addMetersToLatitude(latitudeGPS, distancia, 2, true), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(13, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 2, false));
-                createCave(14, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 2, false));
-                createCave(15, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 2, false));
-                createCave(16, addMetersToLatitude(latitudeGPS, distancia, 2, true), addMetersToLongitude(longitudeGPS, distancia, 2, false));
-                createCave(17, addMetersToLatitude(latitudeGPS, distancia, 2, false), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(18, addMetersToLatitude(latitudeGPS, distancia, 2, false), longitudeGPS);
-                createCave(19, addMetersToLatitude(latitudeGPS, distancia, 2, false), addMetersToLongitude(longitudeGPS, distancia, 1, false));
+                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
+                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(10, addMetersToLatitude(latitudeGPS, distance, 2, true), longitudeGPS);
+                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(12, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(13, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(14, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(15, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(16, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(17, addMetersToLatitude(latitudeGPS, distance, 2, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(18, addMetersToLatitude(latitudeGPS, distance, 2, false), longitudeGPS);
+                createCave(19, addMetersToLatitude(latitudeGPS, distance, 2, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
                 break;
             case 20:
                 /*
@@ -622,25 +640,25 @@ public class Coordenadas extends AppCompatActivity  {
                 *  20- 13- 14- 15- 16
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(4, addMetersToLatitude(latitudeGPS, distancia, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(7, addMetersToLatitude(latitudeGPS, distancia, 1, false), longitudeGPS);
-                createCave(8, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(9, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(10, addMetersToLatitude(latitudeGPS, distancia, 2, true), longitudeGPS);
-                createCave(11, addMetersToLatitude(latitudeGPS, distancia, 2, true), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(12, addMetersToLatitude(latitudeGPS, distancia, 2, true), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(13, addMetersToLatitude(latitudeGPS, distancia, 1, false), addMetersToLongitude(longitudeGPS, distancia, 2, false));
-                createCave(14, latitudeGPS, addMetersToLongitude(longitudeGPS, distancia, 2, false));
-                createCave(15, addMetersToLatitude(latitudeGPS, distancia, 1, true), addMetersToLongitude(longitudeGPS, distancia, 2, false));
-                createCave(16, addMetersToLatitude(latitudeGPS, distancia, 2, true), addMetersToLongitude(longitudeGPS, distancia, 2, false));
-                createCave(17, addMetersToLatitude(latitudeGPS, distancia, 2, false), addMetersToLongitude(longitudeGPS, distancia, 1, true));
-                createCave(18, addMetersToLatitude(latitudeGPS, distancia, 2, false), longitudeGPS);
-                createCave(19, addMetersToLatitude(latitudeGPS, distancia, 2, false), addMetersToLongitude(longitudeGPS, distancia, 1, false));
-                createCave(20, addMetersToLatitude(latitudeGPS, distancia, 2, false), addMetersToLongitude(longitudeGPS, distancia, 2, false));
+                createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
+                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(10, addMetersToLatitude(latitudeGPS, distance, 2, true), longitudeGPS);
+                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(12, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(13, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(14, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(15, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(16, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(17, addMetersToLatitude(latitudeGPS, distance, 2, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(18, addMetersToLatitude(latitudeGPS, distance, 2, false), longitudeGPS);
+                createCave(19, addMetersToLatitude(latitudeGPS, distance, 2, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(20, addMetersToLatitude(latitudeGPS, distance, 2, false), addMetersToLongitude(longitudeGPS, distance, 2, false));
                 break;
         }
     }

@@ -2,10 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.benja.canvas">
 
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -21,14 +22,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SelectPolyActivity"></activity>
-        <activity android:name=".Multiplayer"></activity>
-        <activity android:name=".SelectFromLibActivity"></activity>
-        <activity android:name=".Coordenadas"></activity>
-        <activity android:name=".DrawMazeActivity"></activity>
-        <activity android:name=".Bluetooth.BluetoothChat"></activity>
-        <activity android:name=".Bluetooth.DeviceListActivity"></activity>
-        <activity android:name=".Bluetooth.SelectLabToShare"></activity>
+        <activity android:name=".SelectPolyActivity" />
+        <activity android:name=".Multiplayer" />
+        <activity android:name=".SelectFromLibActivity" />
+        <activity android:name=".Coordenadas" />
+        <activity android:name=".DrawMazeActivity" />
+        <activity android:name=".Bluetooth.BluetoothChat" />
+        <activity android:name=".Bluetooth.DeviceListActivity" />
+        <activity android:name=".Bluetooth.SelectLabToShare" />
+        <activity android:name=".MapActivity"></activity>
     </application>
 
 </manifest>

@@ -29,4 +29,5 @@
         <item>10 metros</item>
         <item>12 metros</item>
     </string-array>
+    <string name="title_activity_map">MapActivity</string>
 </resources>
