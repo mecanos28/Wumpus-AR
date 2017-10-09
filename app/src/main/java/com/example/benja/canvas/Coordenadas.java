@@ -116,7 +116,7 @@ public class Coordenadas extends AppCompatActivity {
                 loading.setVisibility(View.VISIBLE);
                 tv_dist.setText("Distancia: " + distance + " metros.");
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5 * 1000, 0, locationListenerGPS);
-                
+
             } else {
                 Toast.makeText(this, "Por favor indique la distancia deseada.", Toast.LENGTH_LONG).show();
             }
@@ -190,6 +190,7 @@ public class Coordenadas extends AppCompatActivity {
                     String coordinates = "Latitud: " + getLatitudeGPS() + "\nLongitud: " + getLongitudeGPS();
                     loading.setVisibility(View.GONE);
                     tv_info.setText(coordinates);
+
                 }
             });
         }
