@@ -9,7 +9,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
-        android:allowBackup="true"
+        android:name="android.support.multidex.MultiDexApplication"
+    android:allowBackup="true"
         android:icon="@drawable/wumpus_icon"
         android:label="Wumpus"
         android:roundIcon="@drawable/wumpus_icon"
@@ -30,7 +31,24 @@
         <activity android:name=".Bluetooth.BluetoothChat" />
         <activity android:name=".Bluetooth.DeviceListActivity" />
         <activity android:name=".Bluetooth.SelectLabToShare" />
-        <activity android:name=".MapActivity"></activity>
+        <activity android:name=".PassActivity" />
+
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+        <uses-library android:name="com.google.android.maps"/>
+
+        <activity
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps"></activity>
     </application>
 
 </manifest>

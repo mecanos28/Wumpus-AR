@@ -8,39 +8,25 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_information"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.32"
-                android:text="Información de coordenadas"
-                android:layout_marginBottom="10dp"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:textAlignment="center"
-                android:textSize="24sp" />
+            android:orientation="vertical"
+            android:gravity="center"
+            >
 
             <TextView
                 android:id="@+id/tv_dist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="0.02"
                 android:gravity="center"
-                android:textStyle="bold"
+                android:text="Determine la distancia promedio que desea entre cuevas"
                 android:textColor="@color/white"
-                android:layout_marginBottom="10dp"
-                android:text="Determine la distancia promedio que desea que haya entre cuevas"
-                android:textSize="24sp"
-                android:layout_weight="0.28" />
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <Spinner
                 android:id="@+id/spn_distancias"
@@ -48,51 +34,30 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
-                android:layout_weight="0.32"
+                android:layout_weight="0.15"
                 android:spinnerMode="dialog"
                 android:textColor="@color/white" />
 
             <ProgressBar
                 android:id="@+id/progressBar"
                 style="@style/Widget.AppCompat.ProgressBar"
-                android:layout_marginBottom="10dp"
+                android:layout_width="170dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
-                android:layout_width="120dp"
                 android:layout_weight="0.37" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
             <Button
-                android:id="@+id/btn_cancel"
-                android:textColor="@color/white"
-                android:background="@color/white_button"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginBottom="10dp"
+                android:id="@+id/buttonVerMiUbicacion"
+                android:layout_width="170dp"
+                android:layout_height="60dp"
                 android:layout_gravity="center"
-                android:onClick="openSelectPoly"
-                android:layout_width="250dp"
-                android:text="Regresar" />
-
-            <Button
-                android:id="@+id/btn_start_game"
-                android:textColor="@color/white"
+                android:layout_marginBottom="50dp"
                 android:background="@color/white_button"
-                android:layout_gravity="center"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:onClick="getCurrentLocation"
-                android:layout_marginBottom="10dp"
-                android:text="Confirmar"
+                android:text="Agregar ubicación"
 
-                />
+                android:textColor="@color/white" />
+
         </LinearLayout>
 
     </LinearLayout>
