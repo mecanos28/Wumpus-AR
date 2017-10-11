@@ -75,11 +75,7 @@ public class Coordenadas extends AppCompatActivity {
         b = getIntent().getExtras();
         String graphID = b.getString("graphID");
         graph_id = Integer.parseInt(graphID);
-
-
-
     }
-
 
     public void getCurrentLocation(View v) {
 
@@ -221,7 +217,4 @@ public class Coordenadas extends AppCompatActivity {
             selected = false;
         }
     }
-
-
-
 }

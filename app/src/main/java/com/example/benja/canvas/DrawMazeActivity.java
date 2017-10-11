@@ -9,7 +9,6 @@ import android.os.Bundle;
 
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -341,7 +340,7 @@ public class DrawMazeActivity extends Activity {
     }
 
     public void checkD(View v){
-        customMaze = new Graph(myCanvas.getNumCave());
+        customMaze = new Graph(myCanvas.getTotalCaves(), myCanvas.getCaves());
         customMaze.fillGraph(myCanvas.getRelations());
         if (customMaze.valid()) {
             askMazeName();

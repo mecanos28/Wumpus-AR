@@ -26,9 +26,21 @@ public class DrawCanvas extends View {
     private Canvas drawCanvas; //Lienzo
     private Bitmap canvasBitmap; //Para guardar
     private ArrayList<IntPair> relations; //Array que almacena todas las relaciones existentes
+
+    public ArrayList<Cave> getCaves() {
+        return caves;
+    }
+
     private ArrayList<Cave> caves; //Array que almacena todas las cuevas existentes
     private float touchX, touchY; //Coordenadas
-    private int numCave, totalCaves, maxCaves; //Contador para asignar un id a cada cueva; Contador del total de cuevas; Máximo de cuevas definido
+    private int numCave;
+
+    public int getTotalCaves() {
+        return totalCaves;
+    }
+
+    private int totalCaves;
+    private int maxCaves; //Contador para asignar un id a cada cueva; Contador del total de cuevas; Máximo de cuevas definido
 
     public DrawCanvas(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -180,51 +192,26 @@ public class DrawCanvas extends View {
     //Agrega un camino/arco entre 2 cuevas
     public void addArc(Cave c1, Cave c2){
         float x1,y1,x2,y2;
+        String tag;
         x1 = c1.getCorX();
         y1 = c1.getCorY();
         x2 = c2.getCorX();
         y2 = c2.getCorY();
-
         drawPaint.setStrokeWidth(20);
         drawPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         drawPaint.setColor(0xFFFFFFFF);//Blanco //(0xFF000000); /Negro
-
-        //Acomodar coordenadas desde la Cueva 1
-        if(y1 < y2){                       //Si el arco se dibuja hacia abajo
-            if(x1 < x2){                   //Si es hacia la derecha
-                drawPath.moveTo(x1,y1+50);
-            }
-            else {                         //Si es hacia la izquierda
-                drawPath.moveTo(x1,y1+50);
-            }
-        }
-        else {                             //Si el arco se dibuja hacia arriba
-            if(x1 < x2){                   //Si es hacia la derecha
-                drawPath.moveTo(x1,y1-50);
-            }
-            else {                         //Si es hacia la izquierda
-                drawPath.moveTo(x1,y1-50);
-            }
-        }
-        //Acomodar coordenadas hasta la Cueva 2
-        if(y1 > y2){                       //Si el arco viene de abajo
-            if(x1 < x2){                   //Si viene de la izquierda
-                drawPath.lineTo(x2,y2+50);
-            }
-            else {                         //Si viene de la derecha
-                drawPath.lineTo(x2,y2+50);
-            }
-        }
-        else {                             //Si el arco viene de arriba
-            if(x1 < x2){                   //Si viene de la izquierda
-                drawPath.lineTo(x2,y2-50);
-            }
-            else {                         //Si viene de la derecha
-                drawPath.lineTo(x2,y2-50);
-            }
-        }
+        drawPath.moveTo(x1,y1);
+        drawPath.lineTo(x2,y2);
         drawCanvas.drawPath(drawPath, drawPaint);
         drawPath.reset();
+        drawPaint.setStrokeWidth(3);
+        drawPaint.setTextSize(30);
+        drawPaint.setStyle(Paint.Style.STROKE);
+        drawPaint.setColor(0xFF000000);//(0xFFFFFFFF); //Color: Blanco
+        tag = Integer.toString(c1.getId());
+        drawCanvas.drawText(tag, x1 - 5, y1 + 5, drawPaint);
+        tag = Integer.toString(c2.getId());
+        drawCanvas.drawText(tag, x2 - 5, y2 + 5, drawPaint);
         invalidate();
     }
 
