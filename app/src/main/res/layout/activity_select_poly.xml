@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation = "vertical"
-    tools:context="com.example.benja.canvas.SelectPolyActivity"
-    android:weightSum="1">
+    tools:context="com.clavicusoft.wumpus.Select.SelectPolyActivity"
+    android:weightSum="1"
+    android:background="@drawable/other_background_purple">
 
     <TextView
         android:id="@+id/textView4"
@@ -14,32 +15,47 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textStyle="bold"
-        android:text="Seleccione el tipo de laberinto a escoger" />
+        android:textSize="20sp"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/white"
+        android:text="Deslice para escoger un laberinto" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/ImageSlider"
         android:layout_width="match_parent"
         android:layout_height="172dp"
-        android:layout_weight="0.92" />
+        android:layout_weight="0.92"
+        />
 
     <Button
         android:id="@+id/bttnStartGame"
-        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:onClick="startGame"
-        android:text="Start Game" />
+        android:textColor="@color/white"
+        android:background="@color/white_button"
+        android:layout_marginBottom="10dp"
+        android:text="Iniciar el juego" />
 
     <Button
         android:id="@+id/bttnDrawLab"
-        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:onClick="DrawLabyrinthView"
-        android:text="Draw a new labyrinth" />
+        android:onClick="drawLabyrinthView"
+        android:textColor="@color/white"
+        android:background="@color/white_button"
+        android:layout_marginBottom="10dp"
+        android:text="Dibujar un laberinto" />
 
     <Button
         android:id="@+id/bttnChooseLib"
-        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:onClick="selectFromLibView"
-        android:text="Choose from library..." />
+        android:textColor="@color/white"
+        android:background="@color/white_button"
+        android:text="Biblioteca de laberintos" />
 </LinearLayout>

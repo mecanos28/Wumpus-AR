@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.clavicusoft.wumpus.Select.SelectFromLibActivity"
+    tools:context="com.clavicusoft.wumpus.Bluetooth.SelectLabToShare"
     android:background="@drawable/other_background">
 
     <TextView
@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Seleccione un laberinto"
+        android:text="Seleccione el laberinto que desea compartir"
         android:textSize="20sp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
@@ -24,9 +24,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="20dp"
-        android:textColor="#ffffff"
         android:divider="@color/white_button"
-        android:dividerHeight="2dp">
-     </ListView>
+        android:textColor="#ffffff"
+        android:dividerHeight="2dp"/>
 
 </LinearLayout>
