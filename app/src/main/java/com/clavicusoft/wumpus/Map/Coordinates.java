@@ -195,7 +195,7 @@ public class Coordinates extends Activity {
             selected = true;
             switch(pos){
                 case 0:
-                    distance = 2;
+                    distance = 5;
                     break;
                 case 1:
                     distance = 10;
