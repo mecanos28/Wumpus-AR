@@ -12,6 +12,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Looper;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
@@ -114,9 +115,11 @@ public class Coordinates extends Activity {
                     spn_distances.setVisibility(View.GONE);
                     loading.setVisibility(View.VISIBLE);
                     if (displayNetworkGPSStatus()) {
-                        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5 * 1000, 3, locationListenerGPS);
+                        //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5 * 1000, 3, locationListenerGPS);
+                        locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, locationListenerGPS, Looper.getMainLooper());
                     } else {
-                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5 * 1000, 3, locationListenerGPS);
+                        //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5 * 1000, 3, locationListenerGPS);
+                        locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locationListenerGPS, Looper.getMainLooper());
                     }
                 }
 
@@ -216,10 +219,10 @@ public class Coordinates extends Activity {
                     return;
                 }
                 if(displayNetworkGPSStatus()){
-                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5 * 1000, 3, locationListenerCurrent);
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 3, locationListenerCurrent);
                 }
                 else{
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5 * 1000, 3, locationListenerCurrent);
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 3, locationListenerCurrent);
                 }
         } else {
             createAlertDialog("Estado del GPS", "El GPS está desactivado.");
