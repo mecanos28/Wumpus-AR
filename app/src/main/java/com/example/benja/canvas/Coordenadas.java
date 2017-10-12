@@ -29,6 +29,7 @@ public class Coordenadas extends AppCompatActivity {
 
     LocationManager locationManager;
     LocationListenerGPS locationListenerGPS;
+    LocationListenerCurrent locationListenerCurrent;
     ProgressBar loading;
     SpinnerActivity sp;
     double latitudeGPS;
@@ -173,6 +174,43 @@ public class Coordenadas extends AppCompatActivity {
                 startActivity(i, options.toBundle());
 
             }
+        }
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+        }
+    };
+
+    public void updateLocation(View v) {
+        flag = displayGpsStatus();
+        if (flag) {
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                if(displayNetworkGPSStatus()){
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5 * 1000, 3, locationListenerCurrent);
+                }
+                else{
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5 * 1000, 3, locationListenerCurrent);
+                }
+        } else {
+            createAlertDialog("Estado del GPS", "El GPS está desactivado.");
+        }
+    }
+
+    public class LocationListenerCurrent implements LocationListener {
+
+        @Override
+        public void onLocationChanged(Location location) {
+            longitudeGPS = location.getLongitude();
+            latitudeGPS = location.getLatitude();
         }
         @Override
         public void onStatusChanged(String s, int i, Bundle bundle) {
