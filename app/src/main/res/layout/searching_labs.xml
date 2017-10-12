@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:background="@drawable/other_background_purple"
-    tools:context="com.example.benja.canvas.Bluetooth.BluetoothChat">
+    tools:context="com.clavicusoft.wumpus.Bluetooth.BluetoothChat">
 
     <LinearLayout
         android:layout_width="match_parent"

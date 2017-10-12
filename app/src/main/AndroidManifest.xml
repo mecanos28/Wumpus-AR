@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.benja.canvas">
+    package="com.clavicusoft.wumpus">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -16,23 +16,23 @@
         android:roundIcon="@drawable/wumpus_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity" android:screenOrientation="portrait">
+        <activity android:name=".Select.MainActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SelectPolyActivity" android:screenOrientation="portrait" />
-        <activity android:name=".Multiplayer" android:screenOrientation="portrait" />
-        <activity android:name=".SelectFromLibActivity" android:screenOrientation="portrait" />
-        <activity android:name=".Coordenadas" android:screenOrientation="portrait" />
-        <activity android:name=".DrawMazeActivity" android:screenOrientation="portrait" />
+        <activity android:name=".Select.SelectPolyActivity" android:screenOrientation="portrait" />
+        <activity android:name=".Select.Multiplayer" android:screenOrientation="portrait" />
+        <activity android:name=".Select.SelectFromLibActivity" android:screenOrientation="portrait" />
+        <activity android:name=".Map.Coordinates" android:screenOrientation="portrait" />
+        <activity android:name=".Draw.DrawMazeActivity" android:screenOrientation="portrait" />
         <activity android:name=".Bluetooth.BluetoothChat" android:screenOrientation="portrait" />
         <activity android:name=".Bluetooth.DeviceListActivity" android:screenOrientation="portrait" />
         <activity android:name=".Bluetooth.SelectLabToShare" android:screenOrientation="portrait" />
-        <activity android:name=".PassActivity" android:screenOrientation="portrait"  />
-        <activity android:name=".MapsActivity" android:label="@string/title_activity_maps" android:screenOrientation="portrait"></activity>
+        <activity android:name=".Map.PassActivity" android:screenOrientation="portrait"  />
+        <activity android:name=".Map.MapsActivity" android:label="@string/title_activity_maps" android:screenOrientation="portrait"></activity>
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

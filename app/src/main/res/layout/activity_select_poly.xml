@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation = "vertical"
-    tools:context="com.example.benja.canvas.SelectPolyActivity"
+    tools:context="com.clavicusoft.wumpus.Select.SelectPolyActivity"
     android:weightSum="1"
     android:background="@drawable/other_background_purple">
 

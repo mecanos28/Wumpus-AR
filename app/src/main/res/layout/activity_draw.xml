@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.benja.canvas.DrawMazeActivity"
+    tools:context="com.clavicusoft.wumpus.Draw.DrawMazeActivity"
     android:background="@drawable/other_background">
 
     <Button
@@ -19,7 +19,7 @@
 
     <view
         android:id="@+id/viewDrawCanvas"
-        class="com.example.benja.canvas.DrawCanvas"
+        class="com.clavicusoft.wumpus.Draw.DrawCanvas"
         layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
