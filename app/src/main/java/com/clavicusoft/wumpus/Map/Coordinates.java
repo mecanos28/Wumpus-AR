@@ -217,16 +217,16 @@ public class Coordinates extends Activity {
             selected = true;
             switch(pos){
                 case 0:
-                    distance = 6;
+                    distance = 5;
                     break;
                 case 1:
-                    distance = 8;
-                    break;
-                case 2:
                     distance = 10;
                     break;
+                case 2:
+                    distance = 25;
+                    break;
                 case 3:
-                    distance = 12;
+                    distance = 50;
                     break;
                 case 4:
                     distance = 100;
