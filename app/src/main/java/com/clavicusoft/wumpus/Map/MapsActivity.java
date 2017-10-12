@@ -653,10 +653,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public double addMetersToLongitude (double longitude, double meters, double times, boolean sum) {
         double result;
         if (sum) {
-            result = longitude + (times * (180/Math.PI) * (meters/6378137) / Math.cos(Math.PI/180.0 * longitude));
+            //result = longitude + (times * (180/Math.PI) * (meters/6378137) / Math.cos(Math.PI/180.0 * longitude));
+            result = longitude + (times * (180/Math.PI) * (meters/6378137));
         }
         else {
-            result = longitude - (times * (180/Math.PI) * (meters/6378137) / Math.cos(Math.PI/180.0 * longitude));
+            //result = longitude - (times * (180/Math.PI) * (meters/6378137) / Math.cos(Math.PI/180.0 * longitude));
+            result = longitude - (times * (180/Math.PI) * (meters/6378137));
         }
         return result;
     }
