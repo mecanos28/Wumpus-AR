@@ -25,7 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class Coordenadas extends AppCompatActivity {
+public class Coordenadas extends Activity {
 
     LocationManager locationManager;
     LocationListenerGPS locationListenerGPS;
@@ -79,8 +79,6 @@ public class Coordenadas extends AppCompatActivity {
     }
 
     public void getCurrentLocation(View v) {
-
-
         flag = displayGpsStatus();
         if (flag) {
             if (sp.selected) {
@@ -172,7 +170,6 @@ public class Coordenadas extends AppCompatActivity {
                 i.putExtra("Distancia",distance);
                 ActivityOptions options = ActivityOptions.makeCustomAnimation(Coordenadas.this, R.anim.fade_in, R.anim.fade_out);
                 startActivity(i, options.toBundle());
-
             }
         }
         @Override

@@ -10,28 +10,29 @@
 
     <application
         android:name="android.support.multidex.MultiDexApplication"
-    android:allowBackup="true"
+        android:allowBackup="true"
         android:icon="@drawable/wumpus_icon"
         android:label="Wumpus"
         android:roundIcon="@drawable/wumpus_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SelectPolyActivity" />
-        <activity android:name=".Multiplayer" />
-        <activity android:name=".SelectFromLibActivity" />
-        <activity android:name=".Coordenadas" />
-        <activity android:name=".DrawMazeActivity" />
-        <activity android:name=".Bluetooth.BluetoothChat" />
-        <activity android:name=".Bluetooth.DeviceListActivity" />
-        <activity android:name=".Bluetooth.SelectLabToShare" />
-        <activity android:name=".PassActivity" />
+        <activity android:name=".SelectPolyActivity" android:screenOrientation="portrait" />
+        <activity android:name=".Multiplayer" android:screenOrientation="portrait" />
+        <activity android:name=".SelectFromLibActivity" android:screenOrientation="portrait" />
+        <activity android:name=".Coordenadas" android:screenOrientation="portrait" />
+        <activity android:name=".DrawMazeActivity" android:screenOrientation="portrait" />
+        <activity android:name=".Bluetooth.BluetoothChat" android:screenOrientation="portrait" />
+        <activity android:name=".Bluetooth.DeviceListActivity" android:screenOrientation="portrait" />
+        <activity android:name=".Bluetooth.SelectLabToShare" android:screenOrientation="portrait" />
+        <activity android:name=".PassActivity" android:screenOrientation="portrait"  />
+        <activity android:name=".MapsActivity" android:label="@string/title_activity_maps" android:screenOrientation="portrait"></activity>
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -39,16 +40,13 @@
              Note that the API key is linked to the encryption key used to sign the APK.
              You need a different API key for each encryption key, including the release key that is used to
              sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
         <uses-library android:name="com.google.android.maps"/>
 
-        <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
     </application>
 
 </manifest>
