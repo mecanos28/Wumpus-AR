@@ -206,6 +206,9 @@ public class Coordinates extends Activity {
                 case 3:
                     distance = 12;
                     break;
+                case 4:
+                    distance = 100;
+                    break;
                 default:
                     break;
             }
