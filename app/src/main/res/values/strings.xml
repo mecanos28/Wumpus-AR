@@ -24,10 +24,10 @@
     <string name="connect">Dispositivos</string>
     <string name="discoverable">Visibilidad</string>
     <string-array name="distances">
-        <item>6 metros</item>
-        <item>8 metros</item>
+        <item>5 metros</item>
         <item>10 metros</item>
-        <item>12 metros</item>
+        <item>25 metros</item>
+        <item>50 metros</item>
         <item>100 metros</item>
     </string-array>
     <string name="title_activity_map">MapActivity</string>

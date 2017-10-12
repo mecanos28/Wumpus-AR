@@ -14,7 +14,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -42,7 +41,7 @@ public class Coordinates extends Activity {
     boolean flag;
     Spinner spn_distances;
     int graph_id;
-
+    AlertDialog.Builder alert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,24 +77,47 @@ public class Coordinates extends Activity {
         b = getIntent().getExtras();
         String graphID = b.getString("graphID");
         graph_id = Integer.parseInt(graphID);
+
+        alert = new AlertDialog.Builder(this);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 1) {
+            if(grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //Permission accepted
+            } else {
+                //Permission denied
+                alert.setTitle("Error");
+                alert.setMessage("Para poder continuar con el juego debe permitir a Wumpus acceder a su ubicación.");
+                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alert.show();
+            }
+        }
     }
 
     public void getCurrentLocation(View v) {
         flag = displayGpsStatus();
         if (flag) {
             if (sp.selected) {
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    return;
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    //Check Permissions
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
                 }
-                tv_dist.setVisibility(View.GONE);
-                but_VerUbicacion.setVisibility(View.GONE);
-                spn_distances.setVisibility(View.GONE);
-                loading.setVisibility(View.VISIBLE);
-                if(displayNetworkGPSStatus()){
-                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5 * 1000, 3, locationListenerGPS);
-                }
-                else{
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5 * 1000, 3, locationListenerGPS);
+                else {
+                    tv_dist.setVisibility(View.GONE);
+                    but_VerUbicacion.setVisibility(View.GONE);
+                    spn_distances.setVisibility(View.GONE);
+                    loading.setVisibility(View.VISIBLE);
+                    if (displayNetworkGPSStatus()) {
+                        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5 * 1000, 3, locationListenerGPS);
+                    } else {
+                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5 * 1000, 3, locationListenerGPS);
+                    }
                 }
 
             } else {
@@ -233,16 +255,16 @@ public class Coordinates extends Activity {
             selected = true;
             switch(pos){
                 case 0:
-                    distance = 6;
+                    distance = 5;
                     break;
                 case 1:
-                    distance = 8;
-                    break;
-                case 2:
                     distance = 10;
                     break;
+                case 2:
+                    distance = 25;
+                    break;
                 case 3:
-                    distance = 12;
+                    distance = 50;
                     break;
                 case 4:
                     distance = 100;
