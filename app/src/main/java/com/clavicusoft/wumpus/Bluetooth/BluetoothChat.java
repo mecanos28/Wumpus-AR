@@ -19,7 +19,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.clavicusoft.wumpus.Database.AdminSQLite;
 import com.clavicusoft.wumpus.Select.MainActivity;
 import com.clavicusoft.wumpus.Select.Multiplayer;
@@ -33,29 +32,22 @@ public class BluetoothChat extends Activity {
     public static final int MESSAGE_WRITE = 3;
     public static final int MESSAGE_DEVICE_NAME = 4;
     public static final int MESSAGE_TOAST = 5;
-
     // Key names received from the BluetoothChatService Handler
     public static final String DEVICE_NAME = "";
     public static final String TOAST = "";
-
     // Intent request codes
     private static final int REQUEST_CONNECT_DEVICE = 1;
     private static final int REQUEST_ENABLE_BT = 2;
     public String laberinto = "";
     public String nombreLaberinto = "";
     public String funcion = "";
-
-
     private Button mSendButton;
-
     // Name of the connected device
     private String mConnectedDeviceName = null;
     // String buffer for outgoing messages
     private StringBuffer mOutStringBuffer;
-
     // Local Bluetooth adapter
     private BluetoothAdapter mBluetoothAdapter = null;
-
     // Member object for the chat services
     private BluetoothChatService mChatService = null;
     public int counter = 0;
@@ -80,6 +72,9 @@ public class BluetoothChat extends Activity {
         }
     }
 
+    /**
+     *Override onStart
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -93,6 +88,9 @@ public class BluetoothChat extends Activity {
         }
     }
 
+    /**
+     *Override onResume
+     */
     @Override
     public synchronized void onResume() {
         super.onResume();
@@ -103,6 +101,9 @@ public class BluetoothChat extends Activity {
         }
     }
 
+    /**
+     *Recognize if the button send is pressed and send the lab.
+     */
     private void setupChat() {
         if(funcion.equals("enviar")){
             mSendButton = (Button) findViewById(R.id.button_send);
@@ -121,16 +122,25 @@ public class BluetoothChat extends Activity {
         mOutStringBuffer = new StringBuffer("");
     }
 
+    /**
+     *Override onPause
+     */
     @Override
     public synchronized void onPause() {
         super.onPause();
     }
 
+    /**
+     *Override onStop
+     */
     @Override
     public void onStop() {
         super.onStop();
     }
 
+    /**
+     *Override onDestroy
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -140,6 +150,9 @@ public class BluetoothChat extends Activity {
         }
     }
 
+    /**
+     * Put the bluetooth in discoverable mode
+     */
     private void ensureDiscoverable() {
         if (mBluetoothAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
             Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
@@ -148,6 +161,10 @@ public class BluetoothChat extends Activity {
         }
     }
 
+    /**
+     * Take the message and send it to mChatService.write
+     * @param message
+     */
     private void sendMessage(String message) {
 
         // Check that we're actually connected before trying anything
@@ -163,7 +180,9 @@ public class BluetoothChat extends Activity {
         }
     }
 
-    // The action listener for the EditText widget, to listen for the return key
+    /**
+     * The action listener for the EditText widget, to listen for the return key
+     */
     private TextView.OnEditorActionListener mWriteListener = new TextView.OnEditorActionListener() {
         public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
             // If the action is a key-up event on the return key, send the message
@@ -175,7 +194,9 @@ public class BluetoothChat extends Activity {
         }
     };
 
-    // The Handler that gets information back from the BluetoothChatService
+    /**
+     * The Handler that gets information back from the BluetoothChatService
+     */
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -253,6 +274,12 @@ public class BluetoothChat extends Activity {
         }
     };
 
+    /**
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REQUEST_CONNECT_DEVICE:
@@ -278,15 +305,28 @@ public class BluetoothChat extends Activity {
         }
     }
 
+    /**
+     *
+     * @param v
+     */
     public void connect(View v) {
         Intent serverIntent = new Intent(this, DeviceListActivity.class);
         startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
     }
 
+    /**
+     *
+     * @param v
+     */
     public void discoverable(View v) {
         ensureDiscoverable();
     }
 
+    /**
+     *
+     * @param msj
+     * @return
+     */
     public String[] tokenizer(String msj){
         String[] mensaje = msj.split("%");
         return mensaje;

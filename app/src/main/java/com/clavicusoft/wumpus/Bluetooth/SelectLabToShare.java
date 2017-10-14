@@ -5,19 +5,14 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.clavicusoft.wumpus.Database.AdminSQLite;
 import com.clavicusoft.wumpus.R;
-import com.clavicusoft.wumpus.Select.SelectFromLibActivity;
 
 import java.util.ArrayList;
 
@@ -33,9 +28,7 @@ public class SelectLabToShare extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.labs_to_share);
-
         populateListView();
-
         mazeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             /*
             * Gets the maze once one is clicked.
@@ -52,6 +45,12 @@ public class SelectLabToShare extends Activity {
         });
     }
 
+    /**
+     * Prepare the message to send using the lab selected.
+     * @param id
+     * @param name
+     * @return
+     */
     public String getLaberinto(int id, String name){
         AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 6);
         SQLiteDatabase db = admin.getWritableDatabase();
@@ -73,6 +72,11 @@ public class SelectLabToShare extends Activity {
     }
 
 
+    /**
+     * Get the graph id
+     * @param graphName
+     * @return
+     */
     public int getGraphID(String graphName) {
         AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 6);
         SQLiteDatabase db = admin.getWritableDatabase();

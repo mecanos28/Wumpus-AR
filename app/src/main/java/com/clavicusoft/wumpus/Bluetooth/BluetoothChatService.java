@@ -8,7 +8,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -142,7 +141,7 @@ public class BluetoothChatService {
     }
 
     /**
-     * Detiene todos los hilos.
+     * Stop all the threads
      */
     public synchronized void stop() {
         if (mConnectThread != null) {
@@ -176,7 +175,7 @@ public class BluetoothChatService {
     }
 
     /**
-     * Indica que la conexión no se estableció.
+     * Alert if the connection fails
      */
     private void connectionFailed() {
         setState(STATE_LISTEN);
@@ -189,7 +188,7 @@ public class BluetoothChatService {
     }
 
     /**
-     * Indica que la conexión se perdió
+     * Alert if the connection lost
      */
     private void connectionLost() {
         setState(STATE_LISTEN);
@@ -346,6 +345,10 @@ public class BluetoothChatService {
             }
         }
 
+        /**
+         * get the content of buffer and write
+         * @param buffer
+         */
         public void write(byte[] buffer) {
             try {
                 mmOutStream.write(buffer);
@@ -356,6 +359,9 @@ public class BluetoothChatService {
             }
         }
 
+        /**
+         *
+         */
         public void cancel() {
             try {
                 mmSocket.close();

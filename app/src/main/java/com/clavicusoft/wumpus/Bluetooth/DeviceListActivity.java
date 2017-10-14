@@ -76,6 +76,9 @@ public class DeviceListActivity extends Activity {
         }
     }
 
+    /**
+     * Override onDestroy
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
