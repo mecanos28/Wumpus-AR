@@ -17,18 +17,18 @@ import java.util.ArrayList;
 
 public class DrawCanvas extends View {
 
-    private Path drawPath; //Guardo el trazo
-    private Paint drawPaint, canvasPaint; //Pincel
-    private Canvas drawCanvas; //Lienzo
-    private Bitmap canvasBitmap; //Para guardar
-    private ArrayList<IntPair> relations; //Array que almacena todas las relaciones existentes
+    private Path drawPath; //Saves de drawing path
+    private Paint drawPaint, canvasPaint; //Drawing brush
+    private Canvas drawCanvas; //Canvas
+    private Bitmap canvasBitmap; //Stores canvas bit state
+    private ArrayList<IntPair> relations; //Stores all current relations
 
     public ArrayList<Cave> getCaves() {
         return caves;
     }
 
-    private ArrayList<Cave> caves; //Array que almacena todas las cuevas existentes
-    private float touchX, touchY; //Coordenadas
+    private ArrayList<Cave> caves; //Stores all current caves
+    private float touchX, touchY; //Stores coordinates
     private int numCave;
 
     public int getTotalCaves() {
@@ -36,24 +36,28 @@ public class DrawCanvas extends View {
     }
 
     private int totalCaves;
-    private int maxCaves; //Contador para asignar un id a cada cueva; Contador del total de cuevas; Máximo de cuevas definido
+    private int maxCaves;
 
     public DrawCanvas(Context context, AttributeSet attrs) {
         super(context, attrs);
         setupDrawing();
     }
 
-    //Configuracion del area donde se va a dibujar
+
+
+    /**
+     * Configuration of the area used to draw.
+     */
     public void setupDrawing(){
         drawPath = new Path();
         drawPaint = new Paint();
-        drawPaint.setColor(0xFFFFFFFF); //Blanco //0xFF000000); //Negro
-        drawPaint.setAntiAlias(true); //Trazo suave, no completamente recta
-        drawPaint.setStrokeWidth(20); //Ancho del pincel
+        drawPaint.setColor(0xFFFFFFFF); //White //0xFF000000); //Negro
+        drawPaint.setAntiAlias(true); //Soft brush
+        drawPaint.setStrokeWidth(20); //Bursh width
         drawPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
-        canvasPaint = new Paint(Paint.DITHER_FLAG); //Pintar difuminado
+        canvasPaint = new Paint(Paint.DITHER_FLAG); //Difuminated draw
         relations = new ArrayList<>();
         caves = new ArrayList<>();
         touchX = 0;
@@ -63,25 +67,41 @@ public class DrawCanvas extends View {
         maxCaves = 20;
     }
 
-    //Tamaño asignado a la vista
+
+
+    /**
+     * Size given to the drawing area
+     * @param w width of the area after change
+     * @param h height of the area after change
+     * @param oldw old width of the area changed
+     * @param oldh old height of the area changed
+     */
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh){
         super.onSizeChanged(w,h,oldw,oldh);
         canvasBitmap = Bitmap.createBitmap(w,h,Bitmap.Config.ARGB_8888);
         drawCanvas = new Canvas(canvasBitmap);
-        drawCanvas.drawColor(Color.TRANSPARENT);//(0xFF000000); //Negro
+        drawCanvas.drawColor(Color.TRANSPARENT);//(0xFF000000); //Black
     }
 
-    //Pinta la vista, se llama desde el OnTouchEvent
+
+    /**
+     * Draws to the canvas, used from OnTouchEvent
+     * @param drawCanvas receives the canvas to be affected by the drawing
+     */
     @Override
     protected void onDraw(Canvas drawCanvas){
-        drawCanvas.drawBitmap(canvasBitmap,0,0,canvasPaint); //Poner un dibujo en memoria con ese formato
+        drawCanvas.drawBitmap(canvasBitmap,0,0,canvasPaint); //Puts the drawing in memory in this format
         //drawCanvas = new Canvas(canvasBitmap);
         drawCanvas.drawPath(drawPath, drawPaint);
         invalidate();
     }
 
-    //Registra los toques del usuario
+    /**
+     * Registers the user´s touch events
+     * @param event The event of a touch in the canvas
+     * @return Always returns true for a touch
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         touchX = event.getX();
@@ -89,31 +109,36 @@ public class DrawCanvas extends View {
         return true;
     }
 
-    //Reinicializa la pantalla
+
+    /**
+     * Restarts the drawing
+     */
     public void newDraw(){
         setupDrawing();
         drawCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
         invalidate();
     }
 
-    //Agrega una cueva
+    /**
+     * Adds a cave, using coordinates and giving it a unique ID
+     */
     public void addCave(){
         String tag;
         if(touchX > 0 && touchY > 0) {
             if (totalCaves < maxCaves) {
                 drawPaint.setStrokeWidth(20);
                 drawPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-                drawPaint.setColor(0xFFFFFFFF);//Blanco //(0xFF000000); //Negro
-                drawPath.addCircle(touchX, touchY, 50, Path.Direction.CW); //Dibujo una cueva en esas coordenadas
+                drawPaint.setColor(0xFFFFFFFF);//White //(0xFF000000); //Black
+                drawPath.addCircle(touchX, touchY, 50, Path.Direction.CW); //Draw the cave in these coordinates
                 drawCanvas.drawPath(drawPath, drawPaint);
                 drawPath.reset();
                 tag = Integer.toString(numCave);
                 drawPaint.setStrokeWidth(3);
                 drawPaint.setTextSize(30);
                 drawPaint.setStyle(Paint.Style.STROKE);
-                drawPaint.setColor(0xFF000000);//Negro //(0xFFFFFFFF); //Blanco
+                drawPaint.setColor(0xFF000000);//Negro //(0xFFFFFFFF); //White
                 drawCanvas.drawText(tag, touchX - 5, touchY + 5, drawPaint);
-                caves.add(new Cave(numCave, touchX, touchY)); //Añado la nueva cueva a la lista
+                caves.add(new Cave(numCave, touchX, touchY)); //Add cave to the list
                 totalCaves++;
                 numCave++;
                 invalidate();
@@ -121,12 +146,15 @@ public class DrawCanvas extends View {
         }
     }
 
-    //Elimina una cueva
-    public void deleteCave(int c){ //Recibo el id de la cueva que deseo borrar
+    /**
+     * Deletes a cave
+     * @param c Cave to delete
+     */
+    public void deleteCave(int c){
         String tag;
         Cave c1, c2;
         drawCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-        //Borro todas las aristas relacionadas con esa cueva
+        //Delete all arcs related to this cave
         int l = 0;
         IntPair pair;
         while(l < relations.size()) {
@@ -138,7 +166,7 @@ public class DrawCanvas extends View {
                 l++;
             }
         }
-        //Borro la cueva
+        //Delete the cave
         boolean found = false;
         int j = 0;
         while (j < caves.size() && !found)
@@ -152,7 +180,7 @@ public class DrawCanvas extends View {
                 j++;
             }
         }
-        //Dibujo las demás cuevas
+        //Redraw all the other caves
         int i = 0;
         while(i < caves.size()) {
             c1 = caves.get(i);
@@ -173,7 +201,7 @@ public class DrawCanvas extends View {
             drawCanvas.drawText(tag, touchX - 5, touchY + 5, drawPaint);
             i++;
         }
-        //Dibujo los demás arcos
+        //Redraw all other arches
         int k = 0;
         while (k < relations.size()) {
             c1 = searchCave(relations.get(k).x);
@@ -185,7 +213,11 @@ public class DrawCanvas extends View {
         invalidate();
     }
 
-    //Agrega un camino/arco entre 2 cuevas
+    /**
+     * Adds an edge between two caves
+     * @param c1 First cave
+     * @param c2 Second cave
+     */
     public void addArc(Cave c1, Cave c2){
         float x1,y1,x2,y2;
         String tag;
@@ -195,7 +227,7 @@ public class DrawCanvas extends View {
         y2 = c2.getCorY();
         drawPaint.setStrokeWidth(20);
         drawPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        drawPaint.setColor(0xFFFFFFFF);//Blanco //(0xFF000000); /Negro
+        drawPaint.setColor(0xFFFFFFFF);//White //(0xFF000000); //Black
         drawPath.moveTo(x1,y1);
         drawPath.lineTo(x2,y2);
         drawCanvas.drawPath(drawPath, drawPaint);
@@ -203,7 +235,7 @@ public class DrawCanvas extends View {
         drawPaint.setStrokeWidth(3);
         drawPaint.setTextSize(30);
         drawPaint.setStyle(Paint.Style.STROKE);
-        drawPaint.setColor(0xFF000000);//(0xFFFFFFFF); //Color: Blanco
+        drawPaint.setColor(0xFF000000);//(0xFFFFFFFF); //Color: White
         tag = Integer.toString(c1.getId());
         drawCanvas.drawText(tag, x1 - 5, y1 + 5, drawPaint);
         tag = Integer.toString(c2.getId());
@@ -211,11 +243,15 @@ public class DrawCanvas extends View {
         invalidate();
     }
 
-    //Elimina un camino/arco entre 2 cuevas
+    /**
+     * Deletes an edge between two caves
+     * @param c1 First cave
+     * @param c2 Second cave
+     */
     public void deleteArc(Cave c1, Cave c2){
         String tag;
         drawCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-        //Borro los caminos entre esas cuevas
+        //Deletes the edges between both caves
         int l = 0;
         IntPair pair;
         boolean found = false;
@@ -229,7 +265,7 @@ public class DrawCanvas extends View {
                 l++;
             }
         }
-        //Dibujo las cuevas
+        //Redraw the caves
         int i = 0;
         while(i < caves.size()) {
             c1 = caves.get(i);
@@ -238,19 +274,19 @@ public class DrawCanvas extends View {
             drawPath.moveTo(touchX, touchY);
             drawPaint.setStrokeWidth(20);
             drawPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-            drawPaint.setColor(0xFFFFFFFF);//Blanco //(0xFF000000); //Negro
-            drawPath.addCircle(touchX, touchY, 50, Path.Direction.CW); //Dibujo una cueva
-            drawCanvas.drawPath(drawPath, drawPaint); //Llama al onDraw
+            drawPaint.setColor(0xFFFFFFFF);//White //(0xFF000000); //Black
+            drawPath.addCircle(touchX, touchY, 50, Path.Direction.CW); //Draws the cave
+            drawCanvas.drawPath(drawPath, drawPaint); //Calls the onDraw method
             drawPath.reset();
             tag = Integer.toString(c1.getId());
             drawPaint.setStrokeWidth(3);
             drawPaint.setTextSize(30);
             drawPaint.setStyle(Paint.Style.STROKE);
-            drawPaint.setColor(0xFF000000);//(0xFFFFFFFF); //Color: Blanco
+            drawPaint.setColor(0xFF000000);//(0xFFFFFFFF); //Color: White
             drawCanvas.drawText(tag, touchX - 5, touchY + 5, drawPaint);
             i++;
         }
-        //Dibujo los demás arcos
+        //Redraw the edges
         int k = 0;
         while (k < relations.size()) {
             c1 = searchCave(relations.get(k).x);
@@ -262,7 +298,11 @@ public class DrawCanvas extends View {
         invalidate();
     }
 
-    //Busca la cueva con el id especificado y la devuelve
+    /**
+     * Searches the cave with the id and returns it
+     * @param id Cave identifier
+     * @return Cave with the corresponding id
+     */
     public Cave searchCave(int id){
         int i = 0;
         while(i < totalCaves){
@@ -276,10 +316,18 @@ public class DrawCanvas extends View {
         return null;
     }
 
+    /**
+     * Returns the relations in the current graph
+     * @return relations
+     */
     public ArrayList<IntPair> getRelations() {
         return relations;
     }
 
+    /**
+     * Returns the current cave number for naming caves
+     * @return numCave
+     */
     public int getNumCave() {
         return numCave;
     }

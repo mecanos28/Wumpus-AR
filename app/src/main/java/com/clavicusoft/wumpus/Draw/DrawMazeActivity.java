@@ -29,6 +29,9 @@ public class DrawMazeActivity extends Activity {
     AlertDialog.Builder alert;
 
     @Override
+    /**
+     * On create of the  Activity, creates the canvas.
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -45,6 +48,10 @@ public class DrawMazeActivity extends Activity {
         alert.show();
     }
 
+    /**
+     * Shows information on how to create a cave maze
+     * @param v View to be shown
+     */
     public void info (View v) {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Instrucciones");
@@ -57,12 +64,18 @@ public class DrawMazeActivity extends Activity {
         alert.show();
     }
 
-    //Agregar una cueva
+    /**
+     * Adds a cave
+     * @param v View to be affected
+     */
     public void addC(View v){
         myCanvas.addCave();
     }
 
-    //Borrar una cueva
+    /**
+     * Deletes a cave
+     * @param v View to be affected
+     */
     public void delC(View v){
         final Dialog dialogDeleteCave= new Dialog(this);
         dialogDeleteCave.setContentView(R.layout.layout_choosecave);
@@ -109,7 +122,10 @@ public class DrawMazeActivity extends Activity {
         dialogDeleteCave.show();
     }
 
-    //Agregar un arco
+    /**
+     * Adds an edge between caves
+     * @param v View to be affected
+     */
     public void addA(View v)
     {
         final Dialog dialogAddArc = new Dialog(this);
@@ -215,7 +231,10 @@ public class DrawMazeActivity extends Activity {
         dialogAddArc.show();
     }
 
-    //Borrar un arco
+    /**
+     * Deletes an edge
+     * @param v View to be affected
+     */
     public void delA(View v){
         final Dialog dialogDeleteArc = new Dialog(this);
         dialogDeleteArc.setContentView(R.layout.layout_delete_relation);
@@ -324,9 +343,12 @@ public class DrawMazeActivity extends Activity {
         dialogDeleteArc.show();
     }
 
-    //Reiniciar el dibujo
+    /**
+     * Restarts the drawing.
+     * @param v View to be affected
+     */
     public void newD(View v){
-        //¿Reiniciar el dibujo o guardar el que estaba haciendo y empezar uno nuevo?
+        //Restart drawing or save current and start a new one?
         AlertDialog.Builder newDialog = new AlertDialog.Builder(this);
         newDialog.setTitle("Reiniciar laberinto");
         newDialog.setMessage("¿Está seguro que desea comenzar un nuevo dibujo? Perderá el progreso actual.");
@@ -344,6 +366,10 @@ public class DrawMazeActivity extends Activity {
         newDialog.show();
     }
 
+    /**
+     * Checks that the current maze is valid
+     * @param v
+     */
     public void checkD(View v){
         customMaze = new Graph(myCanvas.getTotalCaves(), myCanvas.getCaves());
         customMaze.fillGraph(myCanvas.getRelations());
@@ -415,6 +441,9 @@ public class DrawMazeActivity extends Activity {
         db.close();
     }
 
+    /**
+     * Asks the name of the maze created
+     */
     public void askMazeName () {
         final Dialog dialogAddArc = new Dialog(this);
         dialogAddArc.setContentView(R.layout.layout_maze_name);
@@ -459,6 +488,10 @@ public class DrawMazeActivity extends Activity {
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
+    /**
+     * Starts the game with the ID identifying the created maze
+     * @param stringGraphID
+     */
     public void startGame (String stringGraphID) {
         Intent i = new Intent(this, com.clavicusoft.wumpus.Map.Coordinates.class);
         i.putExtra("graphID",stringGraphID);
