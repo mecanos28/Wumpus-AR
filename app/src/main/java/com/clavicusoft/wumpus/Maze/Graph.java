@@ -12,6 +12,10 @@ public class Graph {
     private int[] caveToArrayMapping;
 
     //Creates an empty graph for irregular mazes.
+
+    /**
+     * Creates a simple Graph with 20 maximum, zero caves and zero relations.
+     */
     public Graph() {
         this.maximumCaves = 20;
         this.cavesRelations = new boolean[20][20];
@@ -19,13 +23,23 @@ public class Graph {
     }
 
     //Creates an empty graph for irregular mazes with the specified number of caves.
+
+    /**
+     * Creates a simple Graph with a given value of maximum caves, with zero caves and zero relations.
+     * @param numCaves Maximum number of caves for the Graph
+     */
     public Graph(int numCaves) {
         this.maximumCaves = numCaves;
         this.cavesRelations = new boolean[numCaves][numCaves];
         //this.allCaves = new ArrayList<Cave>();
     }
 
-    //Creates an empty graph for irregular mazes with the specified number of caves.
+
+    /**
+     *  Creates an empty graph for irregular mazes with the specified number of caves.
+     * @param numCaves Maximum number of caves for the Graph
+     * @param caveArrayList A list of all the caves in the Graph
+     */
     public Graph(int numCaves, ArrayList<Cave> caveArrayList) {
         this.maximumCaves = numCaves;
         this.allCaves = caveArrayList;
@@ -34,7 +48,12 @@ public class Graph {
         //this.allCaves = new ArrayList<Cave>();
     }
 
-    //Creates a graph from a relation's string and the corresponding number of caves.
+
+    /**
+     * Creates a graph from a relation's string and the corresponding number of caves.
+     * @param relations A especial String that contains all the relations between caves.
+     * @param numberOfCaves Maximum number of caves in the Graph
+     */
     public Graph(String relations, int numberOfCaves) {
         this.maximumCaves = numberOfCaves;
         this.cavesRelations = new boolean[this.maximumCaves][this.maximumCaves];
@@ -42,24 +61,23 @@ public class Graph {
         //this.allCaves = new ArrayList<Cave>();
     }
 
-    /*
-    public Graph(boolean[][] relations) {
-        this.maximumCaves = relations.length;
-        this.cavesRelations = relations;
-        this.allCaves = new ArrayList<Cave>();
-    }
-    */
-
+    /**
+     * Yields the index in the CaveArray with a given Id.
+     * @param x The cave Id.
+     * @return
+     */
     public int searchIdInArray (int x){
-        //Devuelve índice en el array del id
-        int result=0;
-        for (int i=0; i<this.caveToArrayMapping.length; i++)
+        int i = 0;
+        boolean resume = false;
+        while ( i<this.caveToArrayMapping.length && !resume )
         {
-            result = i;
-            if(caveToArrayMapping[i]==x)
-                break;
+            if(caveToArrayMapping[i]==x) {
+                resume = true;
+            }else {
+                i++;
+            }
         }
-        return  result;
+        return  i;
     }
 
     public void fillGraph(ArrayList<IntPair> relations){
@@ -84,6 +102,7 @@ public class Graph {
         //allCaves.add(cave);
     }
 
+
     public void removeCave(int cave) {
         /*boolean found = false;
         int i = 0;
@@ -97,16 +116,30 @@ public class Graph {
         this.maximumCaves++;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getMaximumCaves () {
         return maximumCaves;
     }
 
+    /**
+     *
+     * @param caveX_id
+     * @param caveY_id
+     */
     public void add_Bi_Relation(int caveX_id, int caveY_id) {
 
         this.cavesRelations[caveX_id][caveY_id] = true;
         this.cavesRelations[caveY_id][caveX_id] = true;
     }
 
+    /**
+     *
+     * @param caveX_id
+     * @param caveY_id
+     */
     public void remove_Bi_Relation(int caveX_id, int caveY_id) {
         this.cavesRelations[caveX_id][caveY_id] = false;
         this.cavesRelations[caveY_id][caveX_id] = false;
@@ -142,9 +175,10 @@ public class Graph {
         return next;
     }*/
 
-    /*
-    * Converts a string of relations into an array.
-    */
+    /**
+     * Converts a string of relations into an array.
+     * @param relations
+     */
     public void stringToArray(String relations) {
         int row = 0;
         int column = 0;
