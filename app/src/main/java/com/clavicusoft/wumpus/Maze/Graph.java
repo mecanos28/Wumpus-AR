@@ -80,15 +80,19 @@ public class Graph {
         return  i;
     }
 
+    /**
+     * Fills the graph array with the information from the drawing
+     * @param relations Array with the information of the drawing
+     */
     public void fillGraph(ArrayList<IntPair> relations){
 
-        //Mapea
+        //Maps
         int l = 0;
         while(l < this.allCaves.size()) {
             this.caveToArrayMapping[l] = allCaves.get(l).getId();
             l++;
         }
-        //Mete las relaciones
+        //Inserts the relations in the array
         for(int i = 0; i < relations.size(); i++)
         {
             add_Bi_Relation(searchIdInArray(relations.get(i).x),searchIdInArray(relations.get(i).y));
@@ -96,13 +100,19 @@ public class Graph {
         }
     }
 
-
+    /**
+     * Since a cave is added there is one less in the maximum available
+     * @param cave Cave inserted
+     */
     public void addCave(Cave cave) {
         this.maximumCaves--;
         //allCaves.add(cave);
     }
 
-
+    /**
+     * Since a cave is removed there is one more in the maximum available
+     * @param cave Cave removed
+     */
     public void removeCave(int cave) {
         /*boolean found = false;
         int i = 0;
@@ -117,17 +127,17 @@ public class Graph {
     }
 
     /**
-     *
-     * @return
+     *Gets the maximum caves
+     * @return the maximum caves
      */
     public int getMaximumCaves () {
         return maximumCaves;
     }
 
     /**
-     *
-     * @param caveX_id
-     * @param caveY_id
+     * Inserts a relation between two caves
+     * @param caveX_id First cave
+     * @param caveY_id Second cave
      */
     public void add_Bi_Relation(int caveX_id, int caveY_id) {
 
@@ -136,9 +146,9 @@ public class Graph {
     }
 
     /**
-     *
-     * @param caveX_id
-     * @param caveY_id
+     * Removes a relation between two caves
+     * @param caveX_id First cave
+     * @param caveY_id Second cave
      */
     public void remove_Bi_Relation(int caveX_id, int caveY_id) {
         this.cavesRelations[caveX_id][caveY_id] = false;
