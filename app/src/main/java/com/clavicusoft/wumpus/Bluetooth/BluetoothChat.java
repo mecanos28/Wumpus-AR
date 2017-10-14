@@ -25,10 +25,6 @@ import com.clavicusoft.wumpus.Select.MainActivity;
 import com.clavicusoft.wumpus.Select.Multiplayer;
 import com.clavicusoft.wumpus.R;
 
-
-/**
- * Created by JorgeRemon on 7/10/17.
- */
 public class BluetoothChat extends Activity {
 
     // Message types sent from the BluetoothChatService Handler
@@ -296,6 +292,9 @@ public class BluetoothChat extends Activity {
         return mensaje;
     }
 
+    /**
+     * Sets the animation for the onBackPressed function.
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();

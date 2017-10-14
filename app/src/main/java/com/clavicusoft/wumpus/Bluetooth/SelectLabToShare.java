@@ -21,10 +21,6 @@ import com.clavicusoft.wumpus.Select.SelectFromLibActivity;
 
 import java.util.ArrayList;
 
-/**
- * Created by JorgeRemon on 7/10/17.
- */
-
 public class SelectLabToShare extends Activity {
 
     ListView mazeList;
@@ -116,6 +112,9 @@ public class SelectLabToShare extends Activity {
         cursor.close();
     }
 
+    /**
+     * Sets the animation for the onBackPressed function.
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();

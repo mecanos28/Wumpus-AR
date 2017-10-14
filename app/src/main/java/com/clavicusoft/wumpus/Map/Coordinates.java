@@ -26,7 +26,6 @@ import android.widget.Toast;
 
 import com.clavicusoft.wumpus.R;
 
-
 public class Coordinates extends Activity {
 
     LocationManager locationManager;
@@ -139,7 +138,9 @@ public class Coordinates extends Activity {
         return  locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
-
+    /**
+     * Sets the animation for the onBackPressed function.
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();

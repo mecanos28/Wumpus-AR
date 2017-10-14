@@ -15,8 +15,6 @@ import com.clavicusoft.wumpus.Maze.Cave;
 
 import java.util.ArrayList;
 
-
-
 public class DrawCanvas extends View {
 
     private Path drawPath; //Guardo el trazo

@@ -10,9 +10,6 @@ import android.widget.TextView;
 
 import com.clavicusoft.wumpus.R;
 
-/**
- * Created by Jhosua on 01/10/2017.
- */
 
 public class CustomSwip extends PagerAdapter {
     private int[] imageResources;
