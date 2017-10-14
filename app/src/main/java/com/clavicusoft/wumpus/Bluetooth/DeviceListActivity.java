@@ -27,7 +27,6 @@ import java.util.Set;
 
 import static com.clavicusoft.wumpus.R.id.parent;
 
-
 public class DeviceListActivity extends Activity {
     // Return Intent extra
     public static String EXTRA_DEVICE_ADDRESS = "device_address";
@@ -133,6 +132,9 @@ public class DeviceListActivity extends Activity {
         }
     };
 
+    /**
+     * Sets the animation for the onBackPressed function.
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();

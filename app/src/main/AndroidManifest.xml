@@ -2,12 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.clavicusoft.wumpus">
 
+    <!-- Asks for the Bluetooth and location permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <!-- Sets the default values for the game such as it's icon and opening screen -->
     <application
         android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
@@ -23,6 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- Allowed activities -->
         <activity android:name=".Select.SelectPolyActivity" android:screenOrientation="portrait" />
         <activity android:name=".Select.Multiplayer" android:screenOrientation="portrait" />
         <activity android:name=".Select.SelectFromLibActivity" android:screenOrientation="portrait" />

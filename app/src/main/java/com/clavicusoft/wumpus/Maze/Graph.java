@@ -164,9 +164,11 @@ public class Graph {
         }
     }
 
-    /*
-    *  Method for Irregular Mazes
-    */
+    /**
+     * Translates the current Graph into a String.
+     *
+     * @return The Graph as a String.
+     */
     public String arrayToString() {
         String result = "";
         for (int i = 0; i < maximumCaves; i++) {
@@ -185,9 +187,13 @@ public class Graph {
         return result;
     }
 
-    /*
-    * Checks if there's a relation between 2 caves.
-    */
+    /**
+     * Checks if two caves are connected.
+     *
+     * @param caveX_id First cave.
+     * @param caveY_id Second cave.
+     * @return True if the caves are connected, false otherwise.
+     */
     public boolean areConnected(int caveX_id, int caveY_id) {
         boolean connected = false;
         if (this.cavesRelations[caveX_id][caveY_id]) {
@@ -196,9 +202,12 @@ public class Graph {
         return connected;
     }
 
-    /*
-    * Checks if a cave is isolated.
-    */
+    /**
+     * Checks if the cave isn't connected to other caves.
+     *
+     * @param cave Actual cave.
+     * @return True if the cave has no connections, false otherwise.
+     */
     public boolean isIsolated(int cave) {
         boolean isolated = true;
         int i = 0;
@@ -211,9 +220,11 @@ public class Graph {
         return isolated;
     }
 
-    /*
-    * Validates the relations array.
-    */
+    /**
+     * Checks if the current graph is a valid one for the Wumpus game.
+     *
+     * @return True if the graph it's valid, false otherwise.
+     */
     public boolean valid () {
         boolean valid = true;
         //A maze has to have at least 2 caves.
@@ -241,6 +252,11 @@ public class Graph {
         return valid;
     }
 
+    /**
+     * Checks if all the caves are connected.
+     *
+     * @param cave Actual cave.
+     */
     private void checkConnectedCaves(int cave)
     {
         connected[cave] = true;

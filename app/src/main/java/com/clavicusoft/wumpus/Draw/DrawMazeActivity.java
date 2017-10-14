@@ -450,6 +450,9 @@ public class DrawMazeActivity extends Activity {
         dialogAddArc.show();
     }
 
+    /**
+     * Sets the animation for the onBackPressed function.
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();

@@ -14,11 +14,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 
-
-/**
- * Created by JorgeRemon on 7/10/17.
- */
-
 public class BluetoothChatService {
 
     // Name for the SDP record when creating server socket

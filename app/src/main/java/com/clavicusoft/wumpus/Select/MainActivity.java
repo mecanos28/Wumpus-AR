@@ -1,21 +1,21 @@
 package com.clavicusoft.wumpus.Select;
 
-
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.clavicusoft.wumpus.Bluetooth.BluetoothChat;
-import com.clavicusoft.wumpus.Bluetooth.SelectLabToShare;
 import com.clavicusoft.wumpus.R;
 
 
 public class MainActivity extends Activity {
 
-    //boolean multiplayerSubMenu = false;
-
+    /**
+     * Sets the view once this activity starts.
+     *
+     * @param savedInstanceState Activity's previous saved state.
+    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,30 +23,30 @@ public class MainActivity extends Activity {
 
     }
 
-    public void tipoIndividual(View vista)
+    /**
+     * Starts the single player activity, and sets the animation for the transition.
+     *
+     * @param view Current view.
+    */
+    public void singlePlayer (View view)
     {
         Intent i = new Intent(this,SelectPolyActivity.class);
-        ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.slide_in_down, R.anim.slide_out_down);
+        ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.slide_in_down,
+                R.anim.slide_out_down);
         startActivity(i, options.toBundle());
     }
 
-    public void tipoMultijugador(View vista)
+    /**
+     * Starts the single player activity, and sets the animation for the transition.
+     *
+     * @param view Current view.
+     */
+    public void multiPlayer (View view)
     {
         Intent i = new Intent(this,Multiplayer.class);
-        ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.slide_in_down, R.anim.slide_out_down);
+        ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.slide_in_down,
+                R.anim.slide_out_down);
         startActivity(i, options.toBundle());
     }
-
-
-    /*@Override
-    public void onBackPressed() {
-        if(multiplayerSubMenu){
-            setContentView(R.layout.activity_main);
-            multiplayerSubMenu = false;
-        }else{
-            super.onBackPressed();
-        }
-        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-    }*/
 
 }

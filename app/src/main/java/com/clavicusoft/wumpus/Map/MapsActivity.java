@@ -26,8 +26,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-
-
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener {
 
     private GoogleMap mMap;
@@ -214,7 +212,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-
+    /**
+     * Generates the location for the Maze's caves.
+     *
+     * @param cave Number of caves in the Graph.
+     * @param latitudeGPS Player's latitude.
+     * @param longitudeGPS Player's longitude.
+     */
     public void putCave (int cave,double latitudeGPS, double longitudeGPS) {
         mMap.clear();
         switch (numberCaves) {
@@ -233,7 +237,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
                 createCave(2, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
-                createCave(3, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(3, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
                 break;
             case 4:
                 /*
@@ -243,7 +248,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
                 createCave(2, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
-                createCave(3, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(3, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
                 createCave(4, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
                 break;
             case 5:
@@ -253,10 +259,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 *  5  -  3
                 */
                 createCave(1, latitudeGPS, longitudeGPS);
-                createCave(2, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(3, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
-                createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(2, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(3, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 break;
             case 6:
                 /*
@@ -270,8 +280,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
                 createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 break;
             case 7:
                 /*
@@ -285,8 +297,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
                 createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
                 break;
             case 8:
@@ -301,10 +315,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
                 createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
-                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
                 break;
             case 9:
                 /*
@@ -318,11 +335,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
                 createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
-                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 break;
             case 10:
                 /*
@@ -336,11 +357,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
                 createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
-                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(10, addMetersToLatitude(latitudeGPS, distance, 2, true), longitudeGPS);
                 break;
             case 11:
@@ -355,13 +380,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
                 createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
-                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(10, addMetersToLatitude(latitudeGPS, distance, 2, true), longitudeGPS);
-                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
                 break;
             case 12:
                 /*
@@ -375,14 +405,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
                 createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
-                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(10, addMetersToLatitude(latitudeGPS, distance, 2, true), longitudeGPS);
-                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(12, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(12, addMetersToLatitude(latitudeGPS, distance, 2, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 break;
             case 13:
                 /*
@@ -398,15 +434,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
                 createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
-                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(10, addMetersToLatitude(latitudeGPS, distance, 2, true), longitudeGPS);
-                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(12, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
-                createCave(13, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(12, addMetersToLatitude(latitudeGPS, distance, 2, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(13, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 2, false));
                 break;
             case 14:
                 /*
@@ -422,15 +465,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
                 createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
-                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(10, addMetersToLatitude(latitudeGPS, distance, 2, true), longitudeGPS);
-                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(12, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
-                createCave(13, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(12, addMetersToLatitude(latitudeGPS, distance, 2, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(13, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 2, false));
                 createCave(14, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 2, false));
                 break;
             case 15:
@@ -447,17 +497,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
                 createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
-                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(10, addMetersToLatitude(latitudeGPS, distance, 2, true), longitudeGPS);
-                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(12, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
-                createCave(13, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(12, addMetersToLatitude(latitudeGPS, distance, 2, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(13, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 2, false));
                 createCave(14, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 2, false));
-                createCave(15, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(15, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 2, false));
                 break;
             case 16:
                 /*
@@ -473,18 +531,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
                 createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
-                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(10, addMetersToLatitude(latitudeGPS, distance, 2, true), longitudeGPS);
-                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(12, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
-                createCave(13, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(12, addMetersToLatitude(latitudeGPS, distance, 2, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(13, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 2, false));
                 createCave(14, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 2, false));
-                createCave(15, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 2, false));
-                createCave(16, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(15, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(16, addMetersToLatitude(latitudeGPS, distance, 2, true),
+                        addMetersToLongitude(longitudeGPS, distance, 2, false));
                 break;
             case 17:
                 /*
@@ -500,19 +567,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
                 createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
-                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(10, addMetersToLatitude(latitudeGPS, distance, 2, true), longitudeGPS);
-                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(12, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
-                createCave(13, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(12, addMetersToLatitude(latitudeGPS, distance, 2, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(13, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 2, false));
                 createCave(14, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 2, false));
-                createCave(15, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 2, false));
-                createCave(16, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 2, false));
-                createCave(17, addMetersToLatitude(latitudeGPS, distance, 2, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(15, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(16, addMetersToLatitude(latitudeGPS, distance, 2, true),
+                        addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(17, addMetersToLatitude(latitudeGPS, distance, 2, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
                 break;
             case 18:
                 /*
@@ -528,19 +605,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
                 createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
-                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(10, addMetersToLatitude(latitudeGPS, distance, 2, true), longitudeGPS);
-                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(12, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
-                createCave(13, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(12, addMetersToLatitude(latitudeGPS, distance, 2, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(13, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 2, false));
                 createCave(14, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 2, false));
-                createCave(15, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 2, false));
-                createCave(16, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 2, false));
-                createCave(17, addMetersToLatitude(latitudeGPS, distance, 2, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(15, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(16, addMetersToLatitude(latitudeGPS, distance, 2, true),
+                        addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(17, addMetersToLatitude(latitudeGPS, distance, 2, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
                 createCave(18, addMetersToLatitude(latitudeGPS, distance, 2, false), longitudeGPS);
                 break;
             case 19:
@@ -557,21 +644,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
                 createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
-                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(10, addMetersToLatitude(latitudeGPS, distance, 2, true), longitudeGPS);
-                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(12, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
-                createCave(13, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(12, addMetersToLatitude(latitudeGPS, distance, 2, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(13, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 2, false));
                 createCave(14, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 2, false));
-                createCave(15, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 2, false));
-                createCave(16, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 2, false));
-                createCave(17, addMetersToLatitude(latitudeGPS, distance, 2, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(15, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(16, addMetersToLatitude(latitudeGPS, distance, 2, true),
+                        addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(17, addMetersToLatitude(latitudeGPS, distance, 2, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
                 createCave(18, addMetersToLatitude(latitudeGPS, distance, 2, false), longitudeGPS);
-                createCave(19, addMetersToLatitude(latitudeGPS, distance, 2, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(19, addMetersToLatitude(latitudeGPS, distance, 2, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 break;
             case 20:
                 /*
@@ -587,26 +685,45 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 createCave(2, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, true));
                 createCave(3, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(4, addMetersToLatitude(latitudeGPS, distance, 1, true), longitudeGPS);
-                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(5, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(6, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(7, addMetersToLatitude(latitudeGPS, distance, 1, false), longitudeGPS);
-                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(8, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(9, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
                 createCave(10, addMetersToLatitude(latitudeGPS, distance, 2, true), longitudeGPS);
-                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, true));
-                createCave(12, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 1, false));
-                createCave(13, addMetersToLatitude(latitudeGPS, distance, 1, false), addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(11, addMetersToLatitude(latitudeGPS, distance, 2, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(12, addMetersToLatitude(latitudeGPS, distance, 2, true),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(13, addMetersToLatitude(latitudeGPS, distance, 1, false),
+                        addMetersToLongitude(longitudeGPS, distance, 2, false));
                 createCave(14, latitudeGPS, addMetersToLongitude(longitudeGPS, distance, 2, false));
-                createCave(15, addMetersToLatitude(latitudeGPS, distance, 1, true), addMetersToLongitude(longitudeGPS, distance, 2, false));
-                createCave(16, addMetersToLatitude(latitudeGPS, distance, 2, true), addMetersToLongitude(longitudeGPS, distance, 2, false));
-                createCave(17, addMetersToLatitude(latitudeGPS, distance, 2, false), addMetersToLongitude(longitudeGPS, distance, 1, true));
+                createCave(15, addMetersToLatitude(latitudeGPS, distance, 1, true),
+                        addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(16, addMetersToLatitude(latitudeGPS, distance, 2, true),
+                        addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(17, addMetersToLatitude(latitudeGPS, distance, 2, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, true));
                 createCave(18, addMetersToLatitude(latitudeGPS, distance, 2, false), longitudeGPS);
-                createCave(19, addMetersToLatitude(latitudeGPS, distance, 2, false), addMetersToLongitude(longitudeGPS, distance, 1, false));
-                createCave(20, addMetersToLatitude(latitudeGPS, distance, 2, false), addMetersToLongitude(longitudeGPS, distance, 2, false));
+                createCave(19, addMetersToLatitude(latitudeGPS, distance, 2, false),
+                        addMetersToLongitude(longitudeGPS, distance, 1, false));
+                createCave(20, addMetersToLatitude(latitudeGPS, distance, 2, false),
+                        addMetersToLongitude(longitudeGPS, distance, 2, false));
                 break;
         }
     }
 
+    /**
+     * Stores the cave in the DB.
+     *
+     * @param cave_number The number of the cave inside the graph.
+     * @param coordX The latitude of the cave.
+     * @param coordY The longitude of the cave.
+     */
     public void createCave (int cave_number, double coordX, double coordY) {
         AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 6);
         SQLiteDatabase db = admin.getWritableDatabase();
@@ -619,23 +736,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         data.put("longitude", String.valueOf(coordY));
         db.insert("GAME", null, data);
 
-
-        LatLng cuevaNueva = new LatLng(coordX, coordY);
+        LatLng newCave = new LatLng(coordX, coordY);
 
         if (cave_number==1)
-        {        mMap.addMarker(new MarkerOptions().position(cuevaNueva).title("Cueva "+cave_number).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+        {        mMap.addMarker(new MarkerOptions().position(newCave).title("Cueva "+cave_number).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         }
         else {
-            mMap.addMarker(new MarkerOptions().position(cuevaNueva).title("Cueva " + cave_number).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+            mMap.addMarker(new MarkerOptions().position(newCave).title("Cueva " + cave_number).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
         }
-
 
     }
 
 
-    /*
-    * Adds a distance in meters to the latitude a number of times.
-    */
+    /**
+     * Adds meters to the latitude of a location.
+     *
+     * @param latitude Actual latitude.
+     * @param meters Amount of meters to add.
+     * @param times Number of times you want to add those meters.
+     * @param sum Checks if you want to add or subtract the meters.
+     * @return The new latitude.
+     */
     public double addMetersToLatitude (double latitude, double meters, double times, boolean sum) {
         double result;
         if (sum) {
@@ -647,9 +768,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return result;
     }
 
-    /*
-    * Adds a distance in meters to the longitude a number of times.
-    */
+    /**
+     * Adds meters to the longitude of a location.
+     *
+     * @param longitude Actual longitude.
+     * @param meters Amount of meters to add.
+     * @param times Number of times you want to add those meters.
+     * @param sum Checks if you want to add or subtract the meters.
+     * @return The new longitude.
+     */
     public double addMetersToLongitude (double longitude, double meters, double times, boolean sum) {
         double result;
         if (sum) {
@@ -662,7 +789,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         return result;
     }
-
-
 
 }
