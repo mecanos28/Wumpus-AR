@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.clavicusoft.wumpus.Bluetooth.SelectLabToShare"
+    android:background="@drawable/other_background">
+
+    <TextView
+        android:id="@+id/lblChooseLib"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Seleccione el laberinto que desea compartir"
+        android:textSize="20sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+    <ListView
+        android:id="@+id/listViewMazes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp"
+        android:divider="@color/white_button"
+        android:textColor="#ffffff"
+        android:dividerHeight="2dp"/>
+
+</LinearLayout>

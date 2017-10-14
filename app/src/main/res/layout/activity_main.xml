@@ -1,55 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.benja.canvas.MainActivity">
+    tools:context="com.clavicusoft.wumpus.Select.MainActivity"
+    android:background="@drawable/start_background">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center_horizontal">
-
+        android:gravity="center_horizontal"
+        android:baselineAligned="false"
+        android:id="@+id/linearLayout">
 
         <ImageView
-            android:id="@+id/imageTitulo"
-            android:layout_width="match_parent"
-            android:layout_height="400px"
-            android:background="@drawable/titulo"
-            app:srcCompat="@drawable/titulo"
+            android:id="@+id/imageView4"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:background="@drawable/wumpus_icon"
+            app:srcCompat="@drawable/wumpus_icon"
+            android:layout_marginTop="30dp"
             android:scaleType="fitXY"
             />
 
         <Button
-            android:id="@+id/buttonNuevo"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/Individual"
+            android:layout_width="170dp"
+            android:layout_height="60dp"
             android:layout_gravity="center"
-            android:layout_marginTop="30px"
-            android:onClick="metodoNuevo"
-            android:text="Juego Nuevo" />
+            android:layout_marginTop="50dp"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:background="@color/black_button"
+            android:onClick="singlePlayer"
+            android:text="Individual" />
 
         <Button
-            android:id="@+id/buttonCargar"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/buttonMultijuador"
+            android:layout_width="170dp"
+            android:layout_height="60dp"
+            android:layout_below="@+id/linearLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:background="@color/black_button"
             android:layout_gravity="center"
-            android:layout_marginTop="20px"
-            android:onClick="metodoCargar"
-            android:text="Cargar" />
+            android:onClick="multiPlayer"
+            android:text="Multijugador" />
+
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="33dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:text="Universidad de Costa Rica"
-        android:textAlignment="center" />
-
-</RelativeLayout>
+</LinearLayout>
