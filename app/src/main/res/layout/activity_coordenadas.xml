@@ -47,7 +47,7 @@
                 android:layout_weight="0.37" />
 
             <Button
-                android:id="@+id/buttonVerMiUbicacion"
+                android:id="@+id/buttonMyLocation"
                 android:layout_width="170dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
