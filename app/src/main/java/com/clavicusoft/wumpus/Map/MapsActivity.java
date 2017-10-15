@@ -90,15 +90,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         {
 
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);}
+                    .findFragmentById(R.id.map);
+            mapFragment.getMapAsync(this);}
 
         else {
             Dialog dialog = GooglePlayServicesUtil.getErrorDialog(status,(Activity)getApplicationContext(),10);
             dialog.show();
         }
 
-        accesoBD(graph_ID);
+        accessBD(graph_ID);
 
 
     }
@@ -106,7 +106,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     /**
      * Button Functions, change the terrain map type to hybrid. On the other hand, you can start creating the
      * labyrinth from the point the user chooses and displays it on the map.
-     * @param view  view Used view
+     * @param view  Used view
      */
 
     @Override
@@ -120,32 +120,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 break;
             case R.id.bcontinuar: {
-               // Intent i = new Intent(MapsActivity.this, PassActivity.class);
+
+                //Intent other activity
+                // Intent i = new Intent(MapsActivity.this, PassActivity.class);
+
                 if (selectedLatitude !=0.0 && selectedLongitude !=0.0)
                 {
 
-                    //Crear las cuevas
+                    //Create caves
 
                     putCave(numberCaves, selectedLatitude, selectedLongitude);
 
-                    //Se las pasa al otro
-                  //  i.putExtra("Latitud", selectedLatitude);
-                   // i.putExtra("Longitud", selectedLongitude);
+                    //  i.putExtra("Latitud", selectedLatitude);
+                    // i.putExtra("Longitud", selectedLongitude);
 
                 }
-                else {//Crear las cuevas
+                else {//Create caves
                     putCave(numberCaves, latitude, longitude);
 
 
-                    //Se las pasa al otro
-                   // i.putExtra("Latitud", latitude);
-                   // i.putExtra("Longitud", longitude);
+
+                    // i.putExtra("Latitud", latitude);
+                    // i.putExtra("Longitud", longitude);
 
                 }
-               // ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.fade_in, R.anim.fade_out);
-              //  startActivity(i, options.toBundle());
+                // ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.fade_in, R.anim.fade_out);
+                //  startActivity(i, options.toBundle());
             }
-                break;
+            break;
             default:
                 break;
         }
@@ -173,40 +175,39 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         UiSettings uiSettings=mMap.getUiSettings();
         uiSettings.setZoomControlsEnabled(true);
 
-        // Add a marker in Sydney and move the camera
-        LatLng actual = new LatLng(latitude, longitude);
-        mMap.addMarker(new MarkerOptions().position(actual).title("Ubicación Actual").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+        // Add a marker in the current point and move the camera
+        LatLng current = new LatLng(latitude, longitude);
+        mMap.addMarker(new MarkerOptions().position(current).title("Ubicación Actual").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
         float zoomLevel=16;
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(actual, zoomLevel));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current, zoomLevel));
 
 
 
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
-            public void onMapLongClick(LatLng latLngElegida) {
+            public void onMapLongClick(LatLng latLngChosen) {
                 mMap.clear();
                 LatLng actual = new LatLng(latitude, longitude);
                 mMap.addMarker(new MarkerOptions().position(actual).title("Ubicación Actual").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
-                mMap.addMarker(new MarkerOptions().title("Posicion Deseada").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).position(latLngElegida));
-                selectedLatitude =latLngElegida.latitude;
-                selectedLongitude =latLngElegida.longitude;
+                mMap.addMarker(new MarkerOptions().title("Posicion Deseada").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).position(latLngChosen));
+                selectedLatitude =latLngChosen.latitude;
+                selectedLongitude =latLngChosen.longitude;
 
 
             }
         });
     }
 
-   /**
-    *Gets the number of caves and the relationships according to the id of the graph in the database.
-    * @param graph_id id of the selected graph.
-    *
-    */
+    /**
+     *Gets the number of caves and the relationships according to the id of the graph in the database.
+     * @param graph_id id of the selected graph.
+     *
+     */
 
-    public void accesoBD (int graph_id)
+    public void accessBD(int graph_id)
     {
 
-        //Acceso a la BD
         AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 6);
         SQLiteDatabase db = admin.getWritableDatabase();
 
