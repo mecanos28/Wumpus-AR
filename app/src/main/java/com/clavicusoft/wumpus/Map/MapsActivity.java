@@ -26,6 +26,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+/**
+ * Shows the real location in the map and generates the labyrinth from where the user wishes. Storing them in the database with a game id
+ */
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener {
 
     private GoogleMap mMap;
@@ -48,21 +52,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Button btnHybrid;
 
 
+    /**
+     * Obtain the SupportMapFragment and get notified when the map is ready to be used. Further,
+     * gets the number of caves and the relationships according to the id of the graph in the database.
+     * @param savedInstanceState State of the instance saved
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-//Recibe las coordenadas
-        Bundle b = new Bundle();
+
+        Bundle b;
         b = getIntent().getExtras();
         latitude = b.getDouble("Latitud");
         longitude =b.getDouble("Longitud");
         graph_ID=b.getInt("graphID");
         distance=b.getDouble("Distancia");
 
-        //Configurar botones
         btnContinue =(Button) findViewById(R.id.bcontinuar);
         btnHybrid =(Button) findViewById(R.id.bhibrido);
         btnTerrain =(Button) findViewById(R.id.bterreno);
@@ -71,11 +78,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         btnTerrain.setOnClickListener(this);
         btnHybrid.setOnClickListener(this);
 
-        //Para preguntar si se selecciona el original
         selectedLatitude =0.0;
         selectedLongitude =0.0;
 
-        //Inicializar para la formula
         meterToCoordinates = 0.0000095;
 
 
@@ -93,14 +98,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             dialog.show();
         }
 
-        //Acceso a la BD
         accesoBD(graph_ID);
 
 
     }
 
+    /**
+     * Button Functions, change the terrain map type to hybrid. On the other hand, you can start creating the
+     * labyrinth from the point the user chooses and displays it on the map.
+     * @param view  view Used view
+     */
+
     @Override
-    public void onClick(View view) { //Funcion de los botones
+    public void onClick(View view) {
         switch (view.getId())
         {
             case R.id.bterreno:
@@ -110,7 +120,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 break;
             case R.id.bcontinuar: {
-                Intent i = new Intent(MapsActivity.this, PassActivity.class);
+               // Intent i = new Intent(MapsActivity.this, PassActivity.class);
                 if (selectedLatitude !=0.0 && selectedLongitude !=0.0)
                 {
 
@@ -119,8 +129,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     putCave(numberCaves, selectedLatitude, selectedLongitude);
 
                     //Se las pasa al otro
-                    i.putExtra("Latitud", selectedLatitude);
-                    i.putExtra("Longitud", selectedLongitude);
+                  //  i.putExtra("Latitud", selectedLatitude);
+                   // i.putExtra("Longitud", selectedLongitude);
 
                 }
                 else {//Crear las cuevas
@@ -128,11 +138,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
                     //Se las pasa al otro
-                    i.putExtra("Latitud", latitude);
-                    i.putExtra("Longitud", longitude);
+                   // i.putExtra("Latitud", latitude);
+                   // i.putExtra("Longitud", longitude);
 
                 }
-                ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.fade_in, R.anim.fade_out);
+               // ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.fade_in, R.anim.fade_out);
               //  startActivity(i, options.toBundle());
             }
                 break;
@@ -150,7 +160,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
+     * Also, with a long click, it displays a new marker.
+     *
+     * @param googleMap google Map that is shown
+
      */
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -182,6 +197,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
+   /**
+    *Gets the number of caves and the relationships according to the id of the graph in the database.
+    * @param graph_id id of the selected graph.
+    *
+    */
 
     public void accesoBD (int graph_id)
     {
