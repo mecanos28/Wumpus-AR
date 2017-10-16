@@ -47,9 +47,9 @@ public class SelectLabToShare extends Activity {
 
     /**
      * Prepare the message to send using the lab selected.
-     * @param id
-     * @param name
-     * @return
+     * @param id labs id
+     * @param name labs name
+     * @return msg ready to send
      */
     public String getLaberinto(int id, String name){
         AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 6);
@@ -73,9 +73,10 @@ public class SelectLabToShare extends Activity {
 
 
     /**
-     * Get the graph id
-     * @param graphName
-     * @return
+     * Gets the ID of a graph based on it's name.
+     *
+     * @param graphName The name of the graph.
+     * @return The DB ID of the graph
      */
     public int getGraphID(String graphName) {
         AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 6);
@@ -125,6 +126,12 @@ public class SelectLabToShare extends Activity {
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
+    /**
+     * List all devices
+     * @param vista View to be shown.
+     * @param laberinto lab selected
+     * @param nombre lab's name
+     */
     public void listDevices(View vista, String laberinto, String nombre){
         Intent i = new Intent(this, BluetoothChat.class);
         i.putExtra("laberinto",laberinto);

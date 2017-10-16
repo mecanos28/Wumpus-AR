@@ -15,29 +15,23 @@ import java.util.UUID;
 
 public class BluetoothChatService {
 
-    // Name for the SDP record when creating server socket
     private static final String NAME = "BluetoothChat";
-
-    // Unique UUID for this application
     private static final UUID MY_UUID = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
-
-    // Member fields
     private final BluetoothAdapter mAdapter;
     private final Handler mHandler;
     private AcceptThread mAcceptThread;
     private ConnectThread mConnectThread;
     private ConnectedThread mConnectedThread;
     private int mState;
-
-    // Constants that indicate the current connection state
-    public static final int STATE_NONE = 0;       // we're doing nothing
-    public static final int STATE_LISTEN = 1;     // now listening for incoming connections
-    public static final int STATE_CONNECTING = 2; // now initiating an outgoing connection
-    public static final int STATE_CONNECTED = 3;  // now connected to a remote device
-
+    public static final int STATE_NONE = 0;
+    public static final int STATE_LISTEN = 1;
+    public static final int STATE_CONNECTING = 2;
+    public static final int STATE_CONNECTED = 3;
 
     /**
      * Constructor. Prepares a new BluetoothChat session.
+     * @param context Context to access BluetoothChatService class
+     * @param handler Handler receu¡ived
      */
     public BluetoothChatService(Context context, Handler handler) {
         mAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -47,6 +41,7 @@ public class BluetoothChatService {
 
     /**
      * Set the current state of the chat connection
+     * @param state actual state
      */
     private synchronized void setState(int state) {
         mState = state;
@@ -66,17 +61,14 @@ public class BluetoothChatService {
      * session in listening (server) mode. Called by the Activity onResume()
      */
     public synchronized void start() {
-        // Cancel any thread attempting to make a connection
         if (mConnectThread != null) {
             mConnectThread.cancel();
             mConnectThread = null;
         }
-        // Cancel any thread currently running a connection
         if (mConnectedThread != null) {
             mConnectedThread.cancel();
             mConnectedThread = null;
         }
-        // Start the thread to listen on a BluetoothServerSocket
         if (mAcceptThread == null) {
             mAcceptThread = new AcceptThread();
             mAcceptThread.start();
@@ -86,21 +78,19 @@ public class BluetoothChatService {
 
     /**
      * Start the ConnectThread to initiate a connection to a remote device.
+     * @param device device connected
      */
     public synchronized void connect(BluetoothDevice device) {
-        // Cancel any thread attempting to make a connection
         if (mState == STATE_CONNECTING) {
             if (mConnectThread != null) {
                 mConnectThread.cancel();
                 mConnectThread = null;
             }
         }
-        // Cancel any thread currently running a connection
         if (mConnectedThread != null) {
             mConnectedThread.cancel();
             mConnectedThread = null;
         }
-        // Start the thread to connect with the given device
         mConnectThread = new ConnectThread(device);
         mConnectThread.start();
         setState(STATE_CONNECTING);
@@ -113,25 +103,20 @@ public class BluetoothChatService {
      * @param device The BluetoothDevice that has been connected
      */
     public synchronized void connected(BluetoothSocket socket, BluetoothDevice device) {
-        // Cancel the thread that completed the connection
         if (mConnectThread != null) {
             mConnectThread.cancel();
             mConnectThread = null;
         }
-        // Cancel any thread currently running a connection
         if (mConnectedThread != null) {
             mConnectedThread.cancel();
             mConnectedThread = null;
         }
-        // Cancel the accept thread because we only want to connect to one device
         if (mAcceptThread != null) {
             mAcceptThread.cancel();
             mAcceptThread = null;
         }
-        // Start the thread to manage the connection and perform transmissions
         mConnectedThread = new ConnectedThread(socket);
         mConnectedThread.start();
-        // Send the name of the connected device back to the UI Activity
         Message msg = mHandler.obtainMessage(BluetoothChat.MESSAGE_DEVICE_NAME);
         Bundle bundle = new Bundle();
         bundle.putString(BluetoothChat.DEVICE_NAME, device.getName());
@@ -161,16 +146,14 @@ public class BluetoothChatService {
 
     /**
      * Write to the ConnectedThread in an unsynchronized manner
+     * @param out byte to write
      */
     public void write(byte[] out) {
-        // Create temporary object
         ConnectedThread r;
-        // Synchronize a copy of the ConnectedThread
         synchronized (this) {
             if (mState != STATE_CONNECTED) return;
             r = mConnectedThread;
         }
-        // Perform the write unsynchronized
         r.write(out);
     }
 
@@ -179,7 +162,6 @@ public class BluetoothChatService {
      */
     private void connectionFailed() {
         setState(STATE_LISTEN);
-        // Send a failure message back to the Activity
         Message msg = mHandler.obtainMessage(BluetoothChat.MESSAGE_TOAST);
         Bundle bundle = new Bundle();
         bundle.putString(BluetoothChat.TOAST, "No se pudó conectar al dispositivo");

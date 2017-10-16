@@ -26,38 +26,34 @@ import com.clavicusoft.wumpus.R;
 
 public class BluetoothChat extends Activity {
 
-    // Message types sent from the BluetoothChatService Handler
     public static final int MESSAGE_STATE_CHANGE = 1;
     public static final int MESSAGE_READ = 2;
     public static final int MESSAGE_WRITE = 3;
     public static final int MESSAGE_DEVICE_NAME = 4;
     public static final int MESSAGE_TOAST = 5;
-    // Key names received from the BluetoothChatService Handler
     public static final String DEVICE_NAME = "";
     public static final String TOAST = "";
-    // Intent request codes
     private static final int REQUEST_CONNECT_DEVICE = 1;
     private static final int REQUEST_ENABLE_BT = 2;
     public String laberinto = "";
     public String nombreLaberinto = "";
     public String funcion = "";
     private Button mSendButton;
-    // Name of the connected device
     private String mConnectedDeviceName = null;
-    // String buffer for outgoing messages
     private StringBuffer mOutStringBuffer;
-    // Local Bluetooth adapter
     private BluetoothAdapter mBluetoothAdapter = null;
-    // Member object for the chat services
     private BluetoothChatService mChatService = null;
     public int counter = 0;
 
+    /**
+     * On create of the  Activity, creates the Bluetooth Chat.
+     * @param savedInstanceState Activity's previous saved state.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         funcion = getIntent().getStringExtra("funcion").toString();
-
         if(funcion.equals("enviar")){
             setContentView(R.layout.send_labs);
             laberinto = getIntent().getStringExtra("laberinto");
@@ -65,7 +61,6 @@ public class BluetoothChat extends Activity {
         }else{
             setContentView(R.layout.searching_labs);
         }
-
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null) {
             Toast.makeText(this, "El dispositivo no soporta bluetooth", Toast.LENGTH_LONG).show();
@@ -73,7 +68,7 @@ public class BluetoothChat extends Activity {
     }
 
     /**
-     *Override onStart
+     * On start of the  Activity, enables bluetooth.
      */
     @Override
     public void onStart() {
@@ -89,7 +84,7 @@ public class BluetoothChat extends Activity {
     }
 
     /**
-     *Override onResume
+     * On Resume of the  Activity, starts BluetoothChatService.
      */
     @Override
     public synchronized void onResume() {
@@ -102,7 +97,7 @@ public class BluetoothChat extends Activity {
     }
 
     /**
-     *Recognize if the button send is pressed and send the lab.
+     * Recognize if the button send is pressed and send the lab.
      */
     private void setupChat() {
         if(funcion.equals("enviar")){
@@ -114,16 +109,12 @@ public class BluetoothChat extends Activity {
                 }
             });
         }
-
-        // Initialize the BluetoothChatService to perform bluetooth connections
         mChatService = new BluetoothChatService(this, mHandler);
-
-        // Initialize the buffer for outgoing messages
         mOutStringBuffer = new StringBuffer("");
     }
 
     /**
-     *Override onPause
+     * On Pause of the  Activity, Override.
      */
     @Override
     public synchronized void onPause() {
@@ -131,7 +122,7 @@ public class BluetoothChat extends Activity {
     }
 
     /**
-     *Override onStop
+     * On Stop of the  Activity, Override.
      */
     @Override
     public void onStop() {
@@ -139,19 +130,18 @@ public class BluetoothChat extends Activity {
     }
 
     /**
-     *Override onDestroy
+     * On Destroy of the  Activity, stops BluetoothChatService.
      */
     @Override
     public void onDestroy() {
         super.onDestroy();
-        // Stop the Bluetooth chat services
         if (mChatService != null){
             mChatService.stop();
         }
     }
 
     /**
-     * Put the bluetooth in discoverable mode
+     * Set the device in discoverable mode.
      */
     private void ensureDiscoverable() {
         if (mBluetoothAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
@@ -162,8 +152,8 @@ public class BluetoothChat extends Activity {
     }
 
     /**
-     * Take the message and send it to mChatService.write
-     * @param message
+     * Take the message and send it to mChatService.write.
+     * @param message Message to send.
      */
     private void sendMessage(String message) {
 
@@ -184,8 +174,15 @@ public class BluetoothChat extends Activity {
      * The action listener for the EditText widget, to listen for the return key
      */
     private TextView.OnEditorActionListener mWriteListener = new TextView.OnEditorActionListener() {
+
+        /**
+         * If the action is a key-up event on the return key, send the message.
+         * @param view View to be shown.
+         * @param actionId action's id.
+         * @param event event received.
+         * @return True if sends message.
+         */
         public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-            // If the action is a key-up event on the return key, send the message
             if (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_UP) {
                 String message = view.getText().toString();
                 sendMessage(message);
@@ -198,21 +195,22 @@ public class BluetoothChat extends Activity {
      * The Handler that gets information back from the BluetoothChatService
      */
     private final Handler mHandler = new Handler() {
+
+        /**
+         * According to msgId, this method identifies what to do.
+         * @param msg message received
+         */
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MESSAGE_WRITE:
                     byte[] writeBuf = (byte[]) msg.obj;
-                    // construct a string from the buffer
                     String writeMessage = new String(writeBuf);
                     break;
                 case MESSAGE_READ:
-
                     byte[] readBuf = (byte[]) msg.obj;
-                    // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);
                     final String [] splitMessage = tokenizer(readMessage);
-
                     AlertDialog.Builder alert = new AlertDialog.Builder(BluetoothChat.this);
                     alert.setTitle("Invitación para compartir laberinto");
                     alert.setMessage("¿Quiere aceptar el laberinto recibido?\nNombre: "+ splitMessage[2] + "\nRelaciones: " + splitMessage[0]+"\nNúmero de cuevas: "+ splitMessage[1]);
@@ -221,13 +219,11 @@ public class BluetoothChat extends Activity {
                         public void onClick(DialogInterface dialog, int which) {
                             AdminSQLite admin = new AdminSQLite(BluetoothChat.this, "WumpusDB", null, 6);
                             SQLiteDatabase db = admin.getWritableDatabase();
-
                             ContentValues data = new ContentValues();
                             data.put("name", splitMessage[2]);
                             data.put("relations", splitMessage[0]);
                             data.put("number_of_caves", splitMessage[1]);
                             db.insert("GRAPH", null, data);
-
                             db.close();
                             AlertDialog.Builder newDialog = new AlertDialog.Builder(BluetoothChat.this);
                             newDialog.setTitle("Se ha guardado el laberinto");
@@ -259,10 +255,8 @@ public class BluetoothChat extends Activity {
                         }
                     });
                     alert.show();
-
                     break;
                 case MESSAGE_DEVICE_NAME:
-                    // save the connected device's name
                     mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
                     Toast.makeText(getApplicationContext(), "Conectado a " + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
                     break;
@@ -274,40 +268,34 @@ public class BluetoothChat extends Activity {
         }
     };
 
+
     /**
-     *
-     * @param requestCode
-     * @param resultCode
-     * @param data
+     * Connects to another device and validates the bluetooth's state.
+     * @param requestCode function to do.
+     * @param resultCode result of the function's invocation.
+     * @param data data received.
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REQUEST_CONNECT_DEVICE:
-                // When DeviceListActivity returns with a device to connect
                 if (resultCode == Activity.RESULT_OK) {
-                    // Get the device MAC address
                     String address = data.getExtras().getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
-                    // Get the BLuetoothDevice object
                     BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
-                    // Attempt to connect to the device
                     mChatService.connect(device);
                 }
                 break;
             case REQUEST_ENABLE_BT:
-                // When the request to enable Bluetooth returns
                 if (resultCode == Activity.RESULT_OK) {
-                    // Bluetooth is now enabled, so set up a chat session
                     setupChat();
                 } else {
-                    // User did not enable Bluetooth or an error occured
                     Toast.makeText(this, R.string.bt_not_enabled_leaving, Toast.LENGTH_SHORT).show();
                 }
         }
     }
 
     /**
-     *
-     * @param v
+     * Starts activity DeviceListActivity.
+     * @param v View to be shown.
      */
     public void connect(View v) {
         Intent serverIntent = new Intent(this, DeviceListActivity.class);
@@ -315,17 +303,17 @@ public class BluetoothChat extends Activity {
     }
 
     /**
-     *
-     * @param v
+     * call to ensureDiscoverable method.
+     * @param v View to be shown.
      */
     public void discoverable(View v) {
         ensureDiscoverable();
     }
 
     /**
-     *
-     * @param msj
-     * @return
+     * This method split the message and interprets the information.
+     * @param msj msg received
+     * @return the information interpreted
      */
     public String[] tokenizer(String msj){
         String[] mensaje = msj.split("%");
