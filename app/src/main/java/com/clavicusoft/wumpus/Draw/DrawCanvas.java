@@ -29,21 +29,24 @@ public class DrawCanvas extends View {
 
     private ArrayList<Cave> caves; //Stores all current caves
     private float touchX, touchY; //Stores coordinates
-    private int numCave;
+    private int numCave; //Counter to assign an ID to each cave
 
     public int getTotalCaves() {
         return totalCaves;
     }
 
-    private int totalCaves;
-    private int maxCaves;
+    private int totalCaves; //Counter of drawn caves
+    private int maxCaves; //Maximun number of caves allowed
 
+    /**
+     * Constructor of the canvas
+     * @param context Context to access DrawCanvas class
+     * @param attrs AttributeSet of the DrawCanvas configurations
+     */
     public DrawCanvas(Context context, AttributeSet attrs) {
         super(context, attrs);
         setupDrawing();
     }
-
-
 
     /**
      * Configuration of the area used to draw.
@@ -51,9 +54,9 @@ public class DrawCanvas extends View {
     public void setupDrawing(){
         drawPath = new Path();
         drawPaint = new Paint();
-        drawPaint.setColor(0xFFFFFFFF); //White //0xFF000000); //Negro
+        drawPaint.setColor(0xFFFFFFFF); //White
         drawPaint.setAntiAlias(true); //Soft brush
-        drawPaint.setStrokeWidth(20); //Bursh width
+        drawPaint.setStrokeWidth(20); //Brush width
         drawPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
@@ -128,7 +131,7 @@ public class DrawCanvas extends View {
             if (totalCaves < maxCaves) {
                 drawPaint.setStrokeWidth(20);
                 drawPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-                drawPaint.setColor(0xFFFFFFFF);//White //(0xFF000000); //Black
+                drawPaint.setColor(0xFFFFFFFF);//White
                 drawPath.addCircle(touchX, touchY, 50, Path.Direction.CW); //Draw the cave in these coordinates
                 drawCanvas.drawPath(drawPath, drawPaint);
                 drawPath.reset();
@@ -136,8 +139,8 @@ public class DrawCanvas extends View {
                 drawPaint.setStrokeWidth(3);
                 drawPaint.setTextSize(30);
                 drawPaint.setStyle(Paint.Style.STROKE);
-                drawPaint.setColor(0xFF000000);//Negro //(0xFFFFFFFF); //White
-                drawCanvas.drawText(tag, touchX - 5, touchY + 5, drawPaint);
+                drawPaint.setColor(0xFF000000);//Black
+                drawCanvas.drawText(tag, touchX - 5, touchY + 5, drawPaint); //Draw the cave ID
                 caves.add(new Cave(numCave, touchX, touchY)); //Add cave to the list
                 totalCaves++;
                 numCave++;
@@ -189,15 +192,15 @@ public class DrawCanvas extends View {
             drawPath.moveTo(touchX, touchY);
             drawPaint.setStrokeWidth(20);
             drawPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-            drawPaint.setColor(0xFFFFFFFF);//Blanco //(0xFF000000); //Negro
-            drawPath.addCircle(touchX, touchY, 50, Path.Direction.CW); //Dibujo una cueva
-            drawCanvas.drawPath(drawPath, drawPaint); //Llama al onDraw
+            drawPaint.setColor(0xFFFFFFFF);//White
+            drawPath.addCircle(touchX, touchY, 50, Path.Direction.CW);
+            drawCanvas.drawPath(drawPath, drawPaint);
             drawPath.reset();
             tag = Integer.toString(c1.getId());
             drawPaint.setStrokeWidth(3);
             drawPaint.setTextSize(30);
             drawPaint.setStyle(Paint.Style.STROKE);
-            drawPaint.setColor(0xFF000000);//(0xFFFFFFFF); //Color: Blanco
+            drawPaint.setColor(0xFF000000);//Black
             drawCanvas.drawText(tag, touchX - 5, touchY + 5, drawPaint);
             i++;
         }
@@ -227,7 +230,7 @@ public class DrawCanvas extends View {
         y2 = c2.getCorY();
         drawPaint.setStrokeWidth(20);
         drawPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        drawPaint.setColor(0xFFFFFFFF);//White //(0xFF000000); //Black
+        drawPaint.setColor(0xFFFFFFFF);//White
         drawPath.moveTo(x1,y1);
         drawPath.lineTo(x2,y2);
         drawCanvas.drawPath(drawPath, drawPaint);
@@ -235,7 +238,8 @@ public class DrawCanvas extends View {
         drawPaint.setStrokeWidth(3);
         drawPaint.setTextSize(30);
         drawPaint.setStyle(Paint.Style.STROKE);
-        drawPaint.setColor(0xFF000000);//(0xFFFFFFFF); //Color: White
+        drawPaint.setColor(0xFF000000);//Black
+        //Redraw the cave ID
         tag = Integer.toString(c1.getId());
         drawCanvas.drawText(tag, x1 - 5, y1 + 5, drawPaint);
         tag = Integer.toString(c2.getId());
@@ -274,15 +278,15 @@ public class DrawCanvas extends View {
             drawPath.moveTo(touchX, touchY);
             drawPaint.setStrokeWidth(20);
             drawPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-            drawPaint.setColor(0xFFFFFFFF);//White //(0xFF000000); //Black
-            drawPath.addCircle(touchX, touchY, 50, Path.Direction.CW); //Draws the cave
-            drawCanvas.drawPath(drawPath, drawPaint); //Calls the onDraw method
+            drawPaint.setColor(0xFFFFFFFF);//White
+            drawPath.addCircle(touchX, touchY, 50, Path.Direction.CW);
+            drawCanvas.drawPath(drawPath, drawPaint);
             drawPath.reset();
             tag = Integer.toString(c1.getId());
             drawPaint.setStrokeWidth(3);
             drawPaint.setTextSize(30);
             drawPaint.setStyle(Paint.Style.STROKE);
-            drawPaint.setColor(0xFF000000);//(0xFFFFFFFF); //Color: White
+            drawPaint.setColor(0xFF000000);//Black
             drawCanvas.drawText(tag, touchX - 5, touchY + 5, drawPaint);
             i++;
         }

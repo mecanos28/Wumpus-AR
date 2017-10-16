@@ -22,16 +22,18 @@ import com.clavicusoft.wumpus.R;
 
 public class DrawMazeActivity extends Activity {
 
-    private DrawCanvas myCanvas;
-    private Graph customMaze;
-    private int caveToDelete, cave1, cave2;
-    private String name;
-    AlertDialog.Builder alert;
+    private DrawCanvas myCanvas; //Instance of the canvas
+    private Graph customMaze; //Object graph used to store the maze
+    private int caveToDelete, cave1, cave2; //Store the chosen caves
+    private String name; //Name of the created maze
+    AlertDialog.Builder alert; //Dialog used to show important information
 
-    @Override
+
     /**
      * On create of the  Activity, creates the canvas.
+     * @param savedInstanceState Activity's previous saved state.
      */
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -348,7 +350,6 @@ public class DrawMazeActivity extends Activity {
      * @param v View to be affected
      */
     public void newD(View v){
-        //Restart drawing or save current and start a new one?
         AlertDialog.Builder newDialog = new AlertDialog.Builder(this);
         newDialog.setTitle("Reiniciar laberinto");
         newDialog.setMessage("¿Está seguro que desea comenzar un nuevo dibujo? Perderá el progreso actual.");
@@ -368,7 +369,7 @@ public class DrawMazeActivity extends Activity {
 
     /**
      * Checks that the current maze is valid
-     * @param v
+     * @param v View to be affected
      */
     public void checkD(View v){
         customMaze = new Graph(myCanvas.getTotalCaves(), myCanvas.getCaves());
@@ -388,7 +389,7 @@ public class DrawMazeActivity extends Activity {
         }
     }
 
-    /*
+    /**
     * Saves the actual maze.
     */
     public void saveMaze() {
@@ -490,7 +491,7 @@ public class DrawMazeActivity extends Activity {
 
     /**
      * Starts the game with the ID identifying the created maze
-     * @param stringGraphID
+     * @param stringGraphID String used to identify the created maze
      */
     public void startGame (String stringGraphID) {
         Intent i = new Intent(this, com.clavicusoft.wumpus.Map.Coordinates.class);

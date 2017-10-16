@@ -1,8 +1,8 @@
 package com.clavicusoft.wumpus.Draw;
 
 public class IntPair {
-    public int x;
-    public int y;
+    public int x; //First cave
+    public int y; //Second cave
 
     /**
      * Constructor of class that stores relations between caves
