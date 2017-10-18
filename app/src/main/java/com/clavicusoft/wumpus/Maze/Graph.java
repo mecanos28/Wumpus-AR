@@ -1,5 +1,6 @@
 package com.clavicusoft.wumpus.Maze;
 
+import java.security.PrivateKey;
 import java.util.ArrayList;
 import com.clavicusoft.wumpus.Draw.IntPair;
 
@@ -10,7 +11,7 @@ public class Graph {
     private int maximumCaves;
     private boolean[] connected;
     private int[] caveToArrayMapping;
-
+    private CaveContent[] caveContents;
     //Creates an empty graph for irregular mazes.
 
     /**
@@ -19,6 +20,7 @@ public class Graph {
     public Graph() {
         this.maximumCaves = 20;
         this.cavesRelations = new boolean[20][20];
+        this.caveContents = new CaveContent[20];
         //this.allCaves = new ArrayList<Cave>();
     }
 
@@ -31,6 +33,7 @@ public class Graph {
     public Graph(int numCaves) {
         this.maximumCaves = numCaves;
         this.cavesRelations = new boolean[numCaves][numCaves];
+        this.caveContents = new CaveContent[numCaves];
         //this.allCaves = new ArrayList<Cave>();
     }
 
@@ -45,6 +48,7 @@ public class Graph {
         this.allCaves = caveArrayList;
         this.cavesRelations = new boolean[numCaves][numCaves];
         this.caveToArrayMapping = new int[numCaves];
+        this.caveContents = new CaveContent[numCaves];
         //this.allCaves = new ArrayList<Cave>();
     }
 
@@ -155,7 +159,12 @@ public class Graph {
         this.cavesRelations[caveY_id][caveX_id] = false;
     }
 
-    /*public Cave getFirstCave(Cave caveFather) {
+    /**
+     * This method returns the first adjacent cave of a given father cave.
+     * @param caveFather The father cave that have all his adjacent caves.
+     * @return The first adjacent cave of the father, otherwise null.
+     */
+    public Cave getFirstCave(Cave caveFather) {
         Cave first = null;
         int index = 0;
         boolean repeat = true;
@@ -168,9 +177,15 @@ public class Graph {
             }
         }
         return first;
-    }*/
+    }
 
-    /*public Cave getNextCave(Cave caveFather, Cave caveChild) {
+    /**
+     * This method returns the next adjacent cave of a father, from a given adjacent cave.
+     * @param caveFather The father cave that have all his adjacent caves.
+     * @param caveChild One od the adjacent caves of the father cave.
+     * @return The next adjacent cave from the given cave, otherwise null.
+     */
+    public Cave getNextCave(Cave caveFather, Cave caveChild) {
         Cave next = null;
         int index = allCaves.indexOf(caveChild);
         boolean repeat = true;
@@ -183,7 +198,7 @@ public class Graph {
             }
         }
         return next;
-    }*/
+    }
 
     /**
      * Converts a string of relations into an array.
