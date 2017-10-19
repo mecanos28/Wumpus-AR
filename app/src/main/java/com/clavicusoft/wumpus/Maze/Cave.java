@@ -52,7 +52,7 @@ public class Cave {
     }
 
     /**
-     * 
+     *
      * @param caveContent
      */
     public void setCaveContent(CaveContent caveContent) {
