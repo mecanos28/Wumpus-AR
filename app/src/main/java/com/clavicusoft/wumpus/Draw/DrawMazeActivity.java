@@ -144,8 +144,8 @@ public class DrawMazeActivity extends Activity {
                     cave2 = Integer.parseInt(edtTxtCave2.getText().toString());
                     if (cave1 < myCanvas.getNumCave() && cave2 < myCanvas.getNumCave()) {
                         if (cave1 != cave2) {
-                            Cave c1 = myCanvas.searchCave(cave1);
-                            Cave c2 = myCanvas.searchCave(cave2);
+                            Cave c1 = myCanvas.searchCaveById(cave1);
+                            Cave c2 = myCanvas.searchCaveById(cave2);
                             if (c1 != null && c2 != null) {
                                 myCanvas.addArc(c1, c2);
                                 myCanvas.getRelations().add(new IntPair(c1.getId(), c2.getId()));
@@ -254,8 +254,8 @@ public class DrawMazeActivity extends Activity {
                     if(cave1 < myCanvas.getNumCave() && cave2 < myCanvas.getNumCave()){
                         if (cave1 != cave2)
                         {
-                            Cave c1 = myCanvas.searchCave(cave1);
-                            Cave c2 = myCanvas.searchCave(cave2);
+                            Cave c1 = myCanvas.searchCaveById(cave1);
+                            Cave c2 = myCanvas.searchCaveById(cave2);
                             if(c1 != null && c2 != null) {
                                 myCanvas.deleteArc(c1, c2);
                             }

@@ -156,6 +156,8 @@ public class DrawCanvas extends View {
     public void deleteCave(int c){
         String tag;
         Cave c1, c2;
+        c1 = searchCaveByCoordenates(touchX, touchY); //Receive new specified coordinates
+        c = c1.getId();
         drawCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
         //Delete all arcs related to this cave
         int l = 0;
@@ -207,8 +209,8 @@ public class DrawCanvas extends View {
         //Redraw all other arches
         int k = 0;
         while (k < relations.size()) {
-            c1 = searchCave(relations.get(k).x);
-            c2 = searchCave(relations.get(k).y);
+            c1 = searchCaveById(relations.get(k).x);
+            c2 = searchCaveById(relations.get(k).y);
             addArc(c1, c2);
             k++;
         }
@@ -293,8 +295,8 @@ public class DrawCanvas extends View {
         //Redraw the edges
         int k = 0;
         while (k < relations.size()) {
-            c1 = searchCave(relations.get(k).x);
-            c2 = searchCave(relations.get(k).y);
+            c1 = searchCaveById(relations.get(k).x);
+            c2 = searchCaveById(relations.get(k).y);
             addArc(c1, c2);
             k++;
         }
@@ -307,10 +309,33 @@ public class DrawCanvas extends View {
      * @param id Cave identifier
      * @return Cave with the corresponding id
      */
-    public Cave searchCave(int id){
+    public Cave searchCaveById(int id){
         int i = 0;
         while(i < totalCaves){
             if (caves.get(i).getId() == id) {
+                return caves.get(i);
+            }
+            else{
+                i++;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Searches the cave based on the received coordenates and returns it
+     * @param x coordinates for axis x
+     * @param y coordinates for axis y
+     * @return Cave with the corresponding coordinates
+     */
+    public Cave searchCaveByCoordenates(float x, float y){
+        float currentX, currentY;
+        int i = 0;
+        while(i < totalCaves) {
+            currentX = caves.get(i).getCorX();
+            currentY = caves.get(i).getCorY();
+            if ((x >= currentX-50 && y >= currentY-50)|| (x <= currentX+50 && y >= currentY-50) || (x >= currentX-50 && y <= currentY+50) || (x >= currentX+50 && y <= currentY+50))
+            {
                 return caves.get(i);
             }
             else{
