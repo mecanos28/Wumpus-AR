@@ -52,7 +52,7 @@ public class SelectPolyActivity extends Activity {
      */
     public void imageClicked(int graph) {
         //Starts the DB
-        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 6);
+        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 7);
         SQLiteDatabase db = admin.getWritableDatabase();
 
         //Gets the name of the selected maze
