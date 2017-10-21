@@ -10,84 +10,99 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible">
+        android:visibility="visible"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="0dp">
 
         <FrameLayout
             android:id="@+id/camera_preview"
-            android:layout_width="597dp"
-            android:layout_height="351dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_width="0dp"
+            android:layout_height="353dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
             android:layout_weight="3.10"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintHorizontal_bias="0.428">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.066"
+            tools:layout_constraintRight_creator="1"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:layout_constraintLeft_creator="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp">
 
         </FrameLayout>
 
         <ImageView
             android:id="@+id/arrowimage"
-            android:layout_width="82dp"
-            android:layout_height="71dp"
+            android:layout_width="56dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/arrow"
             android:scaleType="fitXY"
-            app:srcCompat="@drawable/arrow"
-            app:layout_constraintRight_toLeftOf="@+id/caveimage"
-            android:layout_marginRight="396dp"
+            app:layout_constraintLeft_toLeftOf="@+id/numCave"
+            app:layout_constraintRight_toRightOf="@+id/numCave"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="396dp" />
+            app:srcCompat="@drawable/arrow"
+            tools:layout_constraintLeft_creator="1"
+            tools:layout_constraintRight_creator="1" />
 
         <ImageView
             android:id="@+id/caveimage"
-            android:layout_width="82dp"
-            android:layout_height="71dp"
+            android:layout_width="58dp"
+            android:layout_height="51dp"
             android:background="@drawable/cave"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/cave"
-            android:layout_marginRight="48dp"
-            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginEnd="56dp"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp" />
-
-        <TextView
-            android:id="@+id/numCave"
-            android:layout_width="86dp"
-            android:layout_height="107dp"
-            android:layout_marginLeft="351dp"
-            android:text="5"
-            android:textAlignment="center"
-            android:textColor="@android:color/holo_orange_dark"
-            android:textSize="24sp"
-            app:layout_constraintLeft_toRightOf="@+id/numArrow"
-            android:layout_marginStart="400dp"
-            android:layout_marginTop="19dp"
-            app:layout_constraintTop_toBottomOf="@+id/caveimage" />
+            tools:layout_constraintRight_creator="1"
+            app:layout_constraintRight_toRightOf="@+id/camera_preview"
+            android:layout_marginRight="56dp" />
 
         <TextView
             android:id="@+id/numArrow"
-            android:layout_width="86dp"
-            android:layout_height="107dp"
-            android:layout_marginTop="19dp"
+            android:layout_width="59dp"
+            android:layout_height="30dp"
             android:text="5"
             android:textAlignment="center"
-            android:textColor="@android:color/holo_orange_dark"
+            android:textColor="@android:color/background_light"
             android:textSize="24sp"
-            app:layout_constraintTop_toBottomOf="@+id/arrowimage"
-            android:layout_marginLeft="16dp"
+            android:textStyle="italic"
+            android:shadowColor="#000000"
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="3"
+            app:layout_constraintLeft_toLeftOf="@+id/caveimage"
+            app:layout_constraintRight_toRightOf="@+id/caveimage"
+            app:layout_constraintTop_toBottomOf="@+id/caveimage"
+            tools:layout_constraintLeft_creator="1"
+            tools:layout_constraintRight_creator="1"
+            tools:layout_constraintTop_creator="1"
+            />
+
+        <TextView
+            android:id="@+id/numCave"
+            android:layout_width="54dp"
+            android:layout_height="28dp"
+            android:layout_marginLeft="41dp"
+            android:layout_marginStart="42dp"
+            android:layout_marginTop="2dp"
+            android:text="5"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="@android:color/background_light"
+            android:textSize="24sp"
+            android:textStyle="italic"
+            android:shadowColor="#000000"
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="3"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginStart="16dp" />
+            app:layout_constraintTop_toBottomOf="@+id/arrowimage"
+            tools:layout_constraintLeft_creator="1"
+            tools:layout_constraintTop_creator="1" />
 
     </android.support.constraint.ConstraintLayout>
 
