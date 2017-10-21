@@ -15,10 +15,11 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.FrameLayout;
 
 import com.clavicusoft.wumpus.R;
 
-public class CameraHUDActivity extends Activity implements SurfaceHolder.Callback{
+/*public class CameraHUDActivity extends Activity implements SurfaceHolder.Callback{
 
     Camera camera;
     SurfaceView surfaceView;
@@ -26,7 +27,7 @@ public class CameraHUDActivity extends Activity implements SurfaceHolder.Callbac
     boolean previewing = false;
     LayoutInflater controlInflater = null;
 
-    /** Called when the activity is first created. */
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -82,5 +83,37 @@ public class CameraHUDActivity extends Activity implements SurfaceHolder.Callbac
         camera.release();
         camera = null;
         previewing = false;
+    }
+}*/
+
+public class CameraHUDActivity extends Activity {
+
+    private Camera mCamera;
+    private CameraPreview mPreview;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_camera_hud);
+
+        // Create an instance of Camera
+        mCamera = getCameraInstance();
+
+        // Create our Preview view and set it as the content of our activity.
+        mPreview = new CameraPreview(this, mCamera);
+        FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
+        preview.addView(mPreview);
+    }
+
+    /** A safe way to get an instance of the Camera object. */
+    public static Camera getCameraInstance(){
+        Camera c = null;
+        try {
+            c = Camera.open(); // attempt to get a Camera instance
+        }
+        catch (Exception e){
+            // Camera is not available (in use or does not exist)
+        }
+        return c; // returns null if camera is unavailable
     }
 }
