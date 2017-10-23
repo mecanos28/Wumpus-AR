@@ -50,6 +50,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Button btnContinue;
     Button btnTerrain;
     Button btnHybrid;
+    Button btnListo;
+
+    boolean creado;
 
 
     /**
@@ -73,15 +76,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         btnContinue =(Button) findViewById(R.id.bcontinuar);
         btnHybrid =(Button) findViewById(R.id.bhibrido);
         btnTerrain =(Button) findViewById(R.id.bterreno);
+        btnListo=(Button) findViewById(R.id.bListo);
 
         btnContinue.setOnClickListener(this);
         btnTerrain.setOnClickListener(this);
         btnHybrid.setOnClickListener(this);
+        btnListo.setOnClickListener(this);
 
         selectedLatitude =0.0;
         selectedLongitude =0.0;
 
         meterToCoordinates = 0.0000095;
+
+        creado=false;
 
 
         int status= GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
@@ -121,8 +128,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 break;
             case R.id.bcontinuar: {
 
-                //Intent other activity
-                // Intent i = new Intent(MapsActivity.this, PassActivity.class);
 
                 if (selectedLatitude !=0.0 && selectedLongitude !=0.0)
                 {
@@ -131,26 +136,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     putCave(numberCaves, selectedLatitude, selectedLongitude);
 
-                    //  i.putExtra("Latitud", selectedLatitude);
-                    // i.putExtra("Longitud", selectedLongitude);
-
                 }
                 else {//Create caves
                     putCave(numberCaves, latitude, longitude);
-
-
-
-                    // i.putExtra("Latitud", latitude);
-                    // i.putExtra("Longitud", longitude);
-
                 }
-                // ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.fade_in, R.anim.fade_out);
-                //  startActivity(i, options.toBundle());
+                game_id++;
+                creado=true;
             }
             break;
+
+            case R.id.bListo:
+                if(creado) {
+                    Intent i = new Intent(MapsActivity.this, ActualCoordinate.class);
+                    i.putExtra("gameID", (game_id - 1));
+                    i.putExtra("numCaves", numberCaves);
+                    ActivityOptions options = ActivityOptions.makeCustomAnimation(MapsActivity.this, R.anim.fade_in, R.anim.fade_out);
+                    startActivity(i, options.toBundle());
+                }
+                    else
+                    {
+                    Toast.makeText(MapsActivity.this,"Debe crear un mapa de juego",Toast.LENGTH_LONG).show();
+                }
+                break;
             default:
                 break;
+
+
         }
+
 
     }
 

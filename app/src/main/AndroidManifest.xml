@@ -34,6 +34,7 @@
         <activity android:name=".Bluetooth.BluetoothChat" android:screenOrientation="portrait" />
         <activity android:name=".Bluetooth.DeviceListActivity" android:screenOrientation="portrait" />
         <activity android:name=".Bluetooth.SelectLabToShare" android:screenOrientation="portrait" />
+        <activity android:name=".Map.ActualCoordinate" android:screenOrientation="portrait" />
         <activity android:name=".Map.MapsActivity" android:label="@string/title_activity_maps" android:screenOrientation="portrait"></activity>
 
         <!--
