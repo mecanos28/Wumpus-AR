@@ -303,6 +303,7 @@ public class BluetoothChat extends Activity {
     }
 
     /**
+     *
      * call to ensureDiscoverable method.
      * @param v View to be shown.
      */
