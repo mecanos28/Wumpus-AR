@@ -1,6 +1,10 @@
 package com.clavicusoft.wumpus.Maze;
 
+import java.security.PrivateKey;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
+
 import com.clavicusoft.wumpus.Draw.IntPair;
 
 public class Graph {
@@ -10,7 +14,7 @@ public class Graph {
     private int maximumCaves;
     private boolean[] connected;
     private int[] caveToArrayMapping;
-
+    private Random random;
     //Creates an empty graph for irregular mazes.
 
     /**
@@ -19,6 +23,7 @@ public class Graph {
     public Graph() {
         this.maximumCaves = 20;
         this.cavesRelations = new boolean[20][20];
+        this.random = new Random();
         //this.allCaves = new ArrayList<Cave>();
     }
 
@@ -31,6 +36,7 @@ public class Graph {
     public Graph(int numCaves) {
         this.maximumCaves = numCaves;
         this.cavesRelations = new boolean[numCaves][numCaves];
+        this.random = new Random();
         //this.allCaves = new ArrayList<Cave>();
     }
 
@@ -45,7 +51,8 @@ public class Graph {
         this.allCaves = caveArrayList;
         this.cavesRelations = new boolean[numCaves][numCaves];
         this.caveToArrayMapping = new int[numCaves];
-        //this.allCaves = new ArrayList<Cave>();
+        this.random = new Random();
+        this.allCaves = new ArrayList<Cave>();
     }
 
 
@@ -58,7 +65,8 @@ public class Graph {
         this.maximumCaves = numberOfCaves;
         this.cavesRelations = new boolean[this.maximumCaves][this.maximumCaves];
         this.stringToArray(relations);
-        //this.allCaves = new ArrayList<Cave>();
+        this.random = new Random();
+        this.allCaves = new ArrayList<Cave>();
     }
 
     /**
@@ -106,7 +114,7 @@ public class Graph {
      */
     public void addCave(Cave cave) {
         this.maximumCaves--;
-        //allCaves.add(cave);
+        allCaves.add(cave);
     }
 
     /**
@@ -155,7 +163,12 @@ public class Graph {
         this.cavesRelations[caveY_id][caveX_id] = false;
     }
 
-    /*public Cave getFirstCave(Cave caveFather) {
+    /**
+     * This method returns the first adjacent cave of a given father cave.
+     * @param caveFather The father cave that have all his adjacent caves.
+     * @return The first adjacent cave of the father, otherwise null.
+     */
+    public Cave getFirstCave(Cave caveFather) {
         Cave first = null;
         int index = 0;
         boolean repeat = true;
@@ -168,9 +181,15 @@ public class Graph {
             }
         }
         return first;
-    }*/
+    }
 
-    /*public Cave getNextCave(Cave caveFather, Cave caveChild) {
+    /**
+     * This method returns the next adjacent cave of a father, from a given adjacent cave.
+     * @param caveFather The father cave that have all his adjacent caves.
+     * @param caveChild One od the adjacent caves of the father cave.
+     * @return The next adjacent cave from the given cave, otherwise null.
+     */
+    public Cave getNextCave(Cave caveFather, Cave caveChild) {
         Cave next = null;
         int index = allCaves.indexOf(caveChild);
         boolean repeat = true;
@@ -183,7 +202,7 @@ public class Graph {
             }
         }
         return next;
-    }*/
+    }
 
     /**
      * Converts a string of relations into an array.
@@ -309,5 +328,90 @@ public class Graph {
                 checkConnectedCaves(i);
             }
         }
+    }
+
+    //TODO RANDOM GEN
+
+    /**
+     *
+     * @param playerPosition Id of the cave where the player will init the game
+     * @return
+     */
+    public CaveContent[] randomEntitiesGen(int playerPosition) {
+        CaveContent[] caveContents = new CaveContent[maximumCaves];
+        boolean[] isCaveNotEmpty = new boolean[maximumCaves];
+        Arrays.fill(caveContents, CaveContent.EMPTY);
+        Arrays.fill(isCaveNotEmpty, false);
+
+        caveContents[this.searchIdInArray(playerPosition)]= CaveContent.PLAYER;
+        isCaveNotEmpty[this.searchIdInArray(playerPosition)] = true;
+
+        /**1 wumpus, 2 pits (0<=3,1<=6) , 2 bats (0<=3, 1<=6)**/
+        int amount[] = new int[3]; // 0: pits, 1: bats, 2: wumpus
+        amount[0] = 0;
+        amount[1] = 0;
+        amount[2] = 1;
+
+        if(maximumCaves > 3 && maximumCaves <= 6) {
+            amount[0] = 1;
+            amount[1] = 1;
+        } else if (maximumCaves > 6) {
+            amount[0] = 2;
+            amount[1] = 2;
+        }
+
+        boolean retry = true;
+
+        while(retry) {
+
+            for (int i = 0; i < 3; i++) {
+
+                for (int j = 0; j < amount[i] ; j++) {
+
+                    boolean replace = true;
+                    while (replace) {
+
+                        int cavePosition = this.random.nextInt(maximumCaves);
+                        if(!isCaveNotEmpty[cavePosition]) {
+
+                            switch (i) {
+                                case 0:
+                                    caveContents[cavePosition] = CaveContent.PIT;
+                                    break;
+                                case 1:
+                                    caveContents[cavePosition] = CaveContent.BAT;
+                                    break;
+                                case 2:
+                                    caveContents[cavePosition] = CaveContent.WUMPUS;
+                                    break;
+                            }
+                            isCaveNotEmpty[cavePosition] = true;
+                            replace = false;
+                        }
+                    }
+                }
+            }
+            retry = this.randomEntitiesGenValidator(caveContents);
+
+            if(retry) {
+                Arrays.fill(caveContents, CaveContent.EMPTY);
+                Arrays.fill(isCaveNotEmpty, false);
+
+                caveContents[this.searchIdInArray(playerPosition)]= CaveContent.PLAYER;
+                isCaveNotEmpty[this.searchIdInArray(playerPosition)] = true;
+            }
+        }
+
+        System.out.println(Arrays.toString(caveContents));
+
+        /**Put information in every caves**/
+        for (int i = 0; i < this.allCaves.size() ; i++) {
+            this.allCaves.get(i).setCaveContent(caveContents[i]);
+        }
+        return caveContents;
+    }
+    //TODO RANDOM GEN VALIDATOR
+    private boolean randomEntitiesGenValidator(CaveContent[] caveContents) {
+        return false;
     }
 }

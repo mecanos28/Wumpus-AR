@@ -75,6 +75,10 @@ public class AdminSQLite extends SQLiteOpenHelper {
                 "00000010100000000100*00000001010000000010*00000000110000000001*" +
                 "00000000001000001100*00000000000100010010*00000000000010010001*" +
                 "00000000000001001001*00000000000000100110\", 20, \"Dodecahedron\", 0);");
+        db.execSQL("INSERT INTO CAVE_CONTENT (id, content) VALUES (1, EMPTY)");
+        db.execSQL("INSERT INTO CAVE_CONTENT (id, content) VALUES (1, BAT)");
+        db.execSQL("INSERT INTO CAVE_CONTENT (id, content) VALUES (1, PIT)");
+        db.execSQL("INSERT INTO CAVE_CONTENT (id, content) VALUES (1, WUMPUS)");
     }
 
     /**

@@ -208,7 +208,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void accessBD(int graph_id)
     {
 
-        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 6);
+        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 7);
         SQLiteDatabase db = admin.getWritableDatabase();
 
         Cursor cell = db.rawQuery("SELECT GRAPH.relations, GRAPH.number_of_caves FROM GRAPH WHERE GRAPH.id = " + graph_id + ";", null);
@@ -746,7 +746,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * @param coordY The longitude of the cave.
      */
     public void createCave (int cave_number, double coordX, double coordY) {
-        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 6);
+        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 7);
         SQLiteDatabase db = admin.getWritableDatabase();
 
         ContentValues data = new ContentValues();
