@@ -32,4 +32,5 @@
     </string-array>
     <string name="title_activity_map">MapActivity</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_camera_hud">CameraHUDActivity</string>
 </resources>
