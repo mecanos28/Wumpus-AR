@@ -17,7 +17,7 @@
         android:id="@+id/linearLayout">
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/arrowimage"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:background="@drawable/wumpus_icon"
@@ -51,6 +51,13 @@
             android:layout_gravity="center"
             android:onClick="multiPlayer"
             android:text="Multijugador" />
+
+        <Button
+            android:id="@+id/prueba"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="prueba"
+            android:onClick="prueba"/>
 
 
     </LinearLayout>
