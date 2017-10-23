@@ -14,7 +14,7 @@ android:id="@+id/mapLayout"
         android:layout_height="wrap_content">
 
         <Button
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:text="Hibrido"
             android:id="@+id/bhibrido"
@@ -26,7 +26,7 @@ android:id="@+id/mapLayout"
             android:background="@color/white_button"/>
 
         <Button
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:text="Terreno"
             android:id="@+id/bterreno"
@@ -39,12 +39,24 @@ android:id="@+id/mapLayout"
 
 
         <Button
-            android:layout_width="150dp"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:text="¡Continuar!"
+            android:text="Crear"
             android:id="@+id/bcontinuar"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textSize="17sp"
+            android:textColor="@color/white"
+            android:background="@color/white_button"/>
+
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:text="Listo"
+            android:id="@+id/bListo"
+            android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:textSize="17sp"

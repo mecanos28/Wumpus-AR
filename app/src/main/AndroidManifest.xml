@@ -40,6 +40,7 @@
             </intent-filter>
         </activity>
         <!-- Allowed activities -->
+
         <activity
             android:name=".Select.SelectPolyActivity"
             android:screenOrientation="portrait" />
@@ -68,6 +69,10 @@
             android:name=".Map.MapsActivity"
             android:label="@string/title_activity_maps"
             android:screenOrientation="portrait" />
+        <activity 
+            android:name=".Map.ActualCoordinate" 
+            android:screenOrientation="portrait" />
+
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
