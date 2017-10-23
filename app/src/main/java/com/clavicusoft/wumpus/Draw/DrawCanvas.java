@@ -16,7 +16,6 @@ import com.clavicusoft.wumpus.Maze.Cave;
 import java.util.ArrayList;
 
 public class DrawCanvas extends View {
-
     private Path drawPath; //Saves de drawing path
     private Paint drawPaint, canvasPaint; //Drawing brush
     private Canvas drawCanvas; //Canvas
@@ -70,8 +69,6 @@ public class DrawCanvas extends View {
         maxCaves = 20;
     }
 
-
-
     /**
      * Size given to the drawing area
      * @param w width of the area after change
@@ -86,7 +83,6 @@ public class DrawCanvas extends View {
         drawCanvas = new Canvas(canvasBitmap);
         drawCanvas.drawColor(Color.TRANSPARENT);//(0xFF000000); //Black
     }
-
 
     /**
      * Draws to the canvas, used from OnTouchEvent
@@ -109,9 +105,8 @@ public class DrawCanvas extends View {
     public boolean onTouchEvent(MotionEvent event) {
         touchX = event.getX();
         touchY = event.getY();
-        return true;
+        return super.onTouchEvent(event);
     }
-
 
     /**
      * Restarts the drawing
@@ -156,7 +151,7 @@ public class DrawCanvas extends View {
     public void deleteCave(int c){
         String tag;
         Cave c1, c2;
-        c1 = searchCaveByCoordenates(touchX, touchY); //Receive new specified coordinates
+        c1 = searchCaveByCoordinates(touchX, touchY); //Receive new specified coordinates
         c = c1.getId();
         drawCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
         //Delete all arcs related to this cave
@@ -328,7 +323,7 @@ public class DrawCanvas extends View {
      * @param y coordinates for axis y
      * @return Cave with the corresponding coordinates
      */
-    public Cave searchCaveByCoordenates(float x, float y){
+    public Cave searchCaveByCoordinates(float x, float y){
         float currentX, currentY;
         int i = 0;
         while(i < totalCaves) {
@@ -359,5 +354,17 @@ public class DrawCanvas extends View {
      */
     public int getNumCave() {
         return numCave;
+    }
+
+    public void managePressedCave()
+    {
+        Cave c = searchCaveByCoordinates(touchX,touchY);
+        if (c == null)
+        {
+            addCave();
+        }
+        else {
+            deleteCave(c.getId());
+        }
     }
 }
