@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.clavicusoft.wumpus.AR.Game_World;
 import com.clavicusoft.wumpus.Database.AdminSQLite;
 import com.clavicusoft.wumpus.R;
 import com.google.android.gms.common.ConnectionResult;
@@ -749,6 +750,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         addMetersToLongitude(longitudeGPS, distance, 2, false));
                 break;
         }
+        startGame();
+    }
+
+    public void startGame()
+    {
+        Intent i = new Intent(this, Game_World.class);
+        i.putExtra("game_ID",game_id);
+        i.putExtra("number_of_caves",numberCaves);
+        ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.fade_in,
+                R.anim.fade_out);
+        startActivity(i, options.toBundle());
     }
 
     /**

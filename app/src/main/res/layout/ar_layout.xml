@@ -1,12 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:weightSum="1">
 
-    <fragment
-        android:id="@+id/beyondarFragment"
-        android:name="com.beyondar.android.fragment.BeyondarFragmentSupport"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="0dp">
 
-</FrameLayout>
+        <FrameLayout
+            android:id="@+id/camera_preview"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="3.10"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.066"
+            tools:layout_constraintRight_creator="1"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:layout_constraintLeft_creator="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            tools:layout_editor_absoluteX="-28dp">
+
+            <fragment
+                android:id="@+id/beyondarFragment"
+                android:name="com.beyondar.android.fragment.BeyondarFragmentSupport"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </FrameLayout>
+
+
+        <TextView
+            android:id="@+id/numArrow"
+            android:layout_width="59dp"
+            android:layout_height="30dp"
+            android:text="5"
+            android:textAlignment="center"
+            android:textColor="@android:color/background_light"
+            android:textSize="24sp"
+            android:textStyle="italic"
+            android:shadowColor="#000000"
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="3"
+
+            tools:layout_editor_absoluteY="156dp"
+            tools:layout_editor_absoluteX="117dp" />
+
+        <TextView
+            android:id="@+id/numCave"
+            android:layout_width="54dp"
+            android:layout_height="28dp"
+            android:layout_marginLeft="42dp"
+            android:layout_marginStart="42dp"
+            android:text="5"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="@android:color/background_light"
+            android:textSize="24sp"
+            android:textStyle="italic"
+            android:shadowColor="#000000"
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="3"
+            app:layout_constraintLeft_toLeftOf="parent"
+
+            tools:layout_constraintLeft_creator="1"
+            tools:layout_editor_absoluteY="231dp" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</LinearLayout>
