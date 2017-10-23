@@ -27,7 +27,7 @@ public class DrawCanvas extends View {
     }
 
     private ArrayList<Cave> caves; //Stores all current caves
-    private float touchX, touchY; //Stores coordinates
+    private float touchX, touchY, touchX2, touchY2; //Stores coordinates
     private int numCave; //Counter to assign an ID to each cave
 
     public int getTotalCaves() {
@@ -64,6 +64,8 @@ public class DrawCanvas extends View {
         caves = new ArrayList<>();
         touchX = 0;
         touchY = 0;
+        touchX2 = 0;
+        touchY2 = 0;
         totalCaves = 0;
         numCave = 0;
         maxCaves = 20;
@@ -103,6 +105,8 @@ public class DrawCanvas extends View {
      */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        touchX2 = touchX;
+        touchY2 = touchY;
         touchX = event.getX();
         touchY = event.getY();
         return super.onTouchEvent(event);
@@ -365,6 +369,16 @@ public class DrawCanvas extends View {
         }
         else {
             deleteCave(c.getId());
+        }
+    }
+
+    public void manageArcsByPress()
+    {
+        Cave c1 = searchCaveByCoordinates(touchX,touchY);
+        Cave c2 = searchCaveByCoordinates(touchX2,touchY2);
+        if (c1 != null && c2 != null)
+        {
+            deleteArc(c1, c2);
         }
     }
 }

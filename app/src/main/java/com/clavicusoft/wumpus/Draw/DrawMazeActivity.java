@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.app.Activity;
@@ -39,11 +40,18 @@ public class DrawMazeActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draw);
         myCanvas = findViewById(R.id.viewDrawCanvas);
+        myCanvas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(),"Click",Toast.LENGTH_SHORT).show();
+                myCanvas.managePressedCave();
+            }
+        });
         myCanvas.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Toast.makeText(v.getContext(),"LONG CLICK",Toast.LENGTH_SHORT).show();
-                myCanvas.managePressedCave();
+                Toast.makeText(v.getContext(),"Long click",Toast.LENGTH_SHORT).show();
+                myCanvas.manageArcsByPress();
                 return true;
             }
         });
