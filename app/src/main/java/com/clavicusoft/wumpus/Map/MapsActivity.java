@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.clavicusoft.wumpus.Database.AdminSQLite;
+import com.clavicusoft.wumpus.Maze.CaveContent;
+import com.clavicusoft.wumpus.Maze.Graph;
 import com.clavicusoft.wumpus.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -51,7 +53,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Button btnTerrain;
     Button btnHybrid;
 
-
+    Graph graph;
+    CaveContent[] caveContents;
     /**
      * Obtain the SupportMapFragment and get notified when the map is ready to be used. Further,
      * gets the number of caves and the relationships according to the id of the graph in the database.
@@ -230,6 +233,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             db.close();
         }
         cell.close();
+        graph = new Graph(numberCaves);
+        //TODO posible cambio
+        caveContents = graph.randomEntitiesGen(0);
 
     }
 
@@ -755,15 +761,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         data.put("cave_number", cave_number);
         data.put("latitude", String.valueOf(coordX));
         data.put("longitude", String.valueOf(coordY));
+        data.put("content", caveContents[cave_number-1].getValue());
         db.insert("GAME", null, data);
 
         LatLng newCave = new LatLng(coordX, coordY);
 
         if (cave_number==1)
-        {        mMap.addMarker(new MarkerOptions().position(newCave).title("Cueva "+cave_number).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+        {        mMap.addMarker(new MarkerOptions().position(newCave).title("Cueva "+cave_number)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         }
         else {
-            mMap.addMarker(new MarkerOptions().position(newCave).title("Cueva " + cave_number).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+            mMap.addMarker(new MarkerOptions().position(newCave).title("Cueva " + cave_number)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
         }
 
     }
