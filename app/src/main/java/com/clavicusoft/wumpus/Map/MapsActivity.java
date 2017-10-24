@@ -144,7 +144,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 else {//Create caves
                     putCave(numberCaves, latitude, longitude);
                 }
-                game_id++;
                 creado=true;
             }
             break;
