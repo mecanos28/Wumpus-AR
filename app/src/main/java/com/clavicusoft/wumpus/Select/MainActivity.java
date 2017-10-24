@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
 
-import com.clavicusoft.wumpus.Camera.CameraHUDActivity;
 import com.clavicusoft.wumpus.R;
 
 
@@ -56,13 +55,4 @@ public class MainActivity extends Activity {
                 R.anim.slide_out_down);
         startActivity(i, options.toBundle());
     }
-
-    public void prueba (View view)
-    {
-        Intent i = new Intent(this,CameraHUDActivity.class);
-        ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.slide_in_down,
-                R.anim.slide_out_down);
-        startActivity(i, options.toBundle());
-    }
-
 }
