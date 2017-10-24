@@ -58,7 +58,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     boolean creado;
 
     Graph graph;
-    CaveContent[] caveContents;
+    //CaveContent[] caveContents;
     /**
      * Obtain the SupportMapFragment and get notified when the map is ready to be used. Further,
      * gets the number of caves and the relationships according to the id of the graph in the database.
@@ -109,7 +109,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             dialog.show();
         }
 
-        accessBD(graph_ID);
+        //accessBD(graph_ID);
 
 
     }
@@ -249,7 +249,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         cell.close();
         graph = new Graph(numberCaves);
         //TODO posible cambio
-        caveContents = graph.randomEntitiesGen(0);
+        //caveContents = graph.randomEntitiesGen(0);
 
     }
 
@@ -786,7 +786,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         data.put("cave_number", cave_number);
         data.put("latitude", String.valueOf(coordX));
         data.put("longitude", String.valueOf(coordY));
-        data.put("content", caveContents[cave_number-1].getValue());
+        //data.put("content", caveContents[cave_number-1].getValue());
         db.insert("GAME", null, data);
 
         LatLng newCave = new LatLng(coordX, coordY);
