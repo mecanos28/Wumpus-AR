@@ -39,9 +39,9 @@ android:id="@+id/mapLayout"
 
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="40dp"
-            android:text="Crear"
+            android:text="Emplazar"
             android:id="@+id/bcontinuar"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
@@ -52,11 +52,12 @@ android:id="@+id/mapLayout"
 
 
         <Button
-            android:layout_width="100dp"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:text="Listo"
+            android:text="Iniciar"
             android:id="@+id/bListo"
             android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:textSize="17sp"

@@ -52,7 +52,7 @@ public class Graph {
         this.cavesRelations = new boolean[numCaves][numCaves];
         this.caveToArrayMapping = new int[numCaves];
         this.random = new Random();
-        this.allCaves = new ArrayList<Cave>();
+        //this.allCaves = new ArrayList<Cave>();
     }
 
 
@@ -66,7 +66,7 @@ public class Graph {
         this.cavesRelations = new boolean[this.maximumCaves][this.maximumCaves];
         this.stringToArray(relations);
         this.random = new Random();
-        this.allCaves = new ArrayList<Cave>();
+        //this.allCaves = new ArrayList<Cave>();
     }
 
     /**
