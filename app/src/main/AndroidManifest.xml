@@ -62,6 +62,10 @@
             android:name=".Map.ActualCoordinate" 
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".AR.Game_World"
+            android:screenOrientation="landscape" />
+
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

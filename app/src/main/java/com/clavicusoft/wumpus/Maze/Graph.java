@@ -36,6 +36,7 @@ public class Graph {
     public Graph(int numCaves) {
         this.maximumCaves = numCaves;
         this.cavesRelations = new boolean[numCaves][numCaves];
+        this.caveToArrayMapping = new int[numCaves];
         this.random = new Random();
         //this.allCaves = new ArrayList<Cave>();
     }
@@ -405,9 +406,9 @@ public class Graph {
         System.out.println(Arrays.toString(caveContents));
 
         /**Put information in every caves**/
-        for (int i = 0; i < this.allCaves.size() ; i++) {
+        /*for (int i = 0; i < this.allCaves.size() ; i++) {
             this.allCaves.get(i).setCaveContent(caveContents[i]);
-        }
+        }*/
         return caveContents;
     }
     //TODO RANDOM GEN VALIDATOR

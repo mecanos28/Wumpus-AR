@@ -37,8 +37,8 @@ public class Game_World extends FragmentActivity implements OnClickBeyondarObjec
 
         //Get the game parameters
         Bundle b = getIntent().getExtras();
-        game_ID = Integer.parseInt(b.getString("game_ID"));
-        number_of_caves = Integer.parseInt(b.getString("number_of_caves"));
+        game_ID = b.getInt("game_ID");
+        number_of_caves = b.getInt("number_of_caves");
 
         //Sets the fragment.
         currentBeyondARFragment = (BeyondarFragmentSupport) getSupportFragmentManager().findFragmentById(
@@ -51,7 +51,7 @@ public class Game_World extends FragmentActivity implements OnClickBeyondarObjec
                 Context.LOCATION_SERVICE));
 
         //Starts the world
-        world = worldHelper.createWorld(this, number_of_caves, game_ID);
+        world = worldHelper.createWorld(this, game_ID);
 
         setDistanceParameters();
         currentBeyondARFragment.setWorld(world);

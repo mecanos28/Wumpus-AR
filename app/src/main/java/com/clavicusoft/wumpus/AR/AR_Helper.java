@@ -12,7 +12,7 @@ import com.clavicusoft.wumpus.R;
 
 import java.util.ArrayList;
 
-public class AR_Helper extends Activity {
+public class AR_Helper {
     public static World world;
     //private Location location;
 
@@ -20,33 +20,32 @@ public class AR_Helper extends Activity {
      * Creates the AR World
      *
      * @param context App´s context.
-     * @param number_of_caves Number of caves in the game.
      * @param game_id DB's id of the current game.
      * @return The created world.
      */
-    public World createWorld(Context context, int number_of_caves, int game_id){
+    public World createWorld(Context context, int game_id){
         if(world != null){
             return world;
         }
         world = new World(context);
         //ubicacion = new Ubicacion(context);
-        createCaves(number_of_caves, game_id);
+        createCaves(context, game_id);
         return world;
     }
 
     /**
      * Creates the caves inside the world.
      *
-     * @param number_of_caves Number of caves to create
+     * @param context Game's context.
      * @param game_id DB's id of the current game.
      */
-    public void createCaves(int number_of_caves, int game_id){
+    public void createCaves(Context context, int game_id){
 
-        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 7);
+        AdminSQLite admin = new AdminSQLite(context, "WumpusDB", null, 7);
         SQLiteDatabase db = admin.getWritableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT latitude, longitude, cave_number FROM GAME WHERE id = " +
-                        String.valueOf(game_id), null);
+                        String.valueOf(game_id) + ";", null);
 
         int geo_id = 1;
         if (cursor.moveToFirst()) {
