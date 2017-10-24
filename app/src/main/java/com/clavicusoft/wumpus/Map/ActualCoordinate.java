@@ -305,7 +305,7 @@ public class ActualCoordinate extends Activity
 
         Location nuevo;
 
-        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 6);
+        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 7);
         SQLiteDatabase db = admin.getWritableDatabase();
 
         Cursor cell = db.rawQuery("SELECT GAME.longitude, GAME.latitude, GAME.cave_number FROM GAME WHERE GAME.id = " + game_id + ";", null);

@@ -42,7 +42,7 @@ public class AR_Helper extends Activity {
      */
     public void createCaves(int number_of_caves, int game_id){
 
-        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 6);
+        AdminSQLite admin = new AdminSQLite(this, "WumpusDB", null, 7);
         SQLiteDatabase db = admin.getWritableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT latitude, longitude, cave_number FROM GAME WHERE id = " +
