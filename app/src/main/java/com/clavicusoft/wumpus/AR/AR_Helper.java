@@ -70,7 +70,7 @@ public class AR_Helper {
         int geo_id = 1;
         if (cursor.moveToFirst()) {
             do{
-                if (data.getGraph().areConnected(cave_Number, cursor.getInt(2) - 1)) {
+                if (data.getGraph().areConnected(cave_Number - 1, cursor.getInt(2) - 1)) {
                     GeoObject geo_Object = new GeoObject(geo_id);
                     geo_Object.setGeoPosition(Double.parseDouble(cursor.getString(0)), Double.parseDouble(cursor.getString(1)));
                     geo_Object.setName("Cueva: " + String.valueOf(cursor.getInt(2)));

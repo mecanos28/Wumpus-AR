@@ -783,7 +783,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         data.put("cave_number", cave_number);
         data.put("latitude", String.valueOf(coordX));
         data.put("longitude", String.valueOf(coordY));
-        //data.put("content", caveContents[cave_number-1].getValue());
+        data.put("content", caveContents[cave_number-1].getValue());
         db.insert("GAME", null, data);
 
         LatLng newCave = new LatLng(coordX, coordY);

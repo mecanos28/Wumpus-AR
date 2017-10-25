@@ -49,7 +49,7 @@ public class Game_World extends FragmentActivity implements OnClickBeyondarObjec
                 R.id.beyondarFragment);
 
         worldHelper = new AR_Helper(this);
-        worldHelper.updateObjects(this, 0, data);
+        worldHelper.updateObjects(this, 1, data);
 
         //Allows BeyondAR to access user's position
         BeyondarLocationManager.setLocationManager((LocationManager) this.getSystemService(

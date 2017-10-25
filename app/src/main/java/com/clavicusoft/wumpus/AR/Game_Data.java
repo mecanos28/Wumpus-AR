@@ -87,7 +87,9 @@ public class Game_Data {
         Cursor cell = db.rawQuery("SELECT GAME.cave_number, CAVE_CONTENT.content FROM GAME, CAVE_CONTENT " +
                 "WHERE GAME.id = " + game_ID + " AND CAVE_CONTENT.id = GAME.content;", null);
         if (cell.moveToFirst()) {
-            caveContents[cell.getInt(0) - 1] = getContentFromString(cell.getString(1));
+            do{
+                caveContents[cell.getInt(0) - 1] = getContentFromString(cell.getString(1));
+            }while(cell.moveToNext());
         }
         cell.close();
     }
