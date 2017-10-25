@@ -154,15 +154,31 @@ public class Game_World extends FragmentActivity implements OnClickBeyondarObjec
                 Context.LOCATION_SERVICE));
     }
 
+    /**
+     * Updates the game board and world.
+     *
+     * @param cave_Number Current cave number.
+     */
     public void updateGame (int cave_Number) {
         checkCaveContent(cave_Number);
         worldHelper.updateObjects(this, cave_Number, data);
     }
 
+    /**
+     * Gets the cave number from the BeyondAR Object's name.
+     *
+     * @param name Object's name.
+     * @return Int: cave number.
+     */
     public int getCaveNumberFromName (String name) {
         return Integer.parseInt(name.substring(name.length() - 1));
     }
 
+    /**
+     * Checks the content of the cave.
+     *
+     * @param cave_Number Current cave number.
+     */
     public void checkCaveContent (int cave_Number){
         CaveContent content = data.getCaveContent(cave_Number);
         switch (content) {
