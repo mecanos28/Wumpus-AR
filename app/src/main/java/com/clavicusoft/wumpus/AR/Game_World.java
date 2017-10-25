@@ -13,6 +13,7 @@ import com.beyondar.android.util.location.BeyondarLocationManager;
 import com.beyondar.android.view.OnClickBeyondarObjectListener;
 import com.beyondar.android.world.BeyondarObject;
 import com.beyondar.android.world.World;
+import com.clavicusoft.wumpus.Maze.CaveContent;
 import com.clavicusoft.wumpus.R;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class Game_World extends FragmentActivity implements OnClickBeyondarObjec
     private BeyondarFragmentSupport currentBeyondARFragment;
     private AR_Helper worldHelper;
     private World world;
+    private Game_Data data;
     private int game_ID;
     private int number_of_caves;
 
@@ -39,6 +41,8 @@ public class Game_World extends FragmentActivity implements OnClickBeyondarObjec
         Bundle b = getIntent().getExtras();
         game_ID = b.getInt("game_ID");
         number_of_caves = b.getInt("number_of_caves");
+
+        data = new Game_Data(this, game_ID);
 
         //Sets the fragment.
         currentBeyondARFragment = (BeyondarFragmentSupport) getSupportFragmentManager().findFragmentById(
@@ -89,13 +93,14 @@ public class Game_World extends FragmentActivity implements OnClickBeyondarObjec
     @Override
     public void onClickBeyondarObject(ArrayList<BeyondarObject> arrayList) {
         // The first element in the array belongs to the closest BeyondarObject
+        final int cave_Number = getCaveNumberFromName(arrayList.get(0).getName());
         AlertDialog.Builder newDialog = new AlertDialog.Builder(this);
         newDialog.setTitle("Has encontrado " + arrayList.get(0).getName());
         newDialog.setMessage("¿Desea entrar a esta cueva?");
         newDialog.setPositiveButton("Sí", new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int which){
                 dialog.dismiss();
-                //TODO: Enter this cave.
+                updateGame(cave_Number);
             }
         });
         newDialog.setNegativeButton("No", new DialogInterface.OnClickListener(){
@@ -146,5 +151,26 @@ public class Game_World extends FragmentActivity implements OnClickBeyondarObjec
         BeyondarLocationManager.addWorldLocationUpdate(world);
         BeyondarLocationManager.setLocationManager((LocationManager) getSystemService(
                 Context.LOCATION_SERVICE));
+    }
+
+    public void updateGame (int cave_Number) {
+        checkCaveContent(cave_Number);
+        worldHelper.updateObjects(cave_Number, data);
+    }
+
+    public int getCaveNumberFromName (String name) {
+        return Integer.parseInt(name.substring(name.length() - 1));
+    }
+
+    public void checkCaveContent (int cave_Number){
+        CaveContent content = data.getCaveContent(cave_Number);
+        switch (content) {
+            case WUMPUS:
+                break;
+            case BAT:
+                break;
+            case PIT:
+                break;
+        }
     }
 }

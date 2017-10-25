@@ -61,4 +61,8 @@ public class AR_Helper {
 
         cursor.close();
     }
+
+    public void updateObjects(int cave_Number, Game_Data data){
+
+    }
 }
