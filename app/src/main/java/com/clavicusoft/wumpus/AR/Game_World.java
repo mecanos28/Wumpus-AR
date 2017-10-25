@@ -16,6 +16,8 @@ import com.beyondar.android.world.World;
 import com.clavicusoft.wumpus.Maze.CaveContent;
 import com.clavicusoft.wumpus.R;
 
+import android.widget.TextView;
+
 import java.util.ArrayList;
 
 public class Game_World extends FragmentActivity implements OnClickBeyondarObjectListener {
@@ -26,6 +28,7 @@ public class Game_World extends FragmentActivity implements OnClickBeyondarObjec
     private Game_Data data;
     private int game_ID;
     private int number_of_caves;
+    private TextView currentCave;
 
     /**
      * Sets the view once this activity starts.
@@ -36,6 +39,7 @@ public class Game_World extends FragmentActivity implements OnClickBeyondarObjec
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ar_layout);
+        currentCave = (TextView) findViewById(R.id.numCave); //current cave number textView
 
         //Get the game parameters
         Bundle b = getIntent().getExtras();
@@ -155,6 +159,7 @@ public class Game_World extends FragmentActivity implements OnClickBeyondarObjec
     }
 
     public void updateGame (int cave_Number) {
+        currentCave.setText(String.valueOf(cave_Number));
         checkCaveContent(cave_Number);
         worldHelper.updateObjects(this, cave_Number, data);
     }
