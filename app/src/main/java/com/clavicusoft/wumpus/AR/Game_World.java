@@ -42,20 +42,21 @@ public class Game_World extends FragmentActivity implements OnClickBeyondarObjec
         game_ID = b.getInt("game_ID");
         number_of_caves = b.getInt("number_of_caves");
 
-        data = new Game_Data(this, game_ID);
+        data = new Game_Data(this, game_ID, 1);
 
         //Sets the fragment.
         currentBeyondARFragment = (BeyondarFragmentSupport) getSupportFragmentManager().findFragmentById(
                 R.id.beyondarFragment);
 
-        worldHelper = new AR_Helper();
+        worldHelper = new AR_Helper(this);
+        worldHelper.updateObjects(this, 0, data);
 
         //Allows BeyondAR to access user's position
         BeyondarLocationManager.setLocationManager((LocationManager) this.getSystemService(
                 Context.LOCATION_SERVICE));
 
         //Starts the world
-        world = worldHelper.createWorld(this, game_ID);
+        world = worldHelper.getWorld();
 
         setDistanceParameters();
         currentBeyondARFragment.setWorld(world);
@@ -155,7 +156,7 @@ public class Game_World extends FragmentActivity implements OnClickBeyondarObjec
 
     public void updateGame (int cave_Number) {
         checkCaveContent(cave_Number);
-        worldHelper.updateObjects(cave_Number, data);
+        worldHelper.updateObjects(this, cave_Number, data);
     }
 
     public int getCaveNumberFromName (String name) {

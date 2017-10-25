@@ -4,28 +4,40 @@ package com.clavicusoft.wumpus.AR;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.widget.Toast;
 
-import com.beyondar.android.world.GeoObject;
 import com.clavicusoft.wumpus.Database.AdminSQLite;
 import com.clavicusoft.wumpus.Maze.CaveContent;
 import com.clavicusoft.wumpus.Maze.Graph;
-import com.clavicusoft.wumpus.R;
 
 public class Game_Data {
+
     private int game_ID;
     private Graph graph;
     private CaveContent[] caveContents;
     private Context game_Context;
+    private int currentCave;
 
-    public Game_Data (Context context, int game_ID) {
+    public int getGame_ID() {
+        return game_ID;
+    }
+
+    public Graph getGraph() {
+        return graph;
+    }
+
+    public int getCurrentCave() {
+        return currentCave;
+    }
+
+    public Game_Data (Context context, int game_ID, int currentCave) {
         this.game_ID = game_ID;
         this.game_Context = context;
+        this.currentCave = currentCave;
         setInitialData();
     }
 
     public void setInitialData () {
-        int graph_ID = getGameID();
+        int graph_ID = getGraphID();
         if (graph_ID != -1) {
             Boolean graph_Created = createGraph(graph_ID);
             if (graph_Created) {
@@ -34,7 +46,7 @@ public class Game_Data {
         }
     }
 
-    public int getGameID() {
+    public int getGraphID() {
         AdminSQLite admin = new AdminSQLite(game_Context, "WumpusDB", null, 7);
         SQLiteDatabase db = admin.getWritableDatabase();
 
