@@ -29,6 +29,13 @@ public class Game_Data {
         return currentCave;
     }
 
+    /**
+     * Creates a new Game_Data object.
+     *
+     * @param context Game's context.
+     * @param game_ID ID of the current game.
+     * @param currentCave Current cave number.
+     */
     public Game_Data (Context context, int game_ID, int currentCave) {
         this.game_ID = game_ID;
         this.game_Context = context;
@@ -36,6 +43,9 @@ public class Game_Data {
         setInitialData();
     }
 
+    /**
+     * Initializes the data.
+     */
     public void setInitialData () {
         int graph_ID = getGraphID();
         if (graph_ID != -1) {
@@ -46,6 +56,11 @@ public class Game_Data {
         }
     }
 
+    /**
+     * Gets the graph_ID from the current game.
+     *
+     * @return Graph's DB ID.
+     */
     public int getGraphID() {
         AdminSQLite admin = new AdminSQLite(game_Context, "WumpusDB", null, 7);
         SQLiteDatabase db = admin.getWritableDatabase();
@@ -61,6 +76,12 @@ public class Game_Data {
         return result;
     }
 
+    /**
+     * Creates a Graph with the graph_ID information.
+     *
+     * @param graph_ID Graph's DB ID.
+     * @return True if the graph was creates | False if the Graph was not created.
+     */
     public Boolean createGraph(int graph_ID) {
         Boolean result = false;
 
@@ -79,6 +100,9 @@ public class Game_Data {
         return result;
     }
 
+    /**
+     * Gets the cave content from the DB and stores it.
+     */
     public void setCaveContent() {
         caveContents = new CaveContent[graph.getMaximumCaves()];
         AdminSQLite admin = new AdminSQLite(game_Context, "WumpusDB", null, 7);
@@ -94,10 +118,22 @@ public class Game_Data {
         cell.close();
     }
 
+    /**
+     * Gets the content of a cave.
+     *
+     * @param cave_Number Number of the cave.
+     * @return The content of the cave.
+     */
     public CaveContent getCaveContent (int cave_Number) {
         return caveContents[cave_Number - 1];
     }
 
+    /**
+     * Gets the content of a cave based on a string.
+     *
+     * @param content String containing the cave content.
+     * @return The content of the cave.
+     */
     public CaveContent getContentFromString (String content) {
         CaveContent result;
         switch (content){
